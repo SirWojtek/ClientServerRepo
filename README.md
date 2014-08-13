@@ -7,7 +7,7 @@ Wrlinb git guide:
 
 2. Set git authentication file (in root of downloaded repo) .git/config, change line:
     url=https://github.com/USER/REPO to
-    url=https://<gituser>:<gitpass>@github.com/USER/REPO
+    url=https://[gituser]:[gitpass]@github.com/USER/REPO
 
 3. Enjoy pushing changes:
     git push
