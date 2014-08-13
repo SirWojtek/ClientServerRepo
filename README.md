@@ -15,3 +15,13 @@ Wrlinb git guide:
 
 4. Enjoy pushing changes:
 	git push
+
+Git tutorial for dummies:
+
+git add . - add current directory to local changes
+
+git checkout master - make sure we're on master branch
+
+git commit -m "Message" - commit locally with message "Message"
+
+git push - push local commit to github
