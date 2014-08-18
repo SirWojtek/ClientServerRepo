@@ -1,0 +1,3 @@
+[submodule "client/cereal"]
+	path = client/cereal
+	url = https://github.com/USCiLab/cereal.git
