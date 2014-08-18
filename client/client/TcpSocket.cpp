@@ -12,37 +12,10 @@ TcpSocket::TcpSocket() :
 void TcpSocket::connect(const std::string& host, const std::string& port)
 {
     boost::asio::ip::tcp::resolver resolver(*ioService_);
-    boost::asio::ip::tcp::resolver::query query(host, port);
-    auto endpointIt = resolver.resolve(query);
+    boost::asio::connect(*tcpSocket_, resolver.resolve({host, port}));
 
-    throwIfThereIsError(endpointIt);
-
-    tcpSocket_->close();
-    tcpSocket_->connect(*endpointIt);
-}
-
-void TcpSocket::close()
-{
-    tcpSocket_->close();
-}
-
-void TcpSocket::throwIfThereIsError(boost::asio::ip::tcp::resolver::iterator it)
-{
-    if (isMoreThanOneResolverEndpoint(it))
-        throw std::runtime_error("There is more than one endport for socket");
     if (!isHostFound())
         throw std::runtime_error("Can not connect to host");
-}
-
-bool TcpSocket::isMoreThanOneResolverEndpoint(boost::asio::ip::tcp::resolver::iterator it)
-{
-    boost::asio::ip::tcp::resolver::iterator end;
-
-    for (int i = 0; it != end; i++, it++)
-        if (i > 1)
-            return true;
-
-    return false;
 }
 
 bool TcpSocket::isHostFound()
