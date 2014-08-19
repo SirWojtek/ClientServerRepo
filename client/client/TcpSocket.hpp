@@ -25,9 +25,6 @@ public:
     std::shared_ptr<const std::string> read();
 
 private:
-    void throwIfThereIsError(boost::asio::ip::tcp::resolver::iterator it);
-    bool isHostFound();
-
     std::unique_ptr<boost::asio::io_service> ioService_;
     std::unique_ptr<boost::asio::ip::tcp::socket> tcpSocket_;
 
