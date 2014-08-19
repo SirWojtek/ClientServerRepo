@@ -21,12 +21,27 @@
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="SharedVariable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TcpSocket.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITcpSocket.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedVariable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
