@@ -29,7 +29,7 @@ public:
 		std::vector<std::thread> pool;
 
 		for (unsigned i = 0; i < size; i++)
-			pool.insert(std::thread(func, i, var));
+			pool.push_back(std::thread(func, i, var));
 
 		return pool;
 	}

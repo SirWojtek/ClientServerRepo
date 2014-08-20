@@ -1,10 +1,10 @@
-INCLUDE_PATH=../cereal/include
-OUTPUT_PATH=../
+INCLUDE_PATH=-I../cereal/include
+OUTPUT_PATH=../Debug/main
 
 CC=g++
-CFLAGS= -Wall -I$(INCLUDE_PATH) -std=c++11 -lboost_system -o ../Debug/main -static-libstdc++
+CFLAGS= -Wall $(INCLUDE_PATH) -std=c++11 -lboost_system -o$(OUTPUT_PATH) -static-libstdc++
 
 all : main
 
-main : main.cpp  TcpSocket.cpp
-	$(CC) $(CFLAGS) main.cpp TcpSocket.cpp
+main : main.cpp TcpSocket.cpp Client.cpp
+	$(CC) $(CFLAGS) main.cpp TcpSocket.cpp Client.cpp
