@@ -23,6 +23,7 @@ public:
     virtual const ILoger& operator<<(long double val) const = 0;
     virtual const ILoger& operator<<(void* val) const = 0;
     virtual const ILoger& operator<<(const std::string& val) const = 0;
+	virtual const ILoger& operator<<(const char* val) const = 0;
 
     static void setDebugPrint(bool status);
     static void setFilePrint(bool status);
@@ -59,6 +60,7 @@ public:
     const ILoger& operator<<(long double val) const;
     const ILoger& operator<<(void* val) const;
     const ILoger& operator<<(const std::string& val) const;
+	const ILoger& operator<<(const char* val) const;
 };
 
 class DebugLoger : public ILoger
@@ -80,6 +82,7 @@ public:
     const ILoger& operator<<(long double val) const;
     const ILoger& operator<<(void* val) const;
     const ILoger& operator<<(const std::string& val) const;
+	const ILoger& operator<<(const char* val) const;
 };
 
 class ErrorLoger : public ILoger
@@ -101,6 +104,7 @@ public:
     const ILoger& operator<<(long double val) const;
     const ILoger& operator<<(void* val) const;
     const ILoger& operator<<(const std::string& val) const;
+	const ILoger& operator<<(const char* val) const;
 };
 
 class Console

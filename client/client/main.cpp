@@ -5,9 +5,11 @@
 #include <cereal/archives/json.hpp>
 
 #include "Client.hpp"
+#include "CommunicationService.hpp"
+#include "TcpSocket.hpp"
 
 int main(int argc, char** argv)
 {
-	Client client(argc, argv);
-	return client.start();
+	Client client(new CommunicationService(new TcpSocket()));
+	return client.start(argc, argv);
 }

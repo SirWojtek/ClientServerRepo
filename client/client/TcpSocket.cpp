@@ -17,7 +17,7 @@ void TcpSocket::connect(const std::string& host, const std::string& port)
 	try
 	{
         console_.info << "Trying to connect to host: " << host << port;
-		// boost::asio::connect(*tcpSocket_, resolver.resolve({ host, port }));
+		boost::asio::connect(*tcpSocket_, resolver.resolve({ host, port }));
         console_.info << "Connected";
 	}
 	catch (boost::system::system_error& e)

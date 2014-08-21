@@ -103,12 +103,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CommunicationService.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SharedVariable.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.hpp" />
+    <ClInclude Include="CommunicationService.hpp" />
+    <ClInclude Include="Console.hpp" />
     <ClInclude Include="ITcpSocket.hpp" />
     <ClInclude Include="SharedVariable.hpp" />
     <ClInclude Include="TcpSocket.hpp" />

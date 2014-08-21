@@ -3,19 +3,19 @@
 #include <memory>
 
 #include "ThreadFactory.hpp"
-#include "SharedVariable.hpp"
+#include "CommunicationService.hpp"
 #include "Console.hpp"
 
 class Client
 {
 public:
-	Client(int argc, char** argv);
-	~Client() {}
+	Client(CommunicationService* communicationServ);
 
-	int start();
+	int start(int argc, char** argv);
 
 private:
 	std::unique_ptr<ThreadFactory> threadFactory_;
+	std::shared_ptr<CommunicationService> communicationServ_;
     Console console_;
 };
 
