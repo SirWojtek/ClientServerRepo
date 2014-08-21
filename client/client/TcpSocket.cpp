@@ -7,7 +7,8 @@
 
 TcpSocket::TcpSocket() :
     ioService_(new boost::asio::io_service()),
-    tcpSocket_(new boost::asio::ip::tcp::socket(*ioService_)) {}
+    tcpSocket_(new boost::asio::ip::tcp::socket(*ioService_)),
+    console_("TcpSocket") {}
 
 void TcpSocket::connect(const std::string& host, const std::string& port)
 {
@@ -15,7 +16,9 @@ void TcpSocket::connect(const std::string& host, const std::string& port)
 
 	try
 	{
-		boost::asio::connect(*tcpSocket_, resolver.resolve({ host, port }));
+        console_.info << "Trying to connect to host: " << host << port;
+		// boost::asio::connect(*tcpSocket_, resolver.resolve({ host, port }));
+        console_.info << "Connected";
 	}
 	catch (boost::system::system_error& e)
 	{
@@ -33,6 +36,7 @@ void TcpSocket::write(std::string& message)
 {
 	try
 	{
+        console_.debug << "Writing message:" << message;
 		boost::asio::write(
 			*tcpSocket_, boost::asio::buffer(message.c_str(), message.size()));
 	}
@@ -50,6 +54,7 @@ std::shared_ptr<const std::string> TcpSocket::read()
 
 	try
 	{
+        console_.debug << "Waiting for message";
 		replyLength = boost::asio::read(
 			*tcpSocket_, boost::asio::buffer(&(*message)[0], maxMessageSize));
 	}
@@ -61,5 +66,6 @@ std::shared_ptr<const std::string> TcpSocket::read()
     if (replyLength == maxMessageSize)
         throw std::runtime_error("Message readed from host is too large");
 
+    console_.debug << "Message received: " << *message;
     return message;
 }

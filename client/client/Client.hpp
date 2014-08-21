@@ -4,6 +4,7 @@
 
 #include "ThreadFactory.hpp"
 #include "SharedVariable.hpp"
+#include "Console.hpp"
 
 class Client
 {
@@ -15,5 +16,6 @@ public:
 
 private:
 	std::unique_ptr<ThreadFactory> threadFactory_;
+    Console console_;
 };
 
