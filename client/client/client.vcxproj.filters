@@ -44,9 +44,6 @@
     <ClInclude Include="ITcpSocket.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SharedVariable.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IMessageActor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ICommunicationService.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,14 +6,18 @@
 
 #include "IMessageActor.hpp"
 #include "Console.hpp"
+#include "ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
-#include "SharedVariable.hpp"
+
 
 class MessageWriter : public IMessageActor
 {
 public:
-	MessageWriter(std::shared_ptr<SharedVariable<IMessageQueue>> messageQueue) :
-		console_("MessageWriter") {}
+	MessageWriter(TcpSocketPtr tcpSocket,
+		MessageQueuePtr messageQueue) :
+			tcpSocket_(tcpSocket),
+			messageQueue_(messageQueue),
+			console_("MessageWriter") {}
 
 	void asyncSend(std::shared_ptr<std::string> message);
 	bool asyncGet();
@@ -21,8 +25,8 @@ public:
 private:
 	bool sendMessage(std::shared_ptr<std::string> message);
 
-	std::shared_ptr<SharedVariable<IMessageQueue>> messageQueue_;
 	std::shared_future<bool> writerThread_;
+	MessageQueuePtr messageQueue_;
+	TcpSocketPtr tcpSocket_;
 	Console console_;
 };
-

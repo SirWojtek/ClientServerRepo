@@ -117,12 +117,12 @@
     <ClInclude Include="Client.hpp" />
     <ClInclude Include="CommunicationService.hpp" />
     <ClInclude Include="Console.hpp" />
+    <ClInclude Include="ICommunicationService.hpp" />
     <ClInclude Include="IMessageQueue.hpp" />
     <ClInclude Include="IMessageActor.hpp" />
     <ClInclude Include="ITcpSocket.hpp" />
     <ClInclude Include="MessageQueue.hpp" />
     <ClInclude Include="MessageWriter.hpp" />
-    <ClInclude Include="SharedVariable.hpp" />
     <ClInclude Include="TcpSocket.hpp" />
     <ClInclude Include="ThreadFactory.hpp" />
   </ItemGroup>

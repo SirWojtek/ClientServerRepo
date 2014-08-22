@@ -104,9 +104,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\client\Client.cpp" />
+    <ClCompile Include="..\client\CommunicationService.cpp" />
+    <ClCompile Include="..\client\Console.cpp" />
+    <ClCompile Include="..\client\MessageQueue.cpp" />
+    <ClCompile Include="..\client\MessageWriter.cpp" />
+    <ClCompile Include="ClientTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommunicationServiceMock.hpp" />
+    <ClInclude Include="MessageActorMock.hpp" />
+    <ClInclude Include="MessageQueueMock.hpp" />
     <ClInclude Include="TcpSocketMock.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

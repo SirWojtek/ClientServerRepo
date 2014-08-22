@@ -11,3 +11,4 @@ public:
 	virtual void write(const char* message) = 0;
 	virtual std::shared_ptr<const std::string> read() = 0;
 };
+typedef std::shared_ptr<ITcpSocket> TcpSocketPtr;
