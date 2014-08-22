@@ -113,9 +113,9 @@ public:
     Console(std::string className);
 
 private:
-    std::unique_ptr<const ILoger> info_;
-    std::unique_ptr<const ILoger> debug_;
-    std::unique_ptr<const ILoger> error_;
+    std::shared_ptr<const ILoger> info_;
+    std::shared_ptr<const ILoger> debug_;
+    std::shared_ptr<const ILoger> error_;
 
 public:
     const ILoger& info;

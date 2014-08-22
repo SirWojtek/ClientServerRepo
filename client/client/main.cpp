@@ -5,11 +5,12 @@
 #include <cereal/archives/json.hpp>
 
 #include "Client.hpp"
-#include "CommunicationService.hpp"
 #include "TcpSocket.hpp"
+#include "MessageQueue.hpp"
 
 int main(int argc, char** argv)
 {
-	Client client(new CommunicationService(new TcpSocket()));
+
+	Client client(std::make_shared<TcpSocket>());
 	return client.start(argc, argv);
 }

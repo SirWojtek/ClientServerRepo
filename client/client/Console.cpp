@@ -3,7 +3,7 @@
 
 #include "Console.hpp"
 
-bool ILoger::debugPrint_ = false;
+bool ILoger::debugPrint_ = true;
 bool ILoger::filePrint_ = false;
 std::ofstream ILoger::file_("client.log");
 std::ostream& ILoger::console_ = std::cout;
@@ -325,7 +325,7 @@ const ILoger& ErrorLoger::operator<<(bool val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -334,7 +334,7 @@ const ILoger& ErrorLoger::operator<<(short val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -343,7 +343,7 @@ const ILoger& ErrorLoger::operator<<(unsigned short val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -352,7 +352,7 @@ const ILoger& ErrorLoger::operator<<(int val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -361,7 +361,7 @@ const ILoger& ErrorLoger::operator<<(unsigned int val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -370,7 +370,7 @@ const ILoger& ErrorLoger::operator<<(long val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -379,7 +379,7 @@ const ILoger& ErrorLoger::operator<<(unsigned long val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -388,7 +388,7 @@ const ILoger& ErrorLoger::operator<<(long long val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -397,7 +397,7 @@ const ILoger& ErrorLoger::operator<<(unsigned long long val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -406,7 +406,7 @@ const ILoger& ErrorLoger::operator<<(float val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -415,7 +415,7 @@ const ILoger& ErrorLoger::operator<<(double val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -424,7 +424,7 @@ const ILoger& ErrorLoger::operator<<(long double val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -433,7 +433,7 @@ const ILoger& ErrorLoger::operator<<(void* val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -442,7 +442,7 @@ const ILoger& ErrorLoger::operator<<(const std::string& val) const
     std::ostream& stream = getStream();
     stream << "!!! ";
     printClassName(stream);
-    stream << " ERROR: " << val << " !!!";
+    stream << " ERROR: " << val << " !!!" << std::endl;
     return *this;
 }
 
@@ -451,6 +451,6 @@ const ILoger& ErrorLoger::operator<<(const char* val) const
 	std::ostream& stream = getStream();
 	stream << "!!! ";
 	printClassName(stream);
-	stream << " ERROR: " << val << " !!!";
+	stream << " ERROR: " << val << " !!!" << std::endl;
 	return *this;
 }

@@ -60,6 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../external/cereal/include;../external/boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,6 +78,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>../external/boost_1_56_0;../external/cereal/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -93,6 +95,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../external/boost_1_56_0/;../external/cereal/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,14 +109,19 @@
     <ClCompile Include="CommunicationService.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SharedVariable.cpp" />
+    <ClCompile Include="MessageQueue.cpp" />
+    <ClCompile Include="MessageWriter.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.hpp" />
     <ClInclude Include="CommunicationService.hpp" />
     <ClInclude Include="Console.hpp" />
+    <ClInclude Include="IMessageQueue.hpp" />
+    <ClInclude Include="IMessageActor.hpp" />
     <ClInclude Include="ITcpSocket.hpp" />
+    <ClInclude Include="MessageQueue.hpp" />
+    <ClInclude Include="MessageWriter.hpp" />
     <ClInclude Include="SharedVariable.hpp" />
     <ClInclude Include="TcpSocket.hpp" />
     <ClInclude Include="ThreadFactory.hpp" />

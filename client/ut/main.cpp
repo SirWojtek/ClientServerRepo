@@ -2,13 +2,6 @@
 #include <gmock/gmock.h>
 #include <iostream>
 
-#include "ITcpSocket.hpp"
-
-class TcpSocketMock : public ITcpSocket
-{
-	MOCK_METHOD2(connect, void(const std::string&, const std::string&));
-};
-
 int main(int argc, char** argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
