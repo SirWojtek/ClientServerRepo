@@ -27,18 +27,18 @@ public:
 
     static void setDebugPrint(bool status);
     static void setFilePrint(bool status);
+	static void setOffPrint(bool status);
+
+	static bool debugPrint_;
+	static bool offPrint_;
+	const std::string className_;
+	static bool filePrint_;
+	static std::ofstream file_;
+	static std::ostream& console_;
 
 protected:
     void printClassName(std::ostream& stream) const;
     std::ostream& getStream() const;
-
-    static bool debugPrint_;
-
-private:
-    const std::string className_;
-    static bool filePrint_;
-    static std::ofstream file_;
-    static std::ostream& console_;
 };
 
 class InfoLoger : public ILoger
