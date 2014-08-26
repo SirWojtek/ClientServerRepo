@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "ThreadFactory.hpp"
 #include "CommunicationService.hpp"
@@ -21,5 +22,7 @@ private:
 	CommunicationServicePtr communicationServ_;
 	ThreadFactory threadFactory_;
     Console console_;
+
+	static std::string host, port;
 };
 typedef std::shared_ptr<Client> ClientPtr;

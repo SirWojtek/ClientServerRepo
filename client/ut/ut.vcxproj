@@ -111,6 +111,7 @@
     <ClCompile Include="..\client\MessageQueue.cpp" />
     <ClCompile Include="..\client\MessageWriter.cpp" />
     <ClCompile Include="ClientTest.cpp" />
+    <ClCompile Include="CommunicationServiceTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

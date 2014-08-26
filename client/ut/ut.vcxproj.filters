@@ -36,6 +36,9 @@
     <ClCompile Include="..\client\Client.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommunicationServiceTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TcpSocketMock.hpp">

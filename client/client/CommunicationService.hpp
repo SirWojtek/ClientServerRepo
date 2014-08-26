@@ -14,14 +14,13 @@ class CommunicationService : public ICommunicationService
 {
 public:
 	CommunicationService(TcpSocketPtr tcpSocket,
-		MessageQueuePtr messageQueue) :
+		MessageQueuePtr messageQueue, MessageActorPtr messageWritter) :
 			messageQueue_(messageQueue),
 			tcpSocket_(tcpSocket),
-			messageWriter_(std::make_shared<MessageWriter>(
-				tcpSocket_, messageQueue_)),
+			messageWriter_(messageWritter),
 			console_("CommunicationService") {}
 
-	void startService();
+	void startService(const std::string& host, const std::string& port);
 
 private:
 	void initService(std::string host, std::string port);

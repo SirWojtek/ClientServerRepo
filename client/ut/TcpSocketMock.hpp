@@ -7,8 +7,10 @@
 
 class TcpSocketMock : public ITcpSocket
 {
+public:
 	MOCK_METHOD2(connect, void(const std::string&, const std::string&));
 	MOCK_METHOD1(write, void(std::string&));
 	MOCK_METHOD1(write, void(const char*));
 	MOCK_METHOD0(read, std::shared_ptr<const std::string>());
 };
+typedef std::shared_ptr<TcpSocketMock> TcpSocketMockPtr;

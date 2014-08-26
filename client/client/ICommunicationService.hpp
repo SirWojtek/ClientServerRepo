@@ -6,6 +6,7 @@ class ICommunicationService
 {
 public:
 	virtual ~ICommunicationService() {}
-	virtual void startService() = 0;
+	virtual void startService(const std::string& host,
+		const std::string& port) = 0;
 };
 typedef std::shared_ptr<ICommunicationService> CommunicationServicePtr;

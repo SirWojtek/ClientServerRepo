@@ -19,6 +19,9 @@ protected:
 
 TEST_F(ClientShould, PrepareApplicationComponents)
 {
-	EXPECT_CALL(*communicationServMock_, startService()).Times(1);
+	std::string host = "127.0.0.1";  // static from Client.cpp
+	std::string port = "1234";  // static from Client.cpp
+
+	EXPECT_CALL(*communicationServMock_, startService(host, port));
 	EXPECT_EQ(0, client_->start(0, nullptr));
 }

@@ -5,12 +5,12 @@
 
 #include "CommunicationService.hpp"
 
-void CommunicationService::startService()
+void CommunicationService::startService(
+	const std::string& host, const std::string& port)
 {
 	try
 	{
-		// initService("127.0.0.1", "1234");
-
+		initService(host, port);
 	}
 	catch (std::runtime_error& e)
 	{
