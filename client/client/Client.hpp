@@ -22,3 +22,4 @@ private:
 	ThreadFactory threadFactory_;
     Console console_;
 };
+typedef std::shared_ptr<Client> ClientPtr;

@@ -21,9 +21,6 @@
     <ClCompile Include="ClientTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\client\Client.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\client\CommunicationService.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="..\client\MessageWriter.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\client\Client.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
