@@ -2,15 +2,16 @@
 
 #include <memory>
 #include <string>
-#include <future>
+#include <thread>
 
-#include "IMessageActor.hpp"
+#include "IMessageWriter.hpp"
 #include "Console.hpp"
 #include "ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
 
 
-class MessageWriter : public IMessageActor
+class MessageWriter : public IMessageWriter,
+	public std::enable_shared_from_this<MessageWriter>
 {
 public:
 	MessageWriter(TcpSocketPtr tcpSocket,
@@ -19,13 +20,12 @@ public:
 			messageQueue_(messageQueue),
 			console_("MessageWriter") {}
 
-	void asyncSend(std::shared_ptr<std::string> message);
-	bool asyncGet();
+	std::thread start();
 
+	static const std::string terminateCommand_;
 private:
-	bool sendMessage(std::shared_ptr<std::string> message);
+	void writerLoop(std::shared_ptr<MessageWriter> self);
 
-	std::shared_future<bool> writerThread_;
 	MessageQueuePtr messageQueue_;
 	TcpSocketPtr tcpSocket_;
 	Console console_;

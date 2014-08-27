@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "IMessageActor.hpp"
+#include "IMessageWriter.hpp"
 
-class MessageActorMock : public IMessageActor
+class MessageActorMock : public IMessageWriter
 {
 public:
 	MOCK_METHOD1(asyncSend, void(std::shared_ptr<std::string>));

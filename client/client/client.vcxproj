@@ -119,7 +119,7 @@
     <ClInclude Include="Console.hpp" />
     <ClInclude Include="ICommunicationService.hpp" />
     <ClInclude Include="IMessageQueue.hpp" />
-    <ClInclude Include="IMessageActor.hpp" />
+    <ClInclude Include="IMessageWriter.hpp" />
     <ClInclude Include="ITcpSocket.hpp" />
     <ClInclude Include="MessageQueue.hpp" />
     <ClInclude Include="MessageWriter.hpp" />

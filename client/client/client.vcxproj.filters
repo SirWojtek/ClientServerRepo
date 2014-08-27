@@ -65,10 +65,10 @@
     <ClInclude Include="MessageWriter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IMessageActor.hpp">
+    <ClInclude Include="ICommunicationService.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ICommunicationService.hpp">
+    <ClInclude Include="IMessageWriter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

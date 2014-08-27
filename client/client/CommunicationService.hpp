@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <future>
+#include <thread>
 #include <string>
 
 #include "ICommunicationService.hpp"
@@ -14,19 +14,22 @@ class CommunicationService : public ICommunicationService
 {
 public:
 	CommunicationService(TcpSocketPtr tcpSocket,
-		MessageQueuePtr messageQueue, MessageActorPtr messageWritter) :
+		MessageQueuePtr messageQueue, MessageWriterPtr messageWritter) :
 			messageQueue_(messageQueue),
-			tcpSocket_(tcpSocket),
+			tcpSocket_(std::move(tcpSocket)),
 			messageWriter_(messageWritter),
 			console_("CommunicationService") {}
 
 	void startService(const std::string& host, const std::string& port);
+	void putMessageInQueue(std::string&& message);
+	void tearDown();
 
 private:
-	void initService(std::string host, std::string port);
+	std::thread initService(std::string host, std::string port);
 
 	MessageQueuePtr messageQueue_;
 	TcpSocketPtr tcpSocket_;
-	MessageActorPtr messageWriter_;
+	MessageWriterPtr messageWriter_;
+	std::thread writerThread_;
 	Console console_;
 };

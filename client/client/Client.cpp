@@ -16,5 +16,7 @@ int Client::start(int argc, char** argv)
 	communicationServ_->startService(host, port);
 
 	console_.debug << "Aplication going to exit";
+	communicationServ_->tearDown();
+
 	return 0;
 }

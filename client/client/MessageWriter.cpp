@@ -1,21 +1,34 @@
 #include <memory>
+#include <thread>
+#include <string>
 
 #include "MessageWriter.hpp"
 
-void MessageWriter::asyncSend(std::shared_ptr<std::string> message)
+const std::string MessageWriter::terminateCommand_ = "TERMINATE";
+
+std::thread MessageWriter::start()
 {
-	console_.debug << "Starting async write message";
-	writerThread_ = std::async(&MessageWriter::sendMessage, this, message);
+	console_.info << "Starting writer thread";
+	return std::thread(&MessageWriter::writerLoop, this, shared_from_this());
 }
 
-bool MessageWriter::sendMessage(std::shared_ptr<std::string> message)
+void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
 {
+	console_.info << "Writer thread start OK";
+	while (true)
+	{
+		auto message = messageQueue_->popMessage();
+		if (*message == terminateCommand_)
+		{
+			console_.debug << "Writer thread terminate";
+			break;
+		}
+		console_.info << "Message to send: " << *message;
 
-	console_.debug << "Mesage sended: " << *message;
-	return true;
-}
+		tcpSocket_->write(*message);
+		console_.info << "Message sended";
 
-bool MessageWriter::asyncGet()
-{
-	return writerThread_.get();
+		auto answer = tcpSocket_->read();
+		console_.info << "Received answer: " << *answer;
+	}
 }

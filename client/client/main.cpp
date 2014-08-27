@@ -15,7 +15,7 @@ CommunicationServicePtr createCommunicationService()
 	MessageQueuePtr messageQueue =
 		std::make_shared<MessageQueue>();
 	TcpSocketPtr tcpSocket = std::make_shared<TcpSocket>();
-	MessageActorPtr messageWritter = std::make_shared<MessageWriter>(tcpSocket, messageQueue);
+	MessageWriterPtr messageWritter = std::make_shared<MessageWriter>(tcpSocket, messageQueue);
 	return std::make_shared<CommunicationService>(tcpSocket, messageQueue, messageWritter);
 }
 

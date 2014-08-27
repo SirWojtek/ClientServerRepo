@@ -1,4 +1,4 @@
-#include <future>
+#include <thread>
 #include <string>
 #include <exception>
 #include <memory>
@@ -10,7 +10,7 @@ void CommunicationService::startService(
 {
 	try
 	{
-		initService(host, port);
+		writerThread_ = initService(host, port);
 	}
 	catch (std::runtime_error& e)
 	{
@@ -18,7 +18,22 @@ void CommunicationService::startService(
 	}
 }
 
-void CommunicationService::initService(std::string host, std::string port)
+std::thread CommunicationService::initService(std::string host, std::string port)
 {
 	tcpSocket_->connect(host, port);
+	tcpSocket_ = nullptr;
+	return messageWriter_->start();
+}
+
+void CommunicationService::putMessageInQueue(std::string&& message)
+{
+	messageQueue_->pushMessage(std::move(message));
+	console_.info << "Message added to queue";
+}
+
+void CommunicationService::tearDown()
+{
+	std::string terminateCommand(MessageWriter::terminateCommand_);
+	messageQueue_->pushMessage(std::move(terminateCommand));
+	writerThread_.join();
 }
