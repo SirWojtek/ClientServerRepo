@@ -18,6 +18,7 @@ public:
 
 private:
 	void initConsole();
+	void receiveAnswer(std::shared_ptr<const std::string> answer);
 
 	CommunicationServicePtr communicationServ_;
 	ThreadFactory threadFactory_;

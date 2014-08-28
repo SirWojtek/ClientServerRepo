@@ -17,18 +17,31 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
 	console_.info << "Writer thread start OK";
 	while (true)
 	{
-		auto message = messageQueue_->popMessage();
-		if (*message == terminateCommand_)
-		{
-			console_.debug << "Writer thread terminate";
+		auto netMessage = messageQueue_->popMessage();
+		if (netMessage->message == terminateCommand_)		
 			break;
-		}
-		console_.info << "Message to send: " << *message;
 
-		tcpSocket_->write(*message);
-		console_.info << "Message sended";
+		writeMessage(netMessage);
+		receiveAnswer(netMessage);
+	}
+	console_.debug << "Writer thread ended";
+}
 
+void MessageWriter::writeMessage(NetworkMessagePtr netMessage)
+{
+	console_.info << "Message to send: " << netMessage->message;
+	tcpSocket_->write(netMessage->message);
+	console_.info << "Message sended";
+}
+
+void MessageWriter::receiveAnswer(NetworkMessagePtr netMessage)
+{
+	if (netMessage->callback)
+	{
 		auto answer = tcpSocket_->read();
 		console_.info << "Received answer: " << *answer;
+
+		netMessage->callback(answer);
+		console_.debug << "Return from callback function";
 	}
 }

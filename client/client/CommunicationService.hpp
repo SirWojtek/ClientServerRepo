@@ -5,6 +5,7 @@
 #include <string>
 
 #include "ICommunicationService.hpp"
+#include "NetworkMessage.hpp"
 #include "ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
 #include "MessageWriter.hpp"
@@ -21,12 +22,11 @@ public:
 			console_("CommunicationService") {}
 
 	void startService(const std::string& host, const std::string& port);
-	void putMessageInQueue(std::string&& message);
+	void putMessageInQueue(NetworkMessage&& message);
+	void putMessageInQueue(const NetworkMessage& message);
 	void tearDown();
 
 private:
-	std::thread initService(std::string host, std::string port);
-
 	MessageQueuePtr messageQueue_;
 	TcpSocketPtr tcpSocket_;
 	MessageWriterPtr messageWriter_;

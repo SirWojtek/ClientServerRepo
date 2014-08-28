@@ -123,6 +123,7 @@
     <ClInclude Include="ITcpSocket.hpp" />
     <ClInclude Include="MessageQueue.hpp" />
     <ClInclude Include="MessageWriter.hpp" />
+    <ClInclude Include="NetworkMessage.hpp" />
     <ClInclude Include="TcpSocket.hpp" />
     <ClInclude Include="ThreadFactory.hpp" />
   </ItemGroup>
