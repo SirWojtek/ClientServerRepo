@@ -22,13 +22,14 @@ void CommunicationService::putMessageInQueue(NetworkMessage&& message)
 void CommunicationService::putMessageInQueue(const NetworkMessage& message)
 {
 	messageQueue_->pushMessage(message);
+	console_.info << "Message added to queue";
 }
 
 void CommunicationService::tearDown()
 {
-	if (writerThread_.joinable())
+	if (writerThread_->joinable())
 	{
 		messageQueue_->pushMessage({ MessageWriter::terminateCommand_, nullptr });
-		writerThread_.join();
+		writerThread_->join();
 	}
 }

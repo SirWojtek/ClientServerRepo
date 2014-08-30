@@ -50,7 +50,7 @@
     <ClInclude Include="MessageQueueMock.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageActorMock.hpp">
+    <ClInclude Include="MessageWriterMock.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,10 +6,10 @@
 
 const std::string MessageWriter::terminateCommand_ = "TERMINATE";
 
-std::thread MessageWriter::start()
+ThreadPtr MessageWriter::start()
 {
 	console_.info << "Starting writer thread";
-	return std::thread(&MessageWriter::writerLoop, this, shared_from_this());
+	return std::make_shared<std::thread>(&MessageWriter::writerLoop, this, shared_from_this());
 }
 
 void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)

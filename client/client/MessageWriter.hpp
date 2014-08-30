@@ -20,7 +20,7 @@ public:
 			messageQueue_(messageQueue),
 			console_("MessageWriter") {}
 
-	std::thread start();
+	ThreadPtr start();
 
 	static const std::string terminateCommand_;
 private:

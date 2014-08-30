@@ -116,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommunicationServiceMock.hpp" />
-    <ClInclude Include="MessageActorMock.hpp" />
+    <ClInclude Include="MessageWriterMock.hpp" />
     <ClInclude Include="MessageQueueMock.hpp" />
     <ClInclude Include="TcpSocketMock.hpp" />
   </ItemGroup>

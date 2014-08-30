@@ -3,7 +3,6 @@
 #include <memory>
 #include <string>
 
-#include "ThreadFactory.hpp"
 #include "CommunicationService.hpp"
 #include "Console.hpp"
 
@@ -21,7 +20,6 @@ private:
 	void receiveAnswer(std::shared_ptr<const std::string> answer);
 
 	CommunicationServicePtr communicationServ_;
-	ThreadFactory threadFactory_;
     Console console_;
 
 	static std::string host, port;

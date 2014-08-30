@@ -30,6 +30,6 @@ private:
 	MessageQueuePtr messageQueue_;
 	TcpSocketPtr tcpSocket_;
 	MessageWriterPtr messageWriter_;
-	std::thread writerThread_;
+	ThreadPtr writerThread_;
 	Console console_;
 };

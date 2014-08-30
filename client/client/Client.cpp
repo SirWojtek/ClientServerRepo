@@ -5,7 +5,6 @@
 #include "Console.hpp"
 #include "Client.hpp"
 #include "CommunicationService.hpp"
-#include "ThreadFactory.hpp"
 
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "1234";
