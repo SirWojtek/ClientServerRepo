@@ -28,7 +28,7 @@ private:
 	void writeMessage(NetworkMessagePtr netMessage);
 	void receiveAnswer(NetworkMessagePtr netMesage);
 
-	MessageQueuePtr messageQueue_;
 	TcpSocketPtr tcpSocket_;
+	MessageQueuePtr messageQueue_;
 	Console console_;
 };

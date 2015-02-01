@@ -8,7 +8,7 @@
 class IMessageQueue
 {
 public:
-	virtual ~IMessageQueue() {}
+    virtual ~IMessageQueue() {}
 	virtual void pushMessage(NetworkMessage&& message) = 0;
 	virtual void pushMessage(const NetworkMessage& message) = 0;
 	virtual NetworkMessagePtr popMessage() = 0;
