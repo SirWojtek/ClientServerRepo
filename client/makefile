@@ -1,6 +1,6 @@
 .PHONY: all client ut
 
-all : client
+all : client ut
 
 client :
 	cd src; make

@@ -1,13 +1,11 @@
-INCLUDE_PATH=-I../src/ -I../external/gmock-1.7.0/include -I../external/cereal/include
-LIBRARY_PATH=../external/gmock-1.7.0/lib/
-OUTPUT_PATH=../ut/
+include ../global.makefile
 
-CFLAGS= -Wall $(INCLUDE_PATH) -std=c++11 -pthread
-LFLAGS= -L$(LIBRARY_PATH) -lboost_system -lgmock -lstdc++
+INCLUDE_PATH_UT=-I../src/
 
-CC=gcc
+CFLAGS_UT= $(CFLAGS) $(INCLUDE_PATH_UT)
+LFLAGS_UT= $(LFLAGS) -lgtest -lgmock
 
-SRC=$(wildcard *.cpp) $(wildcard ../src/*.cpp)
+SRC=$(wildcard *.cpp) $(filter-out ../src/main.cpp, $(wildcard ../src/*.cpp))
 
 ut : $(SRC)
-	$(CC) $(CFLAGS) -o $(OUTPUT_PATH)$@ $^ $(LFLAGS)
+	$(CC) $(CFLAGS_UT) -o $(OUTPUT_PATH)$@ $^ $(LFLAGS_UT)
