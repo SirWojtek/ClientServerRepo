@@ -1,6 +1,6 @@
 include ../global.makefile
 
-INCLUDE_PATH_UT=-I../src/
+INCLUDE_PATH_UT=-I../src/ -Imocks/
 
 CFLAGS_UT= $(CFLAGS) $(INCLUDE_PATH_UT)
 LFLAGS_UT= $(LFLAGS) -lgtest -lgmock
