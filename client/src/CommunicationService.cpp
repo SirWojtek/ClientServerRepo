@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 
+#include "IMessageQueue.hpp"
 #include "CommunicationService.hpp"
 #include "NetworkMessage.hpp"
 

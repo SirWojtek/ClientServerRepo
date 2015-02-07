@@ -23,9 +23,5 @@ int main(int argc, char** argv)
 {
 	CommunicationServicePtr communicationServ = createCommunicationService();
 	Client client(communicationServ);
-	int returnCode = client.start(argc, argv);
-
-	std::cout << std::endl << std::endl;
-	system("pause");
-	return returnCode;
+	return client.start(argc, argv);;
 }
