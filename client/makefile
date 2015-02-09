@@ -6,4 +6,4 @@ client :
 	cd src; make
 
 ut :
-	cd ut; make ut
+	cd ut; make ut;

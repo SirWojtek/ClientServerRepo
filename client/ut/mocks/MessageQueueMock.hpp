@@ -8,6 +8,7 @@
 
 class MessageQueueMock : public IMessageQueue
 {
+public:
 	virtual void pushMessage(NetworkMessage&& a) { pushMessageProxy(a); }
 	MOCK_METHOD1(pushMessageProxy, void(NetworkMessage));
 	MOCK_METHOD1(pushMessage, void(const NetworkMessage& message));
