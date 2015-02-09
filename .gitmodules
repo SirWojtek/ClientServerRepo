@@ -1,3 +1,3 @@
-[submodule "client/external/cereal"]
-	path = client/external/cereal
+[submodule "common/external/cereal"]
+	path = common/external/cereal
 	url = https://github.com/USCiLab/cereal.git
