@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NETWORK_MESSAGE_HPP_
+#define NETWORK_MESSAGE_HPP_
 
 #include <string>
 #include <functional>
@@ -8,7 +9,6 @@
 struct NetworkMessage
 {
 	std::string message;
-	std::function<void(std::shared_ptr<const std::string>)> callback;
 
 	bool operator==(const NetworkMessage& b) const
 	{
@@ -16,3 +16,5 @@ struct NetworkMessage
 	}
 };
 typedef std::shared_ptr<NetworkMessage> NetworkMessagePtr;
+
+#endif  // NETWORK_MESSAGE_HPP_

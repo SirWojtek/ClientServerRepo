@@ -9,14 +9,19 @@
 #include "TcpSocket.hpp"
 #include "MessageQueue.hpp"
 #include "MessageWriter.hpp"
+#include "MessageReader.hpp"
 
 CommunicationServicePtr createCommunicationService()
 {
-	MessageQueuePtr messageQueue =
+	MessageQueuePtr writerQueue =
 		std::make_shared<MessageQueue>();
+    MessageQueuePtr readerQueue =
+        std::make_shared<MessageQueue>();
 	TcpSocketPtr tcpSocket = std::make_shared<TcpSocket>();
-	MessageWriterPtr messageWritter = std::make_shared<MessageWriter>(tcpSocket, messageQueue);
-	return std::make_shared<CommunicationService>(tcpSocket, messageQueue, messageWritter);
+	MessageCommanderPtr messageWritter = std::make_shared<MessageWriter>(tcpSocket, writerQueue);
+	MessageCommanderPtr messageReader = std::make_shared<MessageReader>(tcpSocket, readerQueue);
+    return std::make_shared<CommunicationService>(tcpSocket,
+        writerQueue, messageWritter, readerQueue, messageReader);
 }
 
 int main(int argc, char** argv)

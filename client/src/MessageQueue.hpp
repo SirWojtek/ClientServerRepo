@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MESSAGE_QUEUE_HPP_
+#define MESSAGE_QUEUE_HPP_
 
 #include <string>
 #include <queue>
@@ -11,13 +12,14 @@
 class MessageQueue : public IMessageQueue
 {
 public:
-	void pushMessage(NetworkMessage&& message);
-	void pushMessage(const NetworkMessage& message);
-	NetworkMessagePtr popMessage();
+    void pushMessage(NetworkMessage&& message);
+    void pushMessage(const NetworkMessage& message);
+    NetworkMessagePtr popMessage();
 
 private:
-	std::queue<NetworkMessage> queue_;
-	std::condition_variable conditional_;
-	std::mutex mutex_;
+    std::queue<NetworkMessage> queue_;
+    std::condition_variable conditional_;
+    std::mutex mutex_;
 };
 
+#endif  // MESSAGE_QUEUE_HPP_

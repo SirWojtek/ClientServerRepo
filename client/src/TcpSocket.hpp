@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TCP_SOCKET_HPP_
+#define TCP_SOCKET_HPP_
 
 #include <string>
 #include <memory>
@@ -25,3 +26,5 @@ private:
 
     const static size_t maxMessageSize = 8192;
 };
+
+#endif  // TCP_SOCKET_HPP_
