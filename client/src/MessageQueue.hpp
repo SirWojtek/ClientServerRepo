@@ -13,7 +13,7 @@ class MessageQueue : public IMessageQueue
 {
 public:
     void pushMessage(const std::string& message);
-    std::string popMessage();
+    std::shared_ptr<std::string> popMessage();
 
 private:
     std::queue<std::string> queue_;

@@ -17,8 +17,12 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
     console_.info << "Writer thread start OK";
     while (true)
     {
-        std::string netMessage = messageQueue_->popMessage();
-        writeMessage(netMessage);
+        std::shared_ptr<std::string> netMessage = messageQueue_->popMessage();
+
+        if (netMessage != nullptr)
+        {
+            writeMessage(*netMessage);
+        }
 
         if (stop_.load())
         {

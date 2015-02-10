@@ -46,6 +46,7 @@ void TcpSocket::write(std::string& message)
 	}
 }
 
+// TODO: change to async read with timeout checking
 std::shared_ptr<const std::string> TcpSocket::read()
 {
 	size_t replyLength;
