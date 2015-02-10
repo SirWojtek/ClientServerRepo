@@ -16,7 +16,7 @@ void MessageReader::readerLoop(std::shared_ptr<MessageReader> self)
     console_.info << "Writer thread start OK";
     while (true)
     {
-        NetworkMessage message{*tcpSocket_->read()};
+        std::string message = *tcpSocket_->read();
         messageQueue_->pushMessage(message);
 
         if (stop_.load())

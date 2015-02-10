@@ -17,7 +17,7 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
     console_.info << "Writer thread start OK";
     while (true)
     {
-        auto netMessage = messageQueue_->popMessage();
+        std::string netMessage = messageQueue_->popMessage();
         writeMessage(netMessage);
 
         if (stop_.load())
@@ -28,9 +28,9 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
     console_.debug << "Writer thread ended";
 }
 
-void MessageWriter::writeMessage(NetworkMessagePtr netMessage)
+void MessageWriter::writeMessage(std::string& netMessage)
 {
-    console_.info << "Message to send: " << netMessage->message;
-    tcpSocket_->write(netMessage->message);
+    console_.info << "Message to send: " << netMessage;
+    tcpSocket_->write(netMessage);
     console_.info << "Message sended";
 }

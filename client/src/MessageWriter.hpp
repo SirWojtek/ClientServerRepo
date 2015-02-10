@@ -26,7 +26,7 @@ public:
     static const std::string terminateCommand_;
 private:
     void writerLoop(std::shared_ptr<MessageWriter> self);
-    void writeMessage(NetworkMessagePtr netMessage);
+    void writeMessage(std::string& netMessage);
 
     TcpSocketPtr tcpSocket_;
     MessageQueuePtr messageQueue_;

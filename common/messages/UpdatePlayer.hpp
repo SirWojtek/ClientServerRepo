@@ -2,12 +2,12 @@
 #define UPDATE_PLAYER_HPP_
 
 #include <string>
-#include <utility>
+#include <cereal/types/utility.hpp>
 
 namespace common
 {
 
-struct Updateplayer
+struct UpdatePlayer
 {
     std::pair<int, int> delta;
     int actionId;

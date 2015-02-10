@@ -6,6 +6,8 @@
 #include "Client.hpp"
 #include "CommunicationService.hpp"
 
+#include "messages/UpdatePlayer.hpp"
+
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "1234";
 
@@ -18,8 +20,8 @@ int Client::start(int argc, char** argv)
         console_.info << "Starting network service";
         communicationServ_->startService(host, port);
 
-        communicationServ_->putMessageInQueue(
-            { "test:test1" });
+        common::UpdatePlayer msg;
+        communicationServ_->putMessageInQueue(msg);
 
         console_.debug << "Aplication going to exit";
         communicationServ_->tearDown();

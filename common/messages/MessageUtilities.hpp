@@ -2,6 +2,9 @@
 #define MESSAGE_UTILITIES_HPP_
 
 #include <string>
+#include <sstream>
+
+#include <cereal/archives/json.hpp>
 
 #include "UpdateEnvironment.hpp"
 #include "UpdatePlayer.hpp"
@@ -9,20 +12,41 @@
 namespace common
 {
 
+namespace messagetype
+{
 enum MessageType
 {
     UpdateEnvironment,
     UpdatePlayer
 };
-
-MessageType getMessageType(const std:string& jsonString)
-{
-    // TODO: write method reckognizing type of message
 }
 
-UpdateEnvironment getEnvironmentMessage(const std::string& jsonString)
+messagetype::MessageType getMessageType(const std::string& jsonString)
 {
-    // TODO: wrote method converting JSON to UpdateEnvironment message
+    return messagetype::UpdateEnvironment;
+}
+
+template<class MessageT>
+MessageT getMessage(const std::string& jsonString)
+{
+    MessageT result;
+    std::stringstream stream(jsonString);
+    cereal::JSONInputArchive archive(stream);
+
+    archive(result);
+
+    return result;
+}
+
+template<class MessageT>
+std::string getMessageJson(const MessageT& msg)
+{
+    std::stringstream result;
+    cereal::JSONOutputArchive archive(result);
+
+    archive(msg);
+
+    return result.str();
 }
 
 }

@@ -3,8 +3,14 @@
 #include <memory>
 
 #include "IMessageQueue.hpp"
+#include "IMessageCommander.hpp"
 #include "CommunicationService.hpp"
-#include "NetworkMessage.hpp"
+#include "Console.hpp"
+#include "ITcpSocket.hpp"
+
+#include "messages/UpdateEnvironment.hpp"
+#include "messages/UpdatePlayer.hpp"
+#include "messages/MessageUtilities.hpp"
 
 void CommunicationService::startService(
     const std::string& host, const std::string& port)
@@ -15,15 +21,17 @@ void CommunicationService::startService(
     readerThread_ = messageReader_->start();
 }
 
-void CommunicationService::putMessageInQueue(NetworkMessage&& message)
+void CommunicationService::putMessageInQueue(const common::UpdateEnvironment& message)
 {
-    writerQueue_->pushMessage(std::move(message));
+    std::string json = common::getMessageJson<common::UpdateEnvironment>(message);
+    writerQueue_->pushMessage(json);
     console_.info << "Message added to queue";
 }
 
-void CommunicationService::putMessageInQueue(const NetworkMessage& message)
+void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
 {
-    writerQueue_->pushMessage(message);
+    std::string json = common::getMessageJson<common::UpdatePlayer>(message);
+    writerQueue_->pushMessage(json);
     console_.info << "Message added to queue";
 }
 

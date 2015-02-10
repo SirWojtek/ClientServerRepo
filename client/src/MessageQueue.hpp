@@ -12,12 +12,11 @@
 class MessageQueue : public IMessageQueue
 {
 public:
-    void pushMessage(NetworkMessage&& message);
-    void pushMessage(const NetworkMessage& message);
-    NetworkMessagePtr popMessage();
+    void pushMessage(const std::string& message);
+    std::string popMessage();
 
 private:
-    std::queue<NetworkMessage> queue_;
+    std::queue<std::string> queue_;
     std::condition_variable conditional_;
     std::mutex mutex_;
 };
