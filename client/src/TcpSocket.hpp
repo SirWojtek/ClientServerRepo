@@ -19,12 +19,18 @@ public:
     std::shared_ptr<const std::string> read();
 
 private:
+    bool readWithTimeout(boost::asio::streambuf& buffer);
+    void runIoService(const bool& readed, const bool& timeout, boost::asio::deadline_timer& timer);
+    std::shared_ptr<std::string> getMessageFromBuffer(boost::asio::streambuf& buffer);
+
     std::unique_ptr<boost::asio::io_service> ioService_;
     std::unique_ptr<boost::asio::ip::tcp::socket> tcpSocket_;
 
     Console console_;
 
     const static size_t maxMessageSize = 8192;
+    const static unsigned readTimeout = 2;
+    const static char readDelim = ';';
 };
 
 #endif  // TCP_SOCKET_HPP_

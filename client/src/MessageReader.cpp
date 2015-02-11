@@ -14,13 +14,13 @@ ThreadPtr MessageReader::start()
 
 void MessageReader::readerLoop(std::shared_ptr<MessageReader> self)
 {
-    console_.info << "Writer thread start OK";
+    console_.info << "Reader thread start OK";
     while (true)
     {
-        std::string message;
+        std::shared_ptr<const std::string> message;
         try
         {
-            message = *tcpSocket_->read();
+            message = tcpSocket_->read();
         }
         catch(const std::runtime_error& e)
         {
@@ -28,7 +28,11 @@ void MessageReader::readerLoop(std::shared_ptr<MessageReader> self)
             break;
         }
 
-        messageQueue_->pushMessage(message);
+        if (message != nullptr)
+        {
+            console_.debug << "Message readed: " << *message;
+            messageQueue_->pushMessage(*message);
+        }
 
         if (stop_.load())
         {

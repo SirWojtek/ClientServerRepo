@@ -17,8 +17,8 @@ void CommunicationService::startService(
 {
     tcpSocket_->connect(host, port);
     tcpSocket_ = nullptr;
-    writerThread_ = messageWriter_->start();
     readerThread_ = messageReader_->start();
+    writerThread_ = messageWriter_->start();
 }
 
 void CommunicationService::putMessageInQueue(const common::UpdateEnvironment& message)
@@ -39,15 +39,17 @@ void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message
 
 void CommunicationService::tearDown()
 {
-    if (writerThread_->joinable())
-    {
-        messageWriter_->stop();
-        writerThread_->join();
-    }
-
     if (readerThread_->joinable())
     {
         messageReader_->stop();
         readerThread_->join();
     }
+
+    if (writerThread_->joinable())
+    {
+        writerQueue_->waitForEmptyQueue();
+        messageWriter_->stop();
+        writerThread_->join();
+    }
+
 }
