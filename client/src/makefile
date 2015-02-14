@@ -1,6 +1,6 @@
 include ../global.makefile
 
-SRC=$(wildcard *.cpp)
+SRC=$(wildcard *.cpp) $(wildcard ../../common/messages/*.cpp)
 
 all : client
 

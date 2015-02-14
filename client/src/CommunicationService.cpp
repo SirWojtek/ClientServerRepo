@@ -1,6 +1,9 @@
 #include <thread>
 #include <string>
 #include <memory>
+#include <utility>
+#include <map>
+#include <stdexcept>
 
 #include "IMessageQueue.hpp"
 #include "IMessageCommander.hpp"
@@ -12,6 +15,8 @@
 #include "messages/UpdatePlayer.hpp"
 #include "messages/MessageUtilities.hpp"
 
+using common::messagetype::MessageType;
+
 void CommunicationService::startService(
     const std::string& host, const std::string& port)
 {
@@ -21,13 +26,6 @@ void CommunicationService::startService(
     writerThread_ = messageWriter_->start();
 }
 
-void CommunicationService::putMessageInQueue(const common::UpdateEnvironment& message)
-{
-    std::string json = common::getMessageJson<common::UpdateEnvironment>(message);
-    writerQueue_->pushMessage(json);
-    console_.info << "Message added to queue";
-}
-
 void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
 {
     std::string json = common::getMessageJson<common::UpdatePlayer>(message);
@@ -35,7 +33,16 @@ void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message
     console_.info << "Message added to queue";
 }
 
-// TODO: receiveMessage(messageType)
+std::shared_ptr<std::string> CommunicationService::getMessage(
+    const MessageType& type)
+{
+    if (isMessageOfTypeAlreadyReceived(type))
+    {
+        return getMessageOfTypeAlreadyReceived(type);
+    }
+
+    return getMessageOfTypeNotReceived(type);
+}
 
 void CommunicationService::tearDown()
 {
@@ -52,4 +59,45 @@ void CommunicationService::tearDown()
         writerThread_->join();
     }
 
+}
+
+bool CommunicationService::isMessageOfTypeAlreadyReceived(const MessageType& type)
+{
+    return receivedMessages_.count(type) != 0;
+}
+
+std::shared_ptr<std::string> CommunicationService::getMessageOfTypeAlreadyReceived(
+    const MessageType& type)
+{
+    auto messageIt = receivedMessages_.find(type);
+
+    if (messageIt == receivedMessages_.end())
+    {
+        throw std::runtime_error("Message of given type doesn't exist in multimap");
+    }
+
+    return messageIt->second;
+}
+
+std::shared_ptr<std::string> CommunicationService::getMessageOfTypeNotReceived(
+    const MessageType& type)
+{
+    std::shared_ptr<std::string> message = readerQueue_->popMessage();
+
+    while (message)
+    {
+        MessageType receivedMessageType = common::getMessageType(*message);
+
+        if (receivedMessageType == type)
+        {
+            return message;
+        }
+        else
+        {
+            receivedMessages_.insert(
+                std::pair<MessageType, std::shared_ptr<std::string>>(receivedMessageType, message));
+        }
+    }
+
+    return nullptr;
 }

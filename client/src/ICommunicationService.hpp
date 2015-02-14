@@ -3,9 +3,10 @@
 
 #include <memory>
 #include <thread>
+#include <string>
 
-#include "messages/UpdateEnvironment.hpp"
 #include "messages/UpdatePlayer.hpp"
+#include "messages/MessageUtilities.hpp"
 
 class ICommunicationService
 {
@@ -13,8 +14,9 @@ public:
     virtual ~ICommunicationService() {}
     virtual void startService(const std::string& host,
         const std::string& port) = 0;
-    virtual void putMessageInQueue(const common::UpdateEnvironment& message) = 0;
     virtual void putMessageInQueue(const common::UpdatePlayer& message) = 0;
+    virtual std::shared_ptr<std::string> getMessage(
+        const common::messagetype::MessageType& type) = 0;
     virtual void tearDown() = 0;
 };
 typedef std::shared_ptr<ICommunicationService> CommunicationServicePtr;

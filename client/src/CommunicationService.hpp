@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 #include <string>
+#include <map>
 
 #include "ICommunicationService.hpp"
 #include "ITcpSocket.hpp"
@@ -11,7 +12,7 @@
 #include "IMessageCommander.hpp"
 #include "Console.hpp"
 
-#include "messages/UpdateEnvironment.hpp"
+#include "messages/MessageUtilities.hpp"
 #include "messages/UpdatePlayer.hpp"
 
 class CommunicationService : public ICommunicationService
@@ -28,11 +29,17 @@ public:
             console_("CommunicationService") {}
 
     void startService(const std::string& host, const std::string& port);
-    void putMessageInQueue(const common::UpdateEnvironment& message);
     void putMessageInQueue(const common::UpdatePlayer& message);
+    std::shared_ptr<std::string> getMessage(const common::messagetype::MessageType& type);
     void tearDown();
 
 private:
+    bool isMessageOfTypeAlreadyReceived(const common::messagetype::MessageType& type);
+    std::shared_ptr<std::string> getMessageOfTypeAlreadyReceived(
+        const common::messagetype::MessageType& type);
+    std::shared_ptr<std::string> getMessageOfTypeNotReceived(
+        const common::messagetype::MessageType& type);
+
     TcpSocketPtr tcpSocket_;
 
     MessageQueuePtr writerQueue_;
@@ -42,6 +49,8 @@ private:
     MessageQueuePtr readerQueue_;
     MessageCommanderPtr messageReader_;
     ThreadPtr readerThread_;
+
+    std::multimap<common::messagetype::MessageType, std::shared_ptr<std::string>> receivedMessages_;
 
     Console console_;
 };
