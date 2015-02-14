@@ -1,65 +1,10 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# CMake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
 
-# Visual Studio project files
-*_i.c
-*_p.c
-*_i.h
-*.ilk
-*.meta
-*.pch
-*.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
+# Program logs
 *.log
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.svclog
-*.scc
-*.ilk
-*.idb
-*.tlog
 
-# Visual C++ cache files
-ipch/
-*.aps
-*.ncb
-*.opensdf
-*.sdf
-*.cachefile
-
-# Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
-
-# Others
-sql/
-*.Cache
-ClientBin/
-[Ss]tyle[Cc]op.*
-~$*
-*~
-*.dbmdl
-*.dbproj.schemaview
-*.pfx
-*.publishsettings
-node_modules/
-
-# SQL Server files
-*.mdf
-*.ldf
-
-client/bin/*
