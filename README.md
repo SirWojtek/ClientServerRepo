@@ -1,5 +1,5 @@
 
-##CLientServerRepo##
+##ClientServerRepo##
 
 ###Building intructions###
 
