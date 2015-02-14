@@ -1,17 +1,20 @@
-#pragma once
+#ifndef MESSAGEQUEUE_MOCK_HPP_
+#define MESSAGEQUEUE_MOCK_HPP_
 
-#include <gmock/gmock.h>
 #include <memory>
+#include <string>
+#include <gmock/gmock.h>
 
-#include "IMessageQueue.hpp"
-#include "NetworkMessage.hpp"
+
+#include "client/src/IMessageQueue.hpp"
 
 class MessageQueueMock : public IMessageQueue
 {
 public:
-	virtual void pushMessage(NetworkMessage&& a) { pushMessageProxy(a); }
-	MOCK_METHOD1(pushMessageProxy, void(NetworkMessage));
-	MOCK_METHOD1(pushMessage, void(const NetworkMessage& message));
-	MOCK_METHOD0(popMessage, NetworkMessagePtr());
+    MOCK_METHOD1(pushMessage, void(const std::string& message));
+    MOCK_METHOD0(popMessage, std::shared_ptr<std::string>());
+    MOCK_METHOD0(waitForEmptyQueue, void());
 };
 typedef std::shared_ptr<MessageQueueMock> MessageQueueMockPtr;
+
+#endif  // MESSAGEQUEUE_MOCK_HPP_

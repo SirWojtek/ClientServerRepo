@@ -6,6 +6,9 @@
 namespace common
 {
 
+struct UpdateEnvironment;
+struct UpdatePlayer;
+
 namespace messagetype
 {
 enum MessageType
@@ -17,10 +20,10 @@ enum MessageType
 
 messagetype::MessageType getMessageType(const std::string& jsonString);
 
-template<class MessageT>
+template<typename MessageT>
 MessageT getMessage(const std::string& jsonString);
 
-template<class MessageT>
+template<typename MessageT>
 std::string getMessageJson(const MessageT& msg);
 
 }

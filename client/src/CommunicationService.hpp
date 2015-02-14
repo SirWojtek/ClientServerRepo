@@ -12,8 +12,8 @@
 #include "IMessageCommander.hpp"
 #include "Console.hpp"
 
-#include "messages/MessageUtilities.hpp"
-#include "messages/UpdatePlayer.hpp"
+#include "common/messages/MessageUtilities.hpp"
+#include "common/messages/UpdatePlayer.hpp"
 
 class CommunicationService : public ICommunicationService
 {

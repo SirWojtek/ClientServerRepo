@@ -2,7 +2,6 @@
 #include <chrono>
 
 #include "MessageQueue.hpp"
-#include "NetworkMessage.hpp"
 
 void MessageQueue::pushMessage(const std::string& message)
 {

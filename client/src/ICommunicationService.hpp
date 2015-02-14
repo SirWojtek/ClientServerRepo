@@ -5,8 +5,8 @@
 #include <thread>
 #include <string>
 
-#include "messages/UpdatePlayer.hpp"
-#include "messages/MessageUtilities.hpp"
+#include "common/messages/UpdatePlayer.hpp"
+#include "common/messages/MessageUtilities.hpp"
 
 class ICommunicationService
 {

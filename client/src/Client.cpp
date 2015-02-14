@@ -8,7 +8,7 @@
 #include "Client.hpp"
 #include "CommunicationService.hpp"
 
-#include "messages/UpdatePlayer.hpp"
+#include "common/messages/UpdatePlayer.hpp"
 
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "1234";

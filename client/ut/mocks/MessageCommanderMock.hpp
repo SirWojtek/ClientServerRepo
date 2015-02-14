@@ -5,7 +5,7 @@
 #include <memory>
 #include <thread>
 
-#include "IMessageCommander.hpp"
+#include "client/src/IMessageCommander.hpp"
 
 class MessageCommanderMock : public IMessageCommander
 {

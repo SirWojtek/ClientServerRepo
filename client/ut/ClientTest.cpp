@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-#include "Client.hpp"
+#include "client/src/Client.hpp"
 #include "CommunicationServiceMock.hpp"
 
 using namespace ::testing;

@@ -16,7 +16,7 @@ messagetype::MessageType getMessageType(const std::string& jsonString)
     return messagetype::UpdateEnvironment;
 }
 
-template<class MessageT>
+template<typename MessageT>
 MessageT getMessage(const std::string& jsonString)
 {
     MessageT result;
@@ -28,7 +28,7 @@ MessageT getMessage(const std::string& jsonString)
     return result;
 }
 
-template<class MessageT>
+template<typename MessageT>
 std::string getMessageJson(const MessageT& msg)
 {
     std::stringstream result;

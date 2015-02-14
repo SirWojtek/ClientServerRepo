@@ -3,7 +3,6 @@
 #include <string>
 #include <stdexcept>
 
-#include "NetworkMessage.hpp"
 #include "MessageReader.hpp"
 
 ThreadPtr MessageReader::start()

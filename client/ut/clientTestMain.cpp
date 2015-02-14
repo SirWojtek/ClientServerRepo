@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 #include <iostream>
 
-#include "Console.hpp"
+#include "client/src/Console.hpp"
 
 int main(int argc, char** argv)
 {
