@@ -27,7 +27,6 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -pthread")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-# include_directories("common")
 include_directories("common/external/cereal/include")
 
 add_subdirectory(client)

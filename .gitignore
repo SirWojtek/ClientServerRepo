@@ -9,3 +9,6 @@ CTestTestfile.cmake
 # Program logs
 *.log
 
+# Binaries and libs
+bin/
+lib/
