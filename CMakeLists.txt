@@ -33,5 +33,8 @@ add_subdirectory(client)
 add_subdirectory(common)
 # add_subdirectory(server)
 
+
 enable_testing()
+
+# add test binaries here
 add_test(clientTest bin/clientTest)
