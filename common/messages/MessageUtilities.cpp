@@ -13,6 +13,7 @@ namespace common
 
 messagetype::MessageType getMessageType(const std::string& jsonString)
 {
+    // TODO: implement this method
     return messagetype::UpdateEnvironment;
 }
 

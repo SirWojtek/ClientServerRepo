@@ -1,8 +1,6 @@
 #include <iostream>
 #include <exception>
 #include <string>
-#include <thread>
-#include <chrono>
 
 #include "Console.hpp"
 #include "Client.hpp"
@@ -25,7 +23,6 @@ int Client::start(int argc, char** argv)
         common::UpdatePlayer msg;
         communicationServ_->putMessageInQueue(msg);
 
-        std::this_thread::sleep_for (std::chrono::seconds(10));
         console_.debug << "Aplication going to exit";
         communicationServ_->tearDown();
     }

@@ -6,7 +6,7 @@
 #include <string>
 
 #include "common/messages/UpdatePlayer.hpp"
-#include "common/messages/MessageUtilities.hpp"
+#include "common/messages/MessageTypes.hpp"
 
 class ICommunicationService
 {

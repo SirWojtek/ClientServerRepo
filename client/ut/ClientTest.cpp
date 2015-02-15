@@ -25,6 +25,7 @@ protected:
 TEST_F(ClientShould, PrepareApplicationComponents)
 {
 	EXPECT_CALL(*communicationServMock_, startService(host, port));
+	EXPECT_CALL(*communicationServMock_, putMessageInQueue(_));
 	EXPECT_CALL(*communicationServMock_, tearDown());
 	EXPECT_EQ(0, client_->start(0, nullptr));
 }

@@ -3,20 +3,13 @@
 
 #include <string>
 
+#include "MessageTypes.hpp"
+
 namespace common
 {
 
 struct UpdateEnvironment;
 struct UpdatePlayer;
-
-namespace messagetype
-{
-enum MessageType
-{
-    UpdateEnvironment,
-    UpdatePlayer
-};
-}
 
 messagetype::MessageType getMessageType(const std::string& jsonString);
 

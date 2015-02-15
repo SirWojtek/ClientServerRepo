@@ -50,6 +50,7 @@ void CommunicationService::tearDown()
     {
         messageReader_->stop();
         readerThread_->join();
+        console_.debug << "Reader thread joined";
     }
 
     if (writerThread_->joinable())
@@ -57,6 +58,7 @@ void CommunicationService::tearDown()
         writerQueue_->waitForEmptyQueue();
         messageWriter_->stop();
         writerThread_->join();
+        console_.debug << "Writer thread joined";
     }
 
 }
@@ -82,9 +84,9 @@ std::shared_ptr<std::string> CommunicationService::getMessageOfTypeAlreadyReceiv
 std::shared_ptr<std::string> CommunicationService::getMessageOfTypeNotReceived(
     const MessageType& type)
 {
-    std::shared_ptr<std::string> message = readerQueue_->popMessage();
+    std::shared_ptr<std::string> message;
 
-    while (message)
+    while ((message = readerQueue_->popMessage()))
     {
         MessageType receivedMessageType = common::getMessageType(*message);
 
