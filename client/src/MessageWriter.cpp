@@ -1,10 +1,9 @@
 #include <memory>
 #include <thread>
 #include <string>
+#include <stdexcept>
 
 #include "MessageWriter.hpp"
-
-const std::string MessageWriter::terminateCommand_ = "TERMINATE";
 
 ThreadPtr MessageWriter::start()
 {
@@ -21,7 +20,15 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
 
         if (netMessage != nullptr)
         {
-            writeMessage(*netMessage);
+            try
+            {
+                writeMessage(*netMessage);
+            }
+            catch(const std::runtime_error& err)
+            {
+                console_.error << err.what();
+                break;
+            }
         }
 
         if (stop_.load())

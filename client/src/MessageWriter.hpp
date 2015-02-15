@@ -22,8 +22,6 @@ public:
             console_("MessageWriter") {}
 
     virtual ThreadPtr start();
-
-    static const std::string terminateCommand_;
 private:
     void writerLoop(std::shared_ptr<MessageWriter> self);
     void writeMessage(std::string& netMessage);
