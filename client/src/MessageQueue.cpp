@@ -13,7 +13,7 @@ void MessageQueue::pushMessage(const std::string& message)
 std::shared_ptr<std::string> MessageQueue::popMessage()
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    conditional_.wait_for(lock, std::chrono::seconds(conditionalTimeout));
+    conditional_.wait_for(lock, std::chrono::seconds(conditionalTimeout_));
 
     if (queue_.empty())
     {

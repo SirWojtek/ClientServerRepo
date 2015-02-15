@@ -21,7 +21,7 @@ private:
     std::condition_variable conditional_;
     std::mutex mutex_;
 
-    const unsigned conditionalTimeout = 2;
+    const unsigned conditionalTimeout_ = 2;
 };
 
 #endif  // MESSAGE_QUEUE_HPP_
