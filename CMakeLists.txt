@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project("ClientServer")
-enable_testing()
+
 
 # variables needed to find Boost and GTest
 set(BOOST_ROOT "/usr")
@@ -33,4 +33,5 @@ add_subdirectory(client)
 add_subdirectory(common)
 # add_subdirectory(server)
 
-# add_test(clientTest client)
+enable_testing()
+add_test(clientTest bin/clientTest)
