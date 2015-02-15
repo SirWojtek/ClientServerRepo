@@ -1,6 +1,3 @@
-#ifndef MESSAGE_QUEUE_TEST_HPP_
-#define MESSAGE_QUEUE_TEST_HPP_
-
 #include <string>
 #include <memory>
 #include <thread>
@@ -67,5 +64,3 @@ TEST_F(MessageQueueShould, waitUntilNoMessagesInQueue)
 
     ASSERT_EQ(isThreadWaiting, false);
 }
-
-#endif  // MESSAGE_QUEUE_TEST_HPP_
