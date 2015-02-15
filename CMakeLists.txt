@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 project("ClientServer")
 enable_testing()
 
+# variables needed to find Boost and GTest
+set(BOOST_ROOT "/usr")
+set(GTEST_ROOT "/usr")
+
 find_package(Boost 1.57)
 if(Boost_FOUND)
     include_directories(${Booat_INCLUDE_DIRS})
