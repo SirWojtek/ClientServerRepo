@@ -3,7 +3,7 @@
 
 #include "IObjectsFacade.hpp"
 #include <set>
-#include "model/Object.hpp"
+#include "objects/Object.hpp"
 
 namespace model
 {

@@ -5,12 +5,12 @@
 namespace model
 {
 
-void StoneObject::getTexture()
+void StoneObject::getTexture() const
 {
     return;
 }
 
-std::string StoneObject::getDescription()
+std::string StoneObject::getDescription() const
 {
     return std::string("This is stone object");
 }

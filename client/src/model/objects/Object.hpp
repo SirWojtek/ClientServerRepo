@@ -18,8 +18,8 @@ public:
     Position position;
     bool isStatic;
 
-    virtual void getTexture() const = 0;
-    virtual std::string getDescription() const = 0;
+    virtual void getTexture() const;
+    virtual std::string getDescription() const;
 
     virtual bool operator<(const Object& a) const;
     virtual bool operator>(const Object& a) const;

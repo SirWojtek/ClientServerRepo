@@ -1,7 +1,7 @@
 #ifndef IOBJECTS_FACADE_HPP_
 #define IOBJECTS_FACADE_HPP_
 
-#include "model/Object.hpp"
+#include "objects/Object.hpp"
 
 namespace model
 {

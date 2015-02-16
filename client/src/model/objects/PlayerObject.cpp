@@ -5,12 +5,12 @@
 namespace model
 {
 
-void PlayerObject::getTexture()
+void PlayerObject::getTexture() const
 {
     return;
 }
 
-std::string PlayerObject::getDescription()
+std::string PlayerObject::getDescription() const
 {
     return std::string("This is player object");
 }

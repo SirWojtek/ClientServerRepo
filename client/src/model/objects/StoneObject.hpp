@@ -11,8 +11,8 @@ namespace model
 class StoneObject : public Object
 {
 public:
-    void getTexture();
-    std::string getDescription();
+    void getTexture() const;
+    std::string getDescription() const;
 };
 }
 

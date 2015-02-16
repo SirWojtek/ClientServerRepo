@@ -1,7 +1,7 @@
 
 #include "ObjectsFacade.hpp"
 #include <set>
-#include "model/Object.hpp"
+#include "objects/Object.hpp"
 
 namespace model
 {
@@ -17,5 +17,3 @@ void ObjectsFacade::addInactiveObject(const Object& obj)
 }
 
 }
-
-#endif  // OBJECTS_FACADE_HPP_
