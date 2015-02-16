@@ -9,7 +9,7 @@ set(GTEST_ROOT "/usr")
 
 find_package(Boost 1.57)
 if(Boost_FOUND)
-    include_directories(${Booat_INCLUDE_DIRS})
+    include_directories(${Boost_INCLUDE_DIRS})
 else()
     message(FATAL_ERROR, " Boost not found or it is too old")
 endif()
