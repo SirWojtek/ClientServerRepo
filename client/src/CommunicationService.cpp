@@ -8,8 +8,8 @@
 #include "IMessageQueue.hpp"
 #include "IMessageCommander.hpp"
 #include "CommunicationService.hpp"
-#include "Console.hpp"
-#include "ITcpSocket.hpp"
+#include "common/utilities/Console.hpp"
+#include "common/utilities/ITcpSocket.hpp"
 
 #include "common/messages/UpdateEnvironment.hpp"
 #include "common/messages/UpdatePlayer.hpp"

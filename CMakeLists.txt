@@ -31,7 +31,7 @@ include_directories("common/external/cereal/include")
 
 add_subdirectory(client)
 add_subdirectory(common)
-# add_subdirectory(server)
+add_subdirectory(server)
 
 
 enable_testing()

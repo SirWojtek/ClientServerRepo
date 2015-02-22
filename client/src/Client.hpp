@@ -4,7 +4,7 @@
 #include <string>
 
 #include "CommunicationService.hpp"
-#include "Console.hpp"
+#include "common/utilities/Console.hpp"
 
 class Client
 {

@@ -6,8 +6,8 @@
 #include <thread>
 
 #include "IMessageCommander.hpp"
-#include "Console.hpp"
-#include "ITcpSocket.hpp"
+#include "common/utilities/Console.hpp"
+#include "common/utilities/ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
 
 

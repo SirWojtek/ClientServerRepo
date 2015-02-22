@@ -10,14 +10,16 @@
 
 #include "TcpSocket.hpp"
 
+using boost::asio::ip::tcp;
+
 TcpSocket::TcpSocket() :
     ioService_(new boost::asio::io_service()),
-    tcpSocket_(new boost::asio::ip::tcp::socket(*ioService_)),
+    tcpSocket_(new tcp::socket(*ioService_)),
     console_("TcpSocket") {}
 
 void TcpSocket::connect(const std::string& host, const std::string& port)
 {
-    boost::asio::ip::tcp::resolver resolver(*ioService_);
+    tcp::resolver resolver(*ioService_);
 
     try
     {
@@ -50,6 +52,26 @@ void TcpSocket::write(std::string& message)
     {
         throw std::runtime_error(e.what());
     }
+}
+
+std::shared_ptr<tcp::acceptor> TcpSocket::establishServer()
+{
+    try
+    {
+        std::shared_ptr<tcp::acceptor> serverAcceptor = std::make_shared<tcp::acceptor>(
+            *ioService_, tcp::endpoint(tcp::v4(), TcpSocket::portNumber));
+        return serverAcceptor;
+    }
+    catch (boost::system::system_error& e)
+    {
+        throw std::runtime_error(e.what());
+    }
+    return nullptr;
+}
+
+std::unique_ptr<boost::asio::ip::tcp::socket> TcpSocket::getSocket()
+{
+    return move(tcpSocket_);
 }
 
 std::shared_ptr<const std::string> TcpSocket::read()

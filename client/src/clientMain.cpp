@@ -2,7 +2,7 @@
 
 #include "Client.hpp"
 #include "CommunicationService.hpp"
-#include "TcpSocket.hpp"
+#include "common/utilities/TcpSocket.hpp"
 #include "MessageQueue.hpp"
 #include "MessageWriter.hpp"
 #include "MessageReader.hpp"
