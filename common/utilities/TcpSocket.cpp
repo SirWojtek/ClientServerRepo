@@ -69,9 +69,9 @@ std::shared_ptr<tcp::acceptor> TcpSocket::establishServer()
     return nullptr;
 }
 
-std::unique_ptr<boost::asio::ip::tcp::socket> TcpSocket::getSocket()
+void TcpSocket::acceptConnection(std::shared_ptr<tcp::acceptor> serverAcceptor)
 {
-    return move(tcpSocket_);
+    serverAcceptor->accept(*tcpSocket_);
 }
 
 std::shared_ptr<const std::string> TcpSocket::read()
@@ -91,7 +91,6 @@ std::shared_ptr<const std::string> TcpSocket::read()
     {
         throw std::runtime_error(e.what());
     }
-
     std::shared_ptr<std::string> message = getMessageFromBuffer(buffer);
     console_.debug << "Message received: " << *message;
     return message;
@@ -101,10 +100,8 @@ bool TcpSocket::readWithTimeout(boost::asio::streambuf& buffer)
 {
     bool timeout = false;
     bool readed = false;
-
-    boost::asio::deadline_timer timer(tcpSocket_->get_io_service());
-
-    timer.expires_from_now(boost::posix_time::seconds(readTimeout));
+    boost::asio::deadline_timer timer(tcpSocket_->get_io_service(),
+        boost::posix_time::seconds(readTimeout));
     timer.async_wait([&timeout](const boost::system::error_code& error)
     {
         timeout = true;

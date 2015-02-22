@@ -21,7 +21,7 @@ public:
 private:
 
     void initServer();
-    bool waitForConnection();
+    void waitForConnection();
 
     const static unsigned defaultPortNumber_ = TcpSocket::portNumber;
     unsigned sessionCount_;

@@ -11,11 +11,8 @@ void Server::run()
     initServer();
     console_.info << "Server started.";
 
-    while (waitForConnection())
-    {
-        sessionCount_++;
-        console_.info << "Waiting for connection...";
-    }
+    waitForConnection();
+    tcpSocket_->read();
 }
 
 void Server::initServer()
@@ -23,12 +20,12 @@ void Server::initServer()
     acceptor_ = tcpSocket_->establishServer();
 }
 
-bool Server::waitForConnection()
+void Server::waitForConnection()
 {
     try
     {
-        acceptor_->accept(*tcpSocket_->getSocket());
-        return true;
+        console_.info << "Waiting for connection...";
+        tcpSocket_->acceptConnection(acceptor_);
     }
     catch(const std::runtime_error& e)
     {

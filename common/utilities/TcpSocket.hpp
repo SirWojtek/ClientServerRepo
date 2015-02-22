@@ -18,7 +18,7 @@ public:
     void write(const char* message);
     std::shared_ptr<const std::string> read();
     std::shared_ptr<boost::asio::ip::tcp::acceptor> establishServer();
-    std::unique_ptr<boost::asio::ip::tcp::socket> getSocket();
+    void acceptConnection(std::shared_ptr<boost::asio::ip::tcp::acceptor> serverAcceptor);
 
     const static unsigned portNumber = 4001;
 
