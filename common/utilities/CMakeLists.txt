@@ -1,2 +1,2 @@
 
-add_library(utilities Console.cpp TcpSocket.cpp)
+add_library(utilities Console.cpp)

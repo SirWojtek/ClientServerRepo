@@ -1,7 +1,7 @@
 
 add_subdirectory(model)
 
-add_library(clientCore Client.cpp CommunicationService.cpp MessageQueue.cpp MessageReader.cpp MessageWriter.cpp)
+add_library(clientCore Client.cpp CommunicationService.cpp MessageQueue.cpp MessageReader.cpp MessageWriter.cpp TcpSocket.cpp)
 
 add_executable(client clientMain.cpp)
 

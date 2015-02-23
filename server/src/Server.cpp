@@ -1,34 +1,31 @@
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include <stdexcept>
 
-#include "common/utilities/TcpSocket.hpp"
 #include "Server.hpp"
 
 using boost::asio::ip::tcp;
 
-void Server::run()
+Server::Server() :
+    ioService_(new boost::asio::io_service()),
+    console_("Server")
 {
-    initServer();
-    console_.info << "Server started.";
-
-    waitForConnection();
-    tcpSocket_->read();
+    acceptor_ = std::make_shared<tcp::acceptor>(*ioService_,
+        tcp::endpoint(tcp::v4(), Server::portNumber));
+    session_ = std::make_shared<ServerSession>(acceptor_->get_io_service());
+    acceptor_->async_accept(session_->socket(),
+        boost::bind(&Server::handleAccept, this, boost::asio::placeholders::error));
+    ioService_->run();
 }
 
-void Server::initServer()
+void Server::handleAccept(const boost::system::error_code& error)
 {
-    acceptor_ = tcpSocket_->establishServer();
-}
-
-void Server::waitForConnection()
-{
-    try
+    if (!error)
     {
-        console_.info << "Waiting for connection...";
-        tcpSocket_->acceptConnection(acceptor_);
-    }
-    catch(const std::runtime_error& e)
-    {
-        throw std::runtime_error(e.what());
+        session_->start();
+        sessionArray_.push_back(session_);
+        session_ = std::make_shared<ServerSession>(*ioService_);
+        acceptor_->async_accept(session_->socket(),
+           boost::bind(&Server::handleAccept, this, boost::asio::placeholders::error));
     }
 }

@@ -5,7 +5,7 @@
 #include <thread>
 #include <atomic>
 
-#include "common/utilities/ITcpSocket.hpp"
+#include "ITcpSocket.hpp"
 
 typedef std::shared_ptr<std::thread> ThreadPtr;
 class IMessageCommander

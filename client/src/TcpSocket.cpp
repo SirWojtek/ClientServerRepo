@@ -6,6 +6,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time_duration.hpp>
+#include <boost/bind.hpp>
 #include <boost/system/error_code.hpp>
 
 #include "TcpSocket.hpp"
@@ -52,26 +53,6 @@ void TcpSocket::write(std::string& message)
     {
         throw std::runtime_error(e.what());
     }
-}
-
-std::shared_ptr<tcp::acceptor> TcpSocket::establishServer()
-{
-    try
-    {
-        std::shared_ptr<tcp::acceptor> serverAcceptor = std::make_shared<tcp::acceptor>(
-            *ioService_, tcp::endpoint(tcp::v4(), TcpSocket::portNumber));
-        return serverAcceptor;
-    }
-    catch (boost::system::system_error& e)
-    {
-        throw std::runtime_error(e.what());
-    }
-    return nullptr;
-}
-
-void TcpSocket::acceptConnection(std::shared_ptr<tcp::acceptor> serverAcceptor)
-{
-    serverAcceptor->accept(*tcpSocket_);
 }
 
 std::shared_ptr<const std::string> TcpSocket::read()

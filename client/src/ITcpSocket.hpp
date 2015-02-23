@@ -12,6 +12,5 @@ public:
 	virtual void write(std::string& message) = 0;
 	virtual void write(const char* message) = 0;
 	virtual std::shared_ptr<const std::string> read() = 0;
-	virtual std::shared_ptr<boost::asio::ip::tcp::acceptor> establishServer() = 0;
 };
 typedef std::shared_ptr<ITcpSocket> TcpSocketPtr;

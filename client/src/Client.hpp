@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CLIENT_HPP_
+#define CLIENT_HPP_
 
 #include <memory>
 #include <string>
@@ -25,3 +26,5 @@ private:
 	static std::string host, port;
 };
 typedef std::shared_ptr<Client> ClientPtr;
+
+#endif

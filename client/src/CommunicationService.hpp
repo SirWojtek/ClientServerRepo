@@ -7,7 +7,7 @@
 #include <map>
 
 #include "ICommunicationService.hpp"
-#include "common/utilities/ITcpSocket.hpp"
+#include "ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
 #include "IMessageCommander.hpp"
 #include "common/utilities/Console.hpp"

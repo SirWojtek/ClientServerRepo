@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 
 #include "ITcpSocket.hpp"
-#include "Console.hpp"
+#include "common/utilities/Console.hpp"
 
 class TcpSocket : public ITcpSocket
 {
@@ -17,10 +17,6 @@ public:
     void write(std::string& message);
     void write(const char* message);
     std::shared_ptr<const std::string> read();
-    std::shared_ptr<boost::asio::ip::tcp::acceptor> establishServer();
-    void acceptConnection(std::shared_ptr<boost::asio::ip::tcp::acceptor> serverAcceptor);
-
-    const static unsigned portNumber = 4001;
 
 private:
     bool readWithTimeout(boost::asio::streambuf& buffer);
