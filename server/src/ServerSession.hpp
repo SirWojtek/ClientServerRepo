@@ -22,7 +22,7 @@ public:
 
 private:
   tcp::socket socket_;
-  enum { maxLength = 1024 };
+  enum { maxLength = 2048 };
   char data_[maxLength];
   Console console_;
 
