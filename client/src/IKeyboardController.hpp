@@ -8,6 +8,7 @@ class IKeyboardController
 public:
     enum KeyDirection
     {
+        None,
         Up,
         Down,
         Right,
