@@ -1,5 +1,5 @@
-#ifndef SERVER_HPP_
-#define SERVER_HPP_
+#ifndef SERVER_INITIALIZER_HPP_
+#define SERVER_INITIALIZER_HPP_
 
 #include <boost/asio.hpp>
 #include "ServerSession.hpp"
@@ -7,10 +7,10 @@
 
 using boost::asio::ip::tcp;
 
-class Server
+class ServerInitializer
 {
 public:
-	Server(boost::asio::io_service& ioService);
+	ServerInitializer(boost::asio::io_service& ioService);
 	void handleAccept(const boost::system::error_code& error);
 
 private:

@@ -1,12 +1,12 @@
 #ifndef TCP_SOCKET_HPP_
 #define TCP_SOCKET_HPP_
 
+#include "common/utilities/Console.hpp"
+#include "ITcpSocket.hpp"
+
 #include <string>
 #include <memory>
 #include <boost/asio.hpp>
-
-#include "ITcpSocket.hpp"
-#include "common/utilities/Console.hpp"
 
 class TcpSocket : public ITcpSocket
 {
@@ -18,6 +18,14 @@ public:
     void write(const char* message);
     std::shared_ptr<const std::string> read();
 
+    std::shared_ptr<boost::asio::ip::tcp::socket> getSocket()
+    { 
+        std::shared_ptr<boost::asio::ip::tcp::socket> nullTcpPointer;
+        return nullTcpPointer;
+    }
+    void cancellAllAsyncServices()
+    { }
+
 private:
     bool readWithTimeout(boost::asio::streambuf& buffer);
     void runIoService(const bool& readed, const bool& timeout, boost::asio::deadline_timer& timer);
@@ -28,9 +36,9 @@ private:
 
     Console console_;
 
-    const static size_t maxMessageSize = 8192;
-    const static unsigned readTimeout = 2;
-    const static char readDelim = ';';
+    const static size_t maxMessageSize = iTcpSocketMaxMessageSize;
+    const static unsigned readTimeout = iTcpSocketReadTimeout;
+    const static char readDelim = iTcpSocketReadDelim;
 };
 
 #endif  // TCP_SOCKET_HPP_

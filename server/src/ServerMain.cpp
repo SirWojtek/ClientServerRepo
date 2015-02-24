@@ -1,13 +1,13 @@
 #include <stdexcept>
 #include <boost/asio.hpp>
-#include "Server.hpp"
+#include "ServerInitializer.hpp"
 
 int main(int argc, char* argv[])
 {
   try
   {
   	boost::asio::io_service ioService;
-    Server s(ioService);
+    ServerInitializer s(ioService);
     ioService.run();
   }
   catch(const std::runtime_error& e)
