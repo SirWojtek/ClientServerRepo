@@ -12,6 +12,6 @@ class MessageCommanderMock : public IMessageCommander
 public:
     MOCK_METHOD0(start, ThreadPtr());
 };
-typedef std::shared_ptr<MessageCommanderMock> MessageCommanderMockPtr;
+using MessageCommanderMockPtr = std::shared_ptr<MessageCommanderMock>;
 
 #endif  // MESSAGE_COMMANDER_MOCK_HPP_

@@ -13,7 +13,6 @@
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "4001";
 
-
 Client::Client(CommunicationServicePtr communicationServ,
     KeyboardControllerPtr keyboardController) :
         communicationServ_(communicationServ),
@@ -26,13 +25,13 @@ int Client::start(int argc, char** argv)
     {
         init();
         clientLoop();
-        tearDown();
     }
     catch (std::runtime_error& e)
     {
         console_.error << e.what();
     }
 
+    tearDown();
     return 0;
 }
 

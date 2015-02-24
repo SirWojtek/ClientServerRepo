@@ -15,6 +15,6 @@ public:
     MOCK_METHOD0(popMessage, std::shared_ptr<std::string>());
     MOCK_METHOD0(waitForEmptyQueue, void());
 };
-typedef std::shared_ptr<MessageQueueMock> MessageQueueMockPtr;
+using MessageQueueMockPtr = std::shared_ptr<MessageQueueMock>;
 
 #endif  // MESSAGEQUEUE_MOCK_HPP_
