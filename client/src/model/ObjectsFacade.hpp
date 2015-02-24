@@ -11,12 +11,16 @@ namespace model
 class ObjectsFacade : IObjectsFacade
 {
 public:
+    ObjectsFacade();
+
     void addActiveObject(const Object& obj);
     void addInactiveObject(const Object& obj);
+    ObjectPtr getPlayerObject();
 
 private:
-    std::set<Object> activeObjects_;
-    std::set<Object> inactiveObjects_;
+    ObjectPtr playerObject_;
+    std::set<ObjectPtr> activeObjects_;
+    std::set<ObjectPtr> inactiveObjects_;
 };
 
 }

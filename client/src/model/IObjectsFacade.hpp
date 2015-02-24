@@ -11,7 +11,10 @@ class IObjectsFacade
 public:
     virtual void addActiveObject(const Object& obj) = 0;
     virtual void addInactiveObject(const Object& obj) = 0;
+    virtual ObjectPtr getPlayerObject() = 0;
 };
+
+using ObjectFacadePtr = std::shared_ptr<IObjectsFacade>;
 
 }
 

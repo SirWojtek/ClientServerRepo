@@ -19,6 +19,6 @@ public:
         const common::messagetype::MessageType& type) = 0;
     virtual void tearDown() = 0;
 };
-typedef std::shared_ptr<ICommunicationService> CommunicationServicePtr;
+using CommunicationServicePtr = std::shared_ptr<ICommunicationService>;
 
 #endif  // ICOMMUNICATION_SERVICE_HPP_

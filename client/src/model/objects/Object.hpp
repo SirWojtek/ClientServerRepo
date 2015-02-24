@@ -2,7 +2,7 @@
 #define MODEL_OBJECT_HPP_
 
 #include <string>
-
+#include <memory>
 
 namespace model
 {
@@ -15,6 +15,11 @@ public:
         int x,y;
     };
 
+    Object();
+    explicit Object(bool isStatic);
+    explicit Object(Position position);
+    Object(Position position, bool isStatic);
+
     Position position;
     bool isStatic;
 
@@ -26,6 +31,8 @@ public:
     virtual bool operator==(const Object& a) const;
     virtual bool operator!=(const Object& a) const;
 };
+using ObjectPtr = std::shared_ptr<Object>;
+
 }
 
 #endif  // MODEL_OBJECT_HPP_
