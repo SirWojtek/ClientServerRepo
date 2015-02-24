@@ -6,7 +6,7 @@
 #include <gmock/gmock.h>
 
 
-#include "client/src/IMessageQueue.hpp"
+#include "common/socketServices/IMessageQueue.hpp"
 
 class MessageQueueMock : public IMessageQueue
 {

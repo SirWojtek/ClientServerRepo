@@ -16,15 +16,15 @@ void ServerSession::start()
     boost::system::error_code error;
     size_t length = socket_.read_some(boost::asio::buffer(data), error);
 	if (error)
-    	throw boost::system::system_error(error); // Some other error.
+    	throw boost::system::system_error(error);
 
-    if(data[length-1] == '\0') // 1.
+    if(data[length-1] == '\0')
     {
         console_.info << "Client sent a terminator";
         --length;
     }
 
-    if(length) // 2.
+    if(length)
     {
         console_.info << "echoing " << length;
         boost::asio::write(socket_, boost::asio::buffer(data, length));

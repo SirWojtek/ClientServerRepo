@@ -7,7 +7,7 @@
 #include "CommunicationService.hpp"
 
 #include "common/messages/UpdatePlayer.hpp"
-#include "ITcpSocket.hpp"
+#include "common/socketServices/ITcpSocket.hpp"
 
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "4001";

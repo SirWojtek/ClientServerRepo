@@ -5,7 +5,7 @@
 #include <memory>
 #include <boost/asio.hpp>
 
-#include "client/src/ITcpSocket.hpp"
+#include "common/socketServices/ITcpSocket.hpp"
 
 class TcpSocketMock : public ITcpSocket
 {

@@ -5,11 +5,11 @@
 #include <map>
 #include <stdexcept>
 
-#include "IMessageQueue.hpp"
-#include "IMessageCommander.hpp"
+#include "common/socketServices/IMessageQueue.hpp"
+#include "common/socketServices/IMessageCommander.hpp"
 #include "CommunicationService.hpp"
 #include "common/utilities/Console.hpp"
-#include "ITcpSocket.hpp"
+#include "common/socketServices/ITcpSocket.hpp"
 
 #include "common/messages/UpdateEnvironment.hpp"
 #include "common/messages/UpdatePlayer.hpp"
