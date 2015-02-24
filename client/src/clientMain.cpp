@@ -1,7 +1,11 @@
+
 #include <memory>
 
 #include "Client.hpp"
 #include "CommunicationService.hpp"
+#include "KeyboardController.hpp"
+#include "KeyGetter.hpp"
+
 #include "common/socketServices/TcpSocket.hpp"
 #include "common/socketServices/MessageQueue.hpp"
 #include "common/socketServices/MessageWriter.hpp"
@@ -20,9 +24,16 @@ CommunicationServicePtr createCommunicationService()
         writerQueue, messageWritter, readerQueue, messageReader);
 }
 
+KeyboardControllerPtr createKeyboardController()
+{
+    return std::make_shared<KeyboardController>(std::make_shared<KeyGetter>());
+}
+
 int main(int argc, char** argv)
 {
 	CommunicationServicePtr communicationServ = createCommunicationService();
-	Client client(communicationServ);
+    KeyboardControllerPtr keyboardController = createKeyboardController();
+
+	Client client(communicationServ, keyboardController);
 	return client.start(argc, argv);;
 }

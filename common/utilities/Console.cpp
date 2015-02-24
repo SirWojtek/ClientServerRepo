@@ -6,7 +6,7 @@
 bool ILoger::debugPrint_ = true;
 bool ILoger::filePrint_ = false;
 bool ILoger::offPrint_ = false;
-std::ofstream ILoger::file_("client.log");
+std::ofstream ILoger::file_("run.log");
 std::ostream& ILoger::console_ = std::cout;
 
 void ILoger::setDebugPrint(bool status)

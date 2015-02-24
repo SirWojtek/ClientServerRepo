@@ -4,27 +4,28 @@
 #include <memory>
 #include <string>
 
-#include "CommunicationService.hpp"
+#include "ICommunicationService.hpp"
+#include "IKeyboardController.hpp"
 #include "common/utilities/Console.hpp"
 
 class Client
 {
 public:
-	Client(CommunicationServicePtr communicationServ) :
-		communicationServ_(communicationServ),
-		console_("Client") {}
+    Client(CommunicationServicePtr communicationServ, KeyboardControllerPtr keyboardController);
 
-	int start(int argc, char** argv);
+    int start(int argc, char** argv);
 
 private:
-	void initConsole();
-	void receiveAnswer(std::shared_ptr<const std::string> answer);
+    void init();
+    void tearDown();
+    void clientLoop();
 
-	CommunicationServicePtr communicationServ_;
+    CommunicationServicePtr communicationServ_;
+    KeyboardControllerPtr keyboardController_;
     Console console_;
 
-	static std::string host, port;
+    static std::string host, port;
 };
-typedef std::shared_ptr<Client> ClientPtr;
+using ClientPtr = std::shared_ptr<Client>;
 
 #endif

@@ -1,13 +1,15 @@
 
 #include "KeyboardController.hpp"
-#include <istream>
+#include "IKeyGetter.hpp"
 
-KeyboardController::KeyboardController(std::istream& keyboardStream) :
-    keyboardStream_(keyboardStream) {}
+#include <curses.h>
+
+KeyboardController::KeyboardController(KeyGetterPtr keyGetter) :
+    keyGetter_(keyGetter) {}
 
 KeyboardController::KeyDirection KeyboardController::getKeyboardInput()
 {
-    char pressedKey = keyboardStream_.get();
+    char pressedKey = keyGetter_->getPressedKey();
 
     switch(pressedKey)
     {

@@ -2,18 +2,18 @@
 #define KEYBOARD_CONTROLLER_HPP_
 
 #include "IKeyboardController.hpp"
-#include <istream>
+#include "IKeyGetter.hpp"
 
 class KeyboardController : public IKeyboardController
 {
 public:
-    KeyboardController(std::istream& keyboardStream);
+    KeyboardController(KeyGetterPtr keyGetter);
 
     virtual KeyDirection getKeyboardInput();
     virtual bool wasExitKeyPressed();
 
 private:
-    std::istream& keyboardStream_;
+    KeyGetterPtr keyGetter_;
     bool wasExitKeyPressed_ = false;
 };
 
