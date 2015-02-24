@@ -6,7 +6,7 @@
 
 #include "MessageQueueMock.hpp"
 #include "TcpSocketMock.hpp"
-#include "client/src/MessageReader.hpp"
+#include "common/socketServices/MessageReader.hpp"
 
 using namespace ::testing;
 

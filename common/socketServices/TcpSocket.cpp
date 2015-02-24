@@ -6,18 +6,21 @@
 
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time_duration.hpp>
+#include <boost/bind.hpp>
 #include <boost/system/error_code.hpp>
 
 #include "TcpSocket.hpp"
 
+using boost::asio::ip::tcp;
+
 TcpSocket::TcpSocket() :
     ioService_(new boost::asio::io_service()),
-    tcpSocket_(new boost::asio::ip::tcp::socket(*ioService_)),
+    tcpSocket_(new tcp::socket(*ioService_)),
     console_("TcpSocket") {}
 
 void TcpSocket::connect(const std::string& host, const std::string& port)
 {
-    boost::asio::ip::tcp::resolver resolver(*ioService_);
+    tcp::resolver resolver(*ioService_);
 
     try
     {
@@ -69,7 +72,6 @@ std::shared_ptr<const std::string> TcpSocket::read()
     {
         throw std::runtime_error(e.what());
     }
-
     std::shared_ptr<std::string> message = getMessageFromBuffer(buffer);
     console_.debug << "Message received: " << *message;
     return message;
@@ -79,10 +81,8 @@ bool TcpSocket::readWithTimeout(boost::asio::streambuf& buffer)
 {
     bool timeout = false;
     bool readed = false;
-
-    boost::asio::deadline_timer timer(tcpSocket_->get_io_service());
-
-    timer.expires_from_now(boost::posix_time::seconds(readTimeout));
+    boost::asio::deadline_timer timer(tcpSocket_->get_io_service(),
+        boost::posix_time::seconds(readTimeout));
     timer.async_wait([&timeout](const boost::system::error_code& error)
     {
         timeout = true;

@@ -7,10 +7,10 @@
 #include <map>
 
 #include "ICommunicationService.hpp"
-#include "ITcpSocket.hpp"
-#include "IMessageQueue.hpp"
-#include "IMessageCommander.hpp"
-#include "Console.hpp"
+#include "common/socketServices/ITcpSocket.hpp"
+#include "common/socketServices/IMessageQueue.hpp"
+#include "common/socketServices/IMessageCommander.hpp"
+#include "common/utilities/Console.hpp"
 
 #include "common/messages/MessageUtilities.hpp"
 #include "common/messages/UpdatePlayer.hpp"

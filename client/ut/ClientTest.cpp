@@ -18,7 +18,7 @@ protected:
 	ClientPtr client_;
 
 	std::string host = "127.0.0.1";  // static from Client.cpp
-	std::string port = "1234";  // static from Client.cpp
+	std::string port = "4001";  // static from Client.cpp
 
 };
 

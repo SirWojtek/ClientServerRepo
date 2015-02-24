@@ -2,10 +2,10 @@
 
 #include "Client.hpp"
 #include "CommunicationService.hpp"
-#include "TcpSocket.hpp"
-#include "MessageQueue.hpp"
-#include "MessageWriter.hpp"
-#include "MessageReader.hpp"
+#include "common/socketServices/TcpSocket.hpp"
+#include "common/socketServices/MessageQueue.hpp"
+#include "common/socketServices/MessageWriter.hpp"
+#include "common/socketServices/MessageReader.hpp"
 
 CommunicationServicePtr createCommunicationService()
 {

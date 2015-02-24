@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 
 #include "ITcpSocket.hpp"
-#include "Console.hpp"
+#include "common/utilities/Console.hpp"
 
 class TcpSocket : public ITcpSocket
 {

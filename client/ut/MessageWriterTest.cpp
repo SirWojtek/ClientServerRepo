@@ -6,7 +6,7 @@
 
 #include "MessageQueueMock.hpp"
 #include "TcpSocketMock.hpp"
-#include "client/src/MessageWriter.hpp"
+#include "common/socketServices/MessageWriter.hpp"
 
 using namespace ::testing;
 

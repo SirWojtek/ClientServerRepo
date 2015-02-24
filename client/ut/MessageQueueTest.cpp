@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include "client/src/MessageQueue.hpp"
+#include "common/socketServices/MessageQueue.hpp"
 
 using namespace ::testing;
 

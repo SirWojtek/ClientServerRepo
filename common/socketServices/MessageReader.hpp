@@ -6,7 +6,7 @@
 #include <thread>
 
 #include "IMessageCommander.hpp"
-#include "Console.hpp"
+#include "common/utilities/Console.hpp"
 #include "ITcpSocket.hpp"
 #include "IMessageQueue.hpp"
 
