@@ -1,7 +1,7 @@
 
 add_subdirectory(model)
 
-add_library(clientCore Client.cpp CommunicationService.cpp)
+add_library(clientCore Client.cpp CommunicationService.cpp KeyboardController.cpp)
 
 add_executable(client clientMain.cpp)
 
