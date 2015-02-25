@@ -50,20 +50,12 @@ void Client::tearDown()
 
 void Client::clientLoop()
 {
-    // common::UpdatePlayer msg;
-    // communicationServ_->putMessageInQueue(msg);
-
     while (!keyboardController_->wasExitKeyPressed())
     {
         IKeyboardController::KeyDirection direction = keyboardController_->getKeyboardInput();
+        console_.debug << "Keyboard input received";
 
-        if (direction == IKeyboardController::None)
-        {
-            continue;
-        }
-
-        console_.debug << "Correct keyboard input received";
-
+        movementManager_->singleTickMove(direction);
     }
 }
 
