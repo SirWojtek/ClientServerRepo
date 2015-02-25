@@ -17,14 +17,8 @@ public:
     void write(std::string& message);
     void write(const char* message);
     std::shared_ptr<const std::string> read();
-
-    std::shared_ptr<boost::asio::ip::tcp::socket> getSocket()
-    { 
-        std::shared_ptr<boost::asio::ip::tcp::socket> nullTcpPointer;
-        return nullTcpPointer;
-    }
-    void cancellAllAsyncServices()
-    { }
+    std::shared_ptr<boost::asio::ip::tcp::socket> getSocket();
+    void cancellAllAsyncServices();
 
 private:
     bool readWithTimeout(boost::asio::streambuf& buffer);

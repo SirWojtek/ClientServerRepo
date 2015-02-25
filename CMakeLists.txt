@@ -26,7 +26,7 @@ find_package(Curses)
 if(CURSES_FOUND)
     include_directories(${CURSES_INCLUDE_DIRS})
 else()
-    message(FATAL_ERROR, " GTest not found")
+    message(FATAL_ERROR, " Curses not found")
 endif()
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

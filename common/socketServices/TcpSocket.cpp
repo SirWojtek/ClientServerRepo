@@ -135,3 +135,9 @@ std::shared_ptr<std::string> TcpSocket::getMessageFromBuffer(boost::asio::stream
     return std::make_shared<std::string>(message);
 }
 
+std::shared_ptr<boost::asio::ip::tcp::socket> TcpSocket::getSocket()
+{
+    std::shared_ptr<boost::asio::ip::tcp::socket> nullTcpPointer;
+    return nullTcpPointer;
+}
+void TcpSocket::cancellAllAsyncServices() {}
