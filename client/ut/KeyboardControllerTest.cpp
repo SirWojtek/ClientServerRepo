@@ -7,13 +7,13 @@
 
 using namespace ::testing;
 
-struct Params
+struct KeyToDirection
 {
     char key;
     KeyboardController::KeyDirection direction;
 };
 
-class KeyboardControllerShould : public TestWithParam<Params>
+class KeyboardControllerShould : public TestWithParam<KeyToDirection>
 {
 protected:
     KeyboardControllerShould() :
@@ -27,7 +27,7 @@ protected:
 
 TEST_P(KeyboardControllerShould, returnCorrectDirection)
 {
-    Params param = GetParam();
+    KeyToDirection param = GetParam();
 
     EXPECT_CALL(*keyGetterMock_, getPressedKey())
         .WillOnce(Return(param.key));
@@ -37,11 +37,11 @@ TEST_P(KeyboardControllerShould, returnCorrectDirection)
 }
 
 INSTANTIATE_TEST_CASE_P(keyCombinations, KeyboardControllerShould, Values(
-        Params({'w', KeyboardController::Up}),
-        Params({'s', KeyboardController::Down}),
-        Params({'d', KeyboardController::Right}),
-        Params({'a', KeyboardController::Left}),
-        Params({'j', KeyboardController::None})
+        KeyToDirection({'w', KeyboardController::Up}),
+        KeyToDirection({'s', KeyboardController::Down}),
+        KeyToDirection({'d', KeyboardController::Right}),
+        KeyToDirection({'a', KeyboardController::Left}),
+        KeyToDirection({'j', KeyboardController::None})
 ));
 
 TEST_F(KeyboardControllerShould, returnTrueIfExitKeyWasPressed)

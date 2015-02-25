@@ -1,5 +1,5 @@
-#ifndef KEY_GETTER_MOCK_
-#define KEY_GETTER_MOCK_
+#ifndef KEY_GETTER_MOCK_HPP_
+#define KEY_GETTER_MOCK_HPP_
 
 #include <memory>
 #include <gmock/gmock.h>
@@ -13,4 +13,4 @@ public:
 };
 using KeyGetterMockPtr = std::shared_ptr<KeyGetterMock>;
 
-#endif  // KEY_GETTER_MOCK_
+#endif  // KEY_GETTER_MOCK_HPP_

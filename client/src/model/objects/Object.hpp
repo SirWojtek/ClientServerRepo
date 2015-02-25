@@ -12,7 +12,12 @@ class Object
 public:
     struct Position
     {
-        int x,y;
+        int x, y;
+
+        bool operator==(const Position& pos) const
+        {
+            return x == pos.x && y == pos.y;
+        }
     };
 
     Object(Position position = {0, 0}, bool isStatic = false);
