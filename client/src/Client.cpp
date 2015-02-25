@@ -25,13 +25,15 @@ int Client::start(int argc, char** argv)
     {
         init();
         clientLoop();
+        tearDown();
     }
     catch (std::runtime_error& e)
     {
         console_.error << e.what();
+        tearDown();
+        return -1;
     }
 
-    tearDown();
     return 0;
 }
 
