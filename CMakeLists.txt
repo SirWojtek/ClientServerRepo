@@ -46,3 +46,4 @@ enable_testing()
 
 # add test binaries here
 add_test(clientTest bin/clientTest)
+add_test(socketServiceTest bin/socketServiceTest)
