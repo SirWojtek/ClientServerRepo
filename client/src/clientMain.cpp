@@ -5,6 +5,8 @@
 #include "CommunicationService.hpp"
 #include "KeyboardController.hpp"
 #include "KeyGetter.hpp"
+#include "MovementManager.hpp"
+#include "model/ObjectsFacade.hpp"
 
 #include "common/socketServices/TcpSocket.hpp"
 #include "common/socketServices/MessageQueue.hpp"
@@ -29,11 +31,24 @@ KeyboardControllerPtr createKeyboardController()
     return std::make_shared<KeyboardController>(std::make_shared<KeyGetter>());
 }
 
+model::ObjectsFacadePtr createObjectsFacade()
+{
+    return std::make_shared<model::ObjectsFacade>();
+}
+
+MovementManagerPtr createMovementManager(model::ObjectsFacadePtr facade)
+{
+    return std::make_shared<MovementManager>(facade);
+}
+
 int main(int argc, char** argv)
 {
+    model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
+
 	CommunicationServicePtr communicationServ = createCommunicationService();
     KeyboardControllerPtr keyboardController = createKeyboardController();
+    MovementManagerPtr movementManager = createMovementManager(objectsFacade);
 
-	Client client(communicationServ, keyboardController);
+	Client client(communicationServ, keyboardController, movementManager);
 	return client.start(argc, argv);;
 }

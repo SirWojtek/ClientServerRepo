@@ -8,14 +8,14 @@
 namespace model
 {
 
-class ObjectsFacade : IObjectsFacade
+class ObjectsFacade : public IObjectsFacade
 {
 public:
     ObjectsFacade();
 
-    void addActiveObject(const Object& obj);
-    void addInactiveObject(const Object& obj);
-    ObjectPtr getPlayerObject();
+    virtual void addActiveObject(const Object& obj);
+    virtual void addInactiveObject(const Object& obj);
+    virtual ObjectPtr getPlayerObject();
 
 private:
     ObjectPtr playerObject_;

@@ -6,12 +6,15 @@
 
 #include "ICommunicationService.hpp"
 #include "IKeyboardController.hpp"
+#include "IMovementManager.hpp"
+
 #include "common/utilities/Console.hpp"
 
 class Client
 {
 public:
-    Client(CommunicationServicePtr communicationServ, KeyboardControllerPtr keyboardController);
+    Client(CommunicationServicePtr communicationServ, KeyboardControllerPtr keyboardController,
+        MovementManagerPtr movementManager);
 
     int start(int argc, char** argv);
 
@@ -22,6 +25,7 @@ private:
 
     CommunicationServicePtr communicationServ_;
     KeyboardControllerPtr keyboardController_;
+    MovementManagerPtr movementManager_;
     Console console_;
 
     static std::string host, port;

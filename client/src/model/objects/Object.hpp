@@ -15,10 +15,9 @@ public:
         int x,y;
     };
 
-    Object();
+    Object(Position position = {0, 0}, bool isStatic = false);
     explicit Object(bool isStatic);
-    explicit Object(Position position);
-    Object(Position position, bool isStatic);
+
 
     Position position;
     bool isStatic;

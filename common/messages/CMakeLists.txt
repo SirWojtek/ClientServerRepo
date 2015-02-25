@@ -1,2 +1,2 @@
 
-add_library(common MessageUtilities.cpp)
+add_library(messages MessageUtilities.cpp)

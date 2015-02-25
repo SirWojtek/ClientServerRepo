@@ -13,8 +13,7 @@ public:
     virtual void addInactiveObject(const Object& obj) = 0;
     virtual ObjectPtr getPlayerObject() = 0;
 };
-
-using ObjectFacadePtr = std::shared_ptr<IObjectsFacade>;
+using ObjectsFacadePtr = std::shared_ptr<IObjectsFacade>;
 
 }
 

@@ -5,18 +5,18 @@
 #include "Client.hpp"
 #include "ICommunicationService.hpp"
 #include "IKeyboardController.hpp"
+#include "IMovementManager.hpp"
 
 #include "common/utilities/Console.hpp"
-#include "common/messages/UpdatePlayer.hpp"
-#include "common/socketServices/ITcpSocket.hpp"
 
 std::string Client::host = "127.0.0.1";
 std::string Client::port = "4001";
 
 Client::Client(CommunicationServicePtr communicationServ,
-    KeyboardControllerPtr keyboardController) :
+    KeyboardControllerPtr keyboardController, MovementManagerPtr movementManager) :
         communicationServ_(communicationServ),
         keyboardController_(keyboardController),
+        movementManager_(movementManager),
         console_("Client") {}
 
 int Client::start(int argc, char** argv)

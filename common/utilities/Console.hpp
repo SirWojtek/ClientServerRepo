@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONSOLE_HPP_
+#define CONSOLE_HPP_
 
 #include <ostream>
 #include <fstream>
@@ -122,3 +123,5 @@ public:
     const ILoger& debug;
     const ILoger& error;
 };
+
+#endif  // CONSOLE_HPP_
