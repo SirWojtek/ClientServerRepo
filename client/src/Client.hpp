@@ -2,33 +2,30 @@
 #define CLIENT_HPP_
 
 #include <memory>
-#include <string>
 
 #include "ICommunicationService.hpp"
 #include "IKeyboardController.hpp"
 #include "IMovementManager.hpp"
+#include "IWorldUpdater.hpp"
 
 #include "common/utilities/Console.hpp"
 
 class Client
 {
 public:
-    Client(CommunicationServicePtr communicationServ, KeyboardControllerPtr keyboardController,
-        MovementManagerPtr movementManager);
+    Client(KeyboardControllerPtr keyboardController,
+        MovementManagerPtr movementManager, WorldUpdaterPtr worldUpdater);
 
     int start(int argc, char** argv);
 
 private:
-    void init();
-    void tearDown();
     void clientLoop();
 
     CommunicationServicePtr communicationServ_;
     KeyboardControllerPtr keyboardController_;
     MovementManagerPtr movementManager_;
+    WorldUpdaterPtr worldUpdater_;
     Console console_;
-
-    static std::string host, port;
 };
 using ClientPtr = std::shared_ptr<Client>;
 

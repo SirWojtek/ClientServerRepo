@@ -17,13 +17,17 @@
 
 using common::messagetype::MessageType;
 
-void CommunicationService::startService(
-    const std::string& host, const std::string& port)
+std::string CommunicationService::host = "127.0.0.1";
+std::string CommunicationService::port = "4001";
+
+void CommunicationService::startService()
 {
     tcpSocket_->connect(host, port);
     tcpSocket_ = nullptr;
     readerThread_ = messageReader_->start();
     writerThread_ = messageWriter_->start();
+
+    console_.info << "Service started";
 }
 
 void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
@@ -61,6 +65,7 @@ void CommunicationService::tearDown()
         console_.debug << "Writer thread joined";
     }
 
+    console_.info << "Service ended";
 }
 
 bool CommunicationService::isMessageOfTypeAlreadyReceived(const MessageType& type)

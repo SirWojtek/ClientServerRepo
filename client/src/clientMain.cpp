@@ -6,12 +6,14 @@
 #include "KeyboardController.hpp"
 #include "KeyGetter.hpp"
 #include "MovementManager.hpp"
+#include "WorldUpdater.hpp"
 #include "model/ObjectsFacade.hpp"
 
 #include "common/socketServices/TcpSocket.hpp"
 #include "common/socketServices/MessageQueue.hpp"
 #include "common/socketServices/MessageWriter.hpp"
 #include "common/socketServices/MessageReader.hpp"
+#include "common/utilities/Console.hpp"
 
 CommunicationServicePtr createCommunicationService()
 {
@@ -41,14 +43,21 @@ MovementManagerPtr createMovementManager(model::ObjectsFacadePtr facade)
     return std::make_shared<MovementManager>(facade);
 }
 
+WorldUpdaterPtr createWorldUpdater(model::ObjectsFacadePtr facade)
+{
+    CommunicationServicePtr communicationServ = createCommunicationService();
+    return std::make_shared<WorldUpdater>(facade, communicationServ);
+}
+
 int main(int argc, char** argv)
 {
+    ILoger::filePrint_ = true;
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
 
-	CommunicationServicePtr communicationServ = createCommunicationService();
     KeyboardControllerPtr keyboardController = createKeyboardController();
     MovementManagerPtr movementManager = createMovementManager(objectsFacade);
+    WorldUpdaterPtr worldUpdater = createWorldUpdater(objectsFacade);
 
-	Client client(communicationServ, keyboardController, movementManager);
+	Client client(keyboardController, movementManager, worldUpdater);
 	return client.start(argc, argv);;
 }

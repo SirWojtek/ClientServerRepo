@@ -7,21 +7,21 @@
 namespace common
 {
 
-struct Changes
-{
-    int state;
-    std::pair<int, int> delta;
-    int id;
-
-    template<class Archive>
-    void serialize(Archive& archive)
-    {
-        archive(CEREAL_NVP(state), CEREAL_NVP(delta), CEREAL_NVP(id));
-    }
-};
-
 struct UpdateEnvironment
 {
+    struct Changes
+    {
+        int state;
+        std::pair<int, int> delta;
+        int id;
+
+        template<class Archive>
+        void serialize(Archive& archive)
+        {
+            archive(CEREAL_NVP(state), CEREAL_NVP(delta), CEREAL_NVP(id));
+        }
+    };
+
     std::vector<Changes> changesVector;
 
     template<class Archive>

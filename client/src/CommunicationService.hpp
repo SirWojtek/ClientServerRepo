@@ -28,7 +28,7 @@ public:
             messageReader_(messageReader),
             console_("CommunicationService") {}
 
-    void startService(const std::string& host, const std::string& port);
+    void startService();
     void putMessageInQueue(const common::UpdatePlayer& message);
     std::shared_ptr<std::string> getMessage(const common::messagetype::MessageType& type);
     void tearDown();
@@ -53,6 +53,8 @@ private:
     std::multimap<common::messagetype::MessageType, std::shared_ptr<std::string>> receivedMessages_;
 
     Console console_;
+
+    static std::string host, port;
 };
 
 #endif  // COMMUNICATION_SERVICE_HPP_
