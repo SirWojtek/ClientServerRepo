@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "ICommunicationService.hpp"
 #include "IKeyboardController.hpp"
 #include "IMovementManager.hpp"
 #include "IWorldUpdater.hpp"
@@ -21,7 +20,6 @@ public:
 private:
     void clientLoop();
 
-    CommunicationServicePtr communicationServ_;
     KeyboardControllerPtr keyboardController_;
     MovementManagerPtr movementManager_;
     WorldUpdaterPtr worldUpdater_;

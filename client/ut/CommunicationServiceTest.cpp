@@ -58,8 +58,8 @@ protected:
 
     std::shared_ptr<std::string> message_ =
         std::make_shared<std::string>("Until getMessageType not implemented");
-    std::string host = "localhost";
-    std::string port = "666";
+    std::string host = "127.0.0.1";
+    std::string port = "4001";  // from implementation
 };
 
 TEST_F(CommunicationServiceShould, prepareCommunicationSocket)
@@ -70,7 +70,7 @@ TEST_F(CommunicationServiceShould, prepareCommunicationSocket)
     EXPECT_CALL(*messageReaderMock_, start())
         .WillOnce(Return(nullptr));
 
-    communicationServ_->startService(host, port);
+    communicationServ_->startService();
 }
 
 TEST_F(CommunicationServiceShould, putMessageInQueue)
