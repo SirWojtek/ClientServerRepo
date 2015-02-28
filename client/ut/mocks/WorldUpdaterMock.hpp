@@ -9,6 +9,7 @@
 class WorldUpdaterMock : public IWorldUpdater
 {
 public:
+	MOCK_METHOD0(init, void());
     MOCK_METHOD1(updateModel, void(bool));
 };
 using WorldUpdaterMockPtr = std::shared_ptr<WorldUpdaterMock>;

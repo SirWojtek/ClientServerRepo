@@ -15,15 +15,17 @@
 WorldUpdater::WorldUpdater(model::ObjectsFacadePtr objectsFacade,
     CommunicationServicePtr communicationServ) :
         objectsFacade_(objectsFacade),
-        communicationServ_(communicationServ)
-    {
-        communicationServ_->startService();
-        previousPlayerObject_ = copyPlayerObject(objectsFacade_->getPlayerObject());
-    }
+        communicationServ_(communicationServ) {}
 
 WorldUpdater::~WorldUpdater()
 {
     communicationServ_->tearDown();
+}
+
+void WorldUpdater::init()
+{
+    communicationServ_->startService();
+    previousPlayerObject_ = copyPlayerObject(objectsFacade_->getPlayerObject());
 }
 
 void WorldUpdater::updateModel(bool isPlayerMoving)

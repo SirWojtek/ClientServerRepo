@@ -16,6 +16,7 @@ public:
     WorldUpdater(model::ObjectsFacadePtr objectsFacade, CommunicationServicePtr communicationServ);
     ~WorldUpdater();
 
+    virtual void init();
     virtual void updateModel(bool isPlayerMoving);
 
 private:

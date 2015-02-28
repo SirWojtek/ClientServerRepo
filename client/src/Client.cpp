@@ -20,6 +20,7 @@ int Client::start(int argc, char** argv)
 {
     try
     {
+        worldUpdater_->init();
         clientLoop();
     }
     catch (std::runtime_error& e)

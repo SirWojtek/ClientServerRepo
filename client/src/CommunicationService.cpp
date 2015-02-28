@@ -50,14 +50,14 @@ std::shared_ptr<std::string> CommunicationService::getMessage(
 
 void CommunicationService::tearDown()
 {
-    if (readerThread_->joinable())
+    if (readerThread_ && readerThread_->joinable())
     {
         messageReader_->stop();
         readerThread_->join();
         console_.debug << "Reader thread joined";
     }
 
-    if (writerThread_->joinable())
+    if (writerThread_ && writerThread_->joinable())
     {
         writerQueue_->waitForEmptyQueue();
         messageWriter_->stop();

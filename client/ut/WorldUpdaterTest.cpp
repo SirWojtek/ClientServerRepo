@@ -21,16 +21,16 @@ protected:
     WorldUpdaterShould() :
         objectsFacadeMock_(std::make_shared<ObjectsFacadeMock>()),
         communicationServMock_(std::make_shared<CommunicationServiceMock>()),
-        playerObject_(std::make_shared<model::Object>()) {}
+        playerObject_(std::make_shared<model::Object>()),
+        worldUpdater_(std::make_shared<WorldUpdater>(
+            objectsFacadeMock_, communicationServMock_)) {}
 
     void SetUp()
     {
         EXPECT_CALL(*communicationServMock_, startService());
         EXPECT_CALL(*objectsFacadeMock_, getPlayerObject())
             .WillOnce(Return(playerObject_));
-
-        worldUpdater_ = std::make_shared<WorldUpdater>(
-            objectsFacadeMock_, communicationServMock_);
+        worldUpdater_->init();
     }
 
     void TearDown()

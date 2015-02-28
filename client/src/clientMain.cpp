@@ -59,5 +59,5 @@ int main(int argc, char** argv)
     WorldUpdaterPtr worldUpdater = createWorldUpdater(objectsFacade);
 
 	Client client(keyboardController, movementManager, worldUpdater);
-	return client.start(argc, argv);;
+	return client.start(argc, argv);
 }
