@@ -6,9 +6,6 @@
 
 #include <cereal/archives/json.hpp>
 
-#include "UpdateEnvironment.hpp"
-#include "UpdatePlayer.hpp"
-
 namespace common
 {
 
@@ -49,7 +46,10 @@ std::string getMessageJson(const MessageT& msg)
 // function specialization
 template std::shared_ptr<UpdateEnvironment> getMessage<UpdateEnvironment>(const std::string& jsonString);
 template std::shared_ptr<UpdatePlayer> getMessage<UpdatePlayer>(const std::string& jsonString);
+template std::shared_ptr<OkResponse> getMessage<OkResponse>(const std::string& jsonString);
+
 template std::string getMessageJson<UpdateEnvironment>(const UpdateEnvironment& msg);
 template std::string getMessageJson<UpdatePlayer>(const UpdatePlayer& msg);
+template std::string getMessageJson<OkResponse>(const OkResponse& msg);
 
 }

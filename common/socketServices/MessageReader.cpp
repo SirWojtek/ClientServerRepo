@@ -29,7 +29,7 @@ void MessageReader::readerLoop(std::shared_ptr<MessageReader> self)
 
         if (message != nullptr)
         {
-            console_.debug << "Message readed: " << *message;
+            console_.debug << "Message read: " << *message;
             messageQueue_->pushMessage(*message);
         }
 

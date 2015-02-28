@@ -8,7 +8,8 @@ namespace messagetype
 enum MessageType
 {
     UpdateEnvironment,
-    UpdatePlayer
+    UpdatePlayer,
+    OkResponse
 };
 }
 }
