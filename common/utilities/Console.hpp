@@ -38,7 +38,7 @@ public:
 	static std::ostream& console_;
 
 protected:
-    void printClassName(std::ostream& stream) const;
+    void printInfo(std::ostream& stream) const;
     std::ostream& getStream() const;
 };
 
