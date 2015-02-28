@@ -23,8 +23,8 @@ private:
     model::ObjectPtr copyPlayerObject(const model::ObjectPtr playerObject) const;
     void sendUpdatePlayerMessage();
     common::UpdatePlayer getUpdatePlayerMessage(const model::ObjectPtr playerObject);
-    common::UpdateEnvironment receiveUpdateEnvironmentMessage();
-    void applyUpdatesToModel(common::UpdateEnvironment message);
+    std::shared_ptr<common::UpdateEnvironment> receiveUpdateEnvironmentMessage();
+    void applyUpdatesToModel(const common::UpdateEnvironment& message);
 
 
     model::ObjectsFacadePtr objectsFacade_;

@@ -35,8 +35,12 @@ void WorldUpdater::updateModel(bool isPlayerMoving)
         sendUpdatePlayerMessage();
     }
 
-    common::UpdateEnvironment message = receiveUpdateEnvironmentMessage();
-    applyUpdatesToModel(message);
+    std::shared_ptr<common::UpdateEnvironment> message = receiveUpdateEnvironmentMessage();
+    
+    if (message != nullptr)
+    {
+        applyUpdatesToModel(*message);
+    }
 }
 
 model::ObjectPtr WorldUpdater::copyPlayerObject(const model::ObjectPtr playerObject) const
@@ -63,9 +67,15 @@ common::UpdatePlayer WorldUpdater::getUpdatePlayerMessage(const model::ObjectPtr
     return message;
 }
 
-common::UpdateEnvironment WorldUpdater::receiveUpdateEnvironmentMessage()
+std::shared_ptr<common::UpdateEnvironment> WorldUpdater::receiveUpdateEnvironmentMessage()
 {
     auto messageString = communicationServ_->getMessage(common::messagetype::UpdateEnvironment);
+
+    if (messageString == nullptr)
+    {
+        return std::make_shared<common::UpdateEnvironment>();
+    }
+
     auto updateMessagePtr = common::getMessage<common::UpdateEnvironment>(*messageString);
 
     if (updateMessagePtr == nullptr)
@@ -73,10 +83,10 @@ common::UpdateEnvironment WorldUpdater::receiveUpdateEnvironmentMessage()
         throw std::runtime_error("Error converting UpdateEnvironment message");
     }
 
-    return *updateMessagePtr;
+    return updateMessagePtr;
 }
 
-void WorldUpdater::applyUpdatesToModel(common::UpdateEnvironment message)
+void WorldUpdater::applyUpdatesToModel(const common::UpdateEnvironment& message)
 {
     // TODO: write this method
 }
