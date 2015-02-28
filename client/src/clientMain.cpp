@@ -51,7 +51,7 @@ WorldUpdaterPtr createWorldUpdater(model::ObjectsFacadePtr facade)
 
 int main(int argc, char** argv)
 {
-    ILoger::filePrint_ = true;
+    ILoger::setFilePrint(true);
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
 
     KeyboardControllerPtr keyboardController = createKeyboardController();
