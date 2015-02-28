@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+#include "Messages.hpp"
 #include "MessageTypes.hpp"
 
 namespace common
@@ -11,6 +12,7 @@ namespace common
 
 struct UpdateEnvironment;
 struct UpdatePlayer;
+struct OkResponse;
 
 messagetype::MessageType getMessageType(const std::string& jsonString);
 

@@ -43,5 +43,5 @@ void MessageWriter::writeMessage(std::string& netMessage)
 {
     console_.info << "Message to send: " << netMessage;
     tcpSocket_->write(netMessage);
-    console_.info << "Message sended";
+    console_.info << "Message sent";
 }
