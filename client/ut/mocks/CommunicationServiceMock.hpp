@@ -11,7 +11,7 @@
 class CommunicationServiceMock : public ICommunicationService
 {
 public:
-    MOCK_METHOD2(startService, void(const std::string& host, const std::string& port));
+    MOCK_METHOD0(startService, void());
     MOCK_METHOD1(putMessageInQueue, void(const common::UpdatePlayer& message));
     MOCK_METHOD1(getMessage, std::shared_ptr<std::string>(
         const common::messagetype::MessageType& type));

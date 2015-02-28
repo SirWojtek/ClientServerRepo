@@ -64,7 +64,14 @@ common::UpdatePlayer WorldUpdater::getUpdatePlayerMessage(const model::ObjectPtr
 common::UpdateEnvironment WorldUpdater::receiveUpdateEnvironmentMessage()
 {
     auto messageString = communicationServ_->getMessage(common::messagetype::UpdateEnvironment);
-    return common::getMessage<common::UpdateEnvironment>(*messageString);
+    auto updateMessagePtr = common::getMessage<common::UpdateEnvironment>(*messageString);
+
+    if (updateMessagePtr == nullptr)
+    {
+        throw std::runtime_error("Error converting UpdateEnvironment message");
+    }
+
+    return *updateMessagePtr;
 }
 
 void WorldUpdater::applyUpdatesToModel(common::UpdateEnvironment message)
