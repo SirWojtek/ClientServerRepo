@@ -2,6 +2,7 @@
 #define MESSAGE_UTILITIES_HPP_
 
 #include <string>
+#include <memory>
 
 #include "MessageTypes.hpp"
 
@@ -14,7 +15,7 @@ struct UpdatePlayer;
 messagetype::MessageType getMessageType(const std::string& jsonString);
 
 template<typename MessageT>
-MessageT getMessage(const std::string& jsonString);
+std::shared_ptr<MessageT> getMessage(const std::string& jsonString);
 
 template<typename MessageT>
 std::string getMessageJson(const MessageT& msg);

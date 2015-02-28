@@ -2,6 +2,7 @@
 
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include <cereal/archives/json.hpp>
 
@@ -18,13 +19,18 @@ messagetype::MessageType getMessageType(const std::string& jsonString)
 }
 
 template<typename MessageT>
-MessageT getMessage(const std::string& jsonString)
+std::shared_ptr<MessageT> getMessage(const std::string& jsonString)
 {
-    MessageT result;
-    std::stringstream stream(jsonString);
-    cereal::JSONInputArchive archive(stream);
+    std::shared_ptr<MessageT> result;
 
-    archive(result);
+    try
+    {
+        std::stringstream stream(jsonString);
+        cereal::JSONInputArchive archive(stream);
+
+        archive(*result);
+    }
+    catch (...) {}
 
     return result;
 }
@@ -41,8 +47,8 @@ std::string getMessageJson(const MessageT& msg)
 }
 
 // function specialization
-template UpdateEnvironment getMessage<UpdateEnvironment>(const std::string& jsonString);
-template UpdatePlayer getMessage<UpdatePlayer>(const std::string& jsonString);
+template std::shared_ptr<UpdateEnvironment> getMessage<UpdateEnvironment>(const std::string& jsonString);
+template std::shared_ptr<UpdatePlayer> getMessage<UpdatePlayer>(const std::string& jsonString);
 template std::string getMessageJson<UpdateEnvironment>(const UpdateEnvironment& msg);
 template std::string getMessageJson<UpdatePlayer>(const UpdatePlayer& msg);
 
