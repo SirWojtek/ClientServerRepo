@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include <exception>
+#include <stdexcept>
 
 #include "client/src/CommunicationService.hpp"
 #include "common/messages/UpdatePlayer.hpp"
@@ -53,7 +53,6 @@ protected:
         return ret;
     }
 
-
     TcpSocketMockPtr tcpSocketMock_;
     MessageQueueMockPtr writerQueueMock_;
     MessageQueueMockPtr readerQueueMock_;
@@ -78,13 +77,27 @@ TEST_F(CommunicationServiceShould, prepareCommunicationSocket)
     communicationServ_->startService();
 }
 
-TEST_F(CommunicationServiceShould, putMessageInQueue)
+TEST_F(CommunicationServiceShould, putUpdatePlayerMessageInQueueAndGetOkResponse)
+{
+    UpdatePlayer msg;
+    OkResponse ok;
+
+    EXPECT_CALL(*writerQueueMock_, pushMessage(_));
+    EXPECT_CALL(*readerQueueMock_, popMessage())
+        .WillOnce(Return(std::make_shared<std::string>(getMessageJson(ok))));
+
+    ASSERT_EQ(communicationServ_->putMessageInQueue(msg), ok);
+}
+
+TEST_F(CommunicationServiceShould, putUpdatePlayerMessageInQueueAndNotGetOkResponseThrows)
 {
     UpdatePlayer msg;
 
     EXPECT_CALL(*writerQueueMock_, pushMessage(_));
+    EXPECT_CALL(*readerQueueMock_, popMessage())
+        .WillRepeatedly(Return(nullptr));
 
-    communicationServ_->putMessageInQueue(msg);
+    EXPECT_THROW(communicationServ_->putMessageInQueue(msg), std::runtime_error);
 }
 
 TEST_F(CommunicationServiceShould, returnNullPtrIfCannotGetMessageOfType)
