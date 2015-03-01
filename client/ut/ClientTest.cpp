@@ -21,6 +21,7 @@ protected:
 
     void SetUp()
     {
+        EXPECT_CALL(*worldUpdaterMock_, init());
     }
 
     void setClientLoopExpectations(unsigned loops,
