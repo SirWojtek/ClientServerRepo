@@ -7,8 +7,10 @@
 #include <sstream>
 #include <memory>
 #include <map>
+#include <stdexcept>
 
 #include <cereal/archives/json.hpp>
+#include <cereal/details/helpers.hpp>
 
 namespace common
 {
@@ -17,9 +19,9 @@ namespace
 
 std::map<std::string, messagetype::MessageType> encodingMap =
 {
-    {UpdatePlayer::getName(), messagetype::UpdatePlayer},
-    {UpdateEnvironment::getName(), messagetype::UpdateEnvironment},
-    {OkResponse::getName(), messagetype::OkResponse}
+    {UpdatePlayer::type(), messagetype::UpdatePlayer},
+    {UpdateEnvironment::type(), messagetype::UpdateEnvironment},
+    {OkResponse::type(), messagetype::OkResponse}
 };
 
 }
@@ -43,16 +45,20 @@ messagetype::MessageType getMessageType(const std::string& jsonString)
 template<typename MessageT>
 std::shared_ptr<MessageT> getMessage(const std::string& jsonString)
 {
-    std::shared_ptr<MessageT> result;
+    std::shared_ptr<MessageT> result = std::make_shared<MessageT>();
+
+    std::stringstream stream(jsonString);
 
     try
     {
-        std::stringstream stream(jsonString);
         cereal::JSONInputArchive archive(stream);
-
         archive(*result);
     }
-    catch (...) {}
+    catch (cereal::Exception e)
+    {
+        result = nullptr;
+    }
+
 
     return result;
 }
@@ -61,9 +67,12 @@ template<typename MessageT>
 std::string getMessageJson(const MessageT& msg)
 {
     std::stringstream result;
-    cereal::JSONOutputArchive archive(result);
 
-    archive(msg);
+    {
+        cereal::JSONOutputArchive archive(result);
+
+        archive(msg);
+    }
 
     return result.str();
 }

@@ -15,10 +15,10 @@ struct UpdatePlayer
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(getName(), delta, actionId);
+        archive(CEREAL_NVP(type()), CEREAL_NVP(delta), CEREAL_NVP(actionId));
     }
 
-    static std::string getName()
+    static std::string type()
     {
         return std::string("UpdatePlayer");
     }

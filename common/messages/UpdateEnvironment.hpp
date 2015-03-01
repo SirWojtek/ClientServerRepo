@@ -27,10 +27,10 @@ struct UpdateEnvironment
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(CEREAL_NVP(getName()), CEREAL_NVP(changesVector));
+        archive(CEREAL_NVP(type()), CEREAL_NVP(changesVector));
     }
 
-    static std::string getName()
+    static std::string type()
     {
         return std::string("UpdateEnvironment");
     }
