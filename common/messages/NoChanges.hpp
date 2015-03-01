@@ -11,10 +11,10 @@ struct NoChanges
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(getName());
+        archive(type());
     }
 
-    static std::string getName()
+    static std::string type()
     {
         return std::string("NoChanges");
     }

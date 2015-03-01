@@ -18,11 +18,14 @@ tcp::socket& ServerSession::getSocket()
 	return *(socket_->getSocket());
 }
 
-void ServerSession::start()
+std::shared_ptr<std::thread> ServerSession::start()
 {
-    // std::shared_ptr<const std::string> messageReceived = socket_->read();
-    // std::string messageToBeSent(*messageReceived);
-    // socket_->write(messageToBeSent);
+    return std::make_shared<std::thread>(&ServerSession::startThreadsAndRun,
+        this, shared_from_this());
+}
+
+void ServerSession::startThreadsAndRun(std::shared_ptr<ServerSession> self)
+{
     readerThread_ = reader_->start();
     writerThread_ = writer_->start();
 
@@ -36,11 +39,26 @@ void ServerSession::runSession()
     while(true)
     {
         messageIndex = getMessage();
+        writerQueue_->waitForEmptyQueue();
         if (messageIndex != noMessage_)
         {
             sendResponse();
         }
+        else
+        {
+            sendBlankUpdate();
+        }
+        if (stop_.load())
+        {
+            break;
+        }
     }
+    console_.info << "Server session stopped.";
+}
+
+void ServerSession::stop()
+{
+    stop_.exchange(true);
 }
 
 int ServerSession::getMessage()
@@ -59,9 +77,16 @@ int ServerSession::getMessage()
 
 void ServerSession::sendResponse()
 {
-    common::OkResponse okMessage_;
-    okMessage_.serverAllows = true;
-    std::string json = common::getMessageJson<common::OkResponse>(okMessage_);
+    common::OkResponse okMessage;
+    okMessage.serverAllows = true;
+    std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     writerQueue_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
+}
+
+void ServerSession::sendBlankUpdate()
+{
+    common::NoChanges noChange;
+    std::string json = common::getMessageJson<common::NoChanges>(noChange);
+    writerQueue_->pushMessage(json);
 }

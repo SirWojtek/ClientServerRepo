@@ -10,7 +10,8 @@ enum MessageType
     Incorrect,
     UpdateEnvironment,
     UpdatePlayer,
-    OkResponse
+    OkResponse,
+    NoChanges
 };
 }
 }

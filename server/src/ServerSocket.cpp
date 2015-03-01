@@ -22,7 +22,6 @@ void ServerSocket::write(std::string& message)
     try
     {
         message += readDelim;
-        console_.debug << "Writing message:" << message;
         boost::asio::write(
             *tcpSocket_, boost::asio::buffer(message.c_str(), message.size()));
     }
@@ -44,8 +43,6 @@ std::shared_ptr<const std::string> ServerSocket::read()
     }
     if(length)
     {
-        console_.debug << "Received bytes: " << length;
-        console_.debug << "Received message: " << data_;
         std::shared_ptr<std::string> returnMessage = 
         	std::make_shared<std::string>(data_);
         return returnMessage;

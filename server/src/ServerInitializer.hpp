@@ -2,6 +2,7 @@
 #define SERVER_INITIALIZER_HPP_
 
 #include <boost/asio.hpp>
+#include <thread>
 #include "ServerSession.hpp"
 #include "common/utilities/Console.hpp"
 
@@ -16,7 +17,7 @@ public:
 private:
 	std::shared_ptr<tcp::acceptor> acceptor_;
 	std::shared_ptr<ServerSession> session_;
-	std::vector<std::shared_ptr<ServerSession>> sessionArray_;
+	std::vector<std::shared_ptr<std::thread>> sessionArray_;
 	Console console_;
 	const static unsigned portNumber = 4001;
 };
