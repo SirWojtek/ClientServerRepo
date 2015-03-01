@@ -5,6 +5,7 @@
 #include "client/src/CommunicationService.hpp"
 #include "common/messages/UpdatePlayer.hpp"
 #include "common/messages/MessageTypes.hpp"
+#include "common/messages/MessageUtilities.hpp"
 
 #include "TcpSocketMock.hpp"
 #include "MessageQueueMock.hpp"
@@ -25,11 +26,15 @@ protected:
         communicationServ_(std::make_shared<CommunicationService>(
             tcpSocketMock_, writerQueueMock_, messageWriterMock_,
             readerQueueMock_, messageReaderMock_))
-    {}
+    {
+        UpdatePlayer updatePlayer;
+        message_ = std::make_shared<std::string>(getMessageJson(updatePlayer));
+        messageType_ = messagetype::UpdatePlayer;
+    }
 
     void insertMessageIntoCommonicationServiceMultiMap()
     {
-        getMessageOfTypeAfterInsert(messagetype::UpdatePlayer, message_);
+        getMessageOfTypeAfterInsert(messagetype::UpdateEnvironment, message_);
     }
 
     std::shared_ptr<std::string> getMessageOfTypeAfterInsert(const messagetype::MessageType& type,
@@ -56,8 +61,8 @@ protected:
     MessageCommanderMockPtr messageReaderMock_;
     CommunicationServicePtr communicationServ_;
 
-    std::shared_ptr<std::string> message_ =
-        std::make_shared<std::string>("Until getMessageType not implemented");
+    std::shared_ptr<std::string> message_;
+    messagetype::MessageType messageType_;
     std::string host = "127.0.0.1";
     std::string port = "4001";  // from implementation
 };
@@ -84,14 +89,14 @@ TEST_F(CommunicationServiceShould, putMessageInQueue)
 
 TEST_F(CommunicationServiceShould, returnNullPtrIfCannotGetMessageOfType)
 {
-    auto rec = getMessageOfTypeAfterInsert(messagetype::UpdatePlayer, message_);
+    auto rec = getMessageOfTypeAfterInsert(messagetype::UpdateEnvironment, message_);
 
     ASSERT_EQ(rec, nullptr);
 }
 
 TEST_F(CommunicationServiceShould, getMessageOfTypeIfIsNotInQueue)
 {
-    auto rec = getMessageOfTypeAfterInsert(messagetype::UpdateEnvironment, message_);
+    auto rec = getMessageOfTypeAfterInsert(messageType_, message_);
 
     ASSERT_EQ(*rec, *message_);
 }
@@ -100,7 +105,7 @@ TEST_F(CommunicationServiceShould, getMessageOfTypeIfIsInQueue)
 {
     insertMessageIntoCommonicationServiceMultiMap();
 
-    auto rec = communicationServ_->getMessage(messagetype::UpdateEnvironment);
+    auto rec = communicationServ_->getMessage(messageType_);
 
     ASSERT_EQ(*message_, *rec);
 }
