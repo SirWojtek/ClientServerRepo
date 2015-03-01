@@ -1,18 +1,43 @@
+
 #include "MessageUtilities.hpp"
+
+#include "Messages.hpp"
 
 #include <string>
 #include <sstream>
 #include <memory>
+#include <map>
 
 #include <cereal/archives/json.hpp>
 
 namespace common
 {
+namespace
+{
+
+std::map<std::string, messagetype::MessageType> encodingMap =
+{
+    {UpdatePlayer::getName(), messagetype::UpdatePlayer},
+    {UpdateEnvironment::getName(), messagetype::UpdateEnvironment},
+    {OkResponse::getName(), messagetype::OkResponse}
+};
+
+}
+
 
 messagetype::MessageType getMessageType(const std::string& jsonString)
 {
-    // TODO: implement this method
-    return messagetype::UpdateEnvironment;
+    for (auto nameToType : encodingMap)
+    {
+        std::size_t pos = jsonString.find(nameToType.first);
+
+        if (pos != std::string::npos)
+        {
+            return nameToType.second;
+        }
+    }
+
+    return messagetype::Incorrect;
 }
 
 template<typename MessageT>

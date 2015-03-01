@@ -5,4 +5,6 @@
 #include "UpdatePlayer.hpp"
 #include "OkResponse.hpp"
 
+#include "MessageTypes.hpp"
+
 #endif

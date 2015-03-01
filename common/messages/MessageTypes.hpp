@@ -7,6 +7,7 @@ namespace messagetype
 {
 enum MessageType
 {
+    Incorrect,
     UpdateEnvironment,
     UpdatePlayer,
     OkResponse

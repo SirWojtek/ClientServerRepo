@@ -14,11 +14,13 @@ struct OkResponse
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(type, serverAllows);
+        archive(getName(), serverAllows);
     }
 
-private:
-    std::string type = "OkResponse";
+    static std::string getName()
+    {
+        return std::string("OkResponse");
+    }
 };
 
 }

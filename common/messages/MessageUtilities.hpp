@@ -10,10 +10,6 @@
 namespace common
 {
 
-struct UpdateEnvironment;
-struct UpdatePlayer;
-struct OkResponse;
-
 messagetype::MessageType getMessageType(const std::string& jsonString);
 
 template<typename MessageT>

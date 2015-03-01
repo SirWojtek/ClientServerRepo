@@ -15,11 +15,13 @@ struct UpdatePlayer
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(type, delta, actionId);
+        archive(getName(), delta, actionId);
     }
 
-private:
-    std::string type = "UpdatePlayer";
+    static std::string getName()
+    {
+        return std::string("UpdatePlayer");
+    }
 };
 
 }
