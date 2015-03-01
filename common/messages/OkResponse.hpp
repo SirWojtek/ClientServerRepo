@@ -2,7 +2,6 @@
 #define OK_RESPONSE_HPP_
 
 #include <string>
-#include <cereal/types/utility.hpp>
 
 namespace common
 {
@@ -14,12 +13,17 @@ struct OkResponse
     template<class Archive>
     void serialize(Archive& archive)
     {
-        archive(getName(), serverAllows);
+        archive(CEREAL_NVP(type()), CEREAL_NVP(serverAllows));
     }
 
-    static std::string getName()
+    static std::string type()
     {
         return std::string("OkResponse");
+    }
+
+    bool operator==(const OkResponse& a) const
+    {
+        return serverAllows == a.serverAllows;
     }
 };
 

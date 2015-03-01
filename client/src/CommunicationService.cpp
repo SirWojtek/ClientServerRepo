@@ -11,14 +11,14 @@
 #include "common/utilities/Console.hpp"
 #include "common/socketServices/ITcpSocket.hpp"
 
-#include "common/messages/UpdateEnvironment.hpp"
-#include "common/messages/UpdatePlayer.hpp"
+#include "common/messages/Messages.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
 using common::messagetype::MessageType;
 
 std::string CommunicationService::host = "127.0.0.1";
 std::string CommunicationService::port = "4001";
+unsigned CommunicationService::waitingForResponseCount = 5;
 
 void CommunicationService::startService()
 {
@@ -30,11 +30,46 @@ void CommunicationService::startService()
     console_.info << "Service started";
 }
 
-void CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
+common::OkResponse CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
 {
-    std::string json = common::getMessageJson<common::UpdatePlayer>(message);
+    using namespace common;
+
+    std::string json = common::getMessageJson<UpdatePlayer>(message);
     writerQueue_->pushMessage(json);
     console_.info << "Message added to queue";
+
+    return getResponse();
+}
+
+common::OkResponse CommunicationService::getResponse()
+{
+    std::shared_ptr<std::string> response;
+
+    for (unsigned i = 0; i < waitingForResponseCount; i++)
+    {
+        response = getMessage(common::messagetype::OkResponse);
+        console_.debug << "Waiting for UpdatePlayer response: " << i + 1;
+
+        if (response != nullptr)
+        {
+            break;
+        }
+    }
+
+    if (response == nullptr)
+    {
+        throw std::runtime_error("Server did not send OkResponse message");
+    }
+
+    console_.debug << "Response received";
+    auto responcePtr = common::getMessage<common::OkResponse>(*response);
+
+    if (responcePtr == nullptr)
+    {
+        throw std::runtime_error("Responce message conversion failed");
+    }
+
+    return *responcePtr;
 }
 
 std::shared_ptr<std::string> CommunicationService::getMessage(
