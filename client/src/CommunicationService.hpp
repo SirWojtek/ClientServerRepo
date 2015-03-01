@@ -12,8 +12,8 @@
 #include "common/socketServices/IMessageCommander.hpp"
 #include "common/utilities/Console.hpp"
 
+#include "common/messages/Messages.hpp"
 #include "common/messages/MessageUtilities.hpp"
-#include "common/messages/UpdatePlayer.hpp"
 
 class CommunicationService : public ICommunicationService
 {
@@ -29,11 +29,12 @@ public:
             console_("CommunicationService") {}
 
     void startService();
-    void putMessageInQueue(const common::UpdatePlayer& message);
+    common::OkResponse putMessageInQueue(const common::UpdatePlayer& message);
     std::shared_ptr<std::string> getMessage(const common::messagetype::MessageType& type);
     void tearDown();
 
 private:
+    common::OkResponse getResponse();
     bool isMessageOfTypeAlreadyReceived(const common::messagetype::MessageType& type);
     std::shared_ptr<std::string> getMessageOfTypeAlreadyReceived(
         const common::messagetype::MessageType& type);
@@ -55,6 +56,7 @@ private:
     Console console_;
 
     static std::string host, port;
+    static unsigned waitingForResponseCount;
 };
 
 #endif  // COMMUNICATION_SERVICE_HPP_
