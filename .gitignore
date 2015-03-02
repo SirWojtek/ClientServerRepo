@@ -13,3 +13,7 @@ Testing/
 # Binaries and libs
 bin/
 lib/
+
+# Sublime Project Files
+*.sublime-project
+*.sublime-workspace
