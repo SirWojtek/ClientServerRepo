@@ -29,10 +29,6 @@ private:
     std::unique_ptr<boost::asio::ip::tcp::socket> tcpSocket_;
 
     Console console_;
-
-    const static size_t maxMessageSize = iTcpSocketMaxMessageSize;
-    const static unsigned readTimeout = iTcpSocketReadTimeout;
-    const static char readDelim = iTcpSocketReadDelim;
 };
 
 #endif  // TCP_SOCKET_HPP_

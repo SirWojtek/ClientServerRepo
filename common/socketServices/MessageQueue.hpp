@@ -8,10 +8,13 @@
 #include <mutex>
 
 #include "IMessageQueue.hpp"
+#include "common/utilities/Console.hpp"
 
 class MessageQueue : public IMessageQueue
 {
 public:
+    MessageQueue();
+
     void pushMessage(const std::string& message);
     std::shared_ptr<std::string> popMessage();
     void waitForEmptyQueue();
@@ -22,6 +25,7 @@ private:
     std::mutex mutex_;
 
     const unsigned conditionalTimeout_ = 2;
+    Console console_;
 };
 
 #endif  // MESSAGE_QUEUE_HPP_

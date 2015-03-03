@@ -113,12 +113,15 @@ std::shared_ptr<std::string> CommunicationService::getMessageOfTypeAlreadyReceiv
 {
     auto messageIt = receivedMessages_.find(type);
 
+
     if (messageIt == receivedMessages_.end())
     {
         throw std::runtime_error("Message of given type doesn't exist in multimap");
     }
 
-    return messageIt->second;
+    std::shared_ptr<std::string> message = messageIt->second;
+    receivedMessages_.erase(messageIt);
+    return message;
 }
 
 std::shared_ptr<std::string> CommunicationService::getMessageOfTypeNotReceived(
@@ -138,6 +141,7 @@ std::shared_ptr<std::string> CommunicationService::getMessageOfTypeNotReceived(
         {
             receivedMessages_.insert(
                 std::pair<MessageType, std::shared_ptr<std::string>>(receivedMessageType, message));
+            console_.info << "Message multimap size: " << receivedMessages_.size();
         }
     }
 

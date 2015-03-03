@@ -1,8 +1,8 @@
 #include <string>
-#include <exception>
+#include <stdexcept>
 #include <memory>
-#include <istream>
-#include <sstream>
+#include <iterator>
+#include <algorithm>
 
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time_duration.hpp>
@@ -44,7 +44,7 @@ void TcpSocket::write(std::string& message)
 {
     try
     {
-        message += readDelim;
+        message += iTcpSocketReadDelim;
         console_.debug << "Writing message:" << message;
         boost::asio::write(
             *tcpSocket_, boost::asio::buffer(message.c_str(), message.size()));
@@ -58,7 +58,6 @@ void TcpSocket::write(std::string& message)
 std::shared_ptr<const std::string> TcpSocket::read()
 {
     boost::asio::streambuf buffer;
-    boost::asio::streambuf::mutable_buffers_type bufs = buffer.prepare(maxMessageSize);
 
     try
     {
@@ -82,13 +81,13 @@ bool TcpSocket::readWithTimeout(boost::asio::streambuf& buffer)
     bool timeout = false;
     bool readed = false;
     boost::asio::deadline_timer timer(tcpSocket_->get_io_service(),
-        boost::posix_time::seconds(readTimeout));
+        boost::posix_time::seconds(iTcpSocketReadTimeout));
     timer.async_wait([&timeout](const boost::system::error_code& error)
     {
         timeout = true;
     });
 
-    boost::asio::async_read_until(*tcpSocket_, buffer, readDelim,
+    boost::asio::async_read_until(*tcpSocket_, buffer, iTcpSocketReadDelim,
         [&readed, this](const boost::system::error_code& error, std::size_t bytes_transferred)
         {
             if (error == boost::asio::error::not_found)
@@ -126,11 +125,11 @@ void TcpSocket::runIoService(const bool& readed, const bool& timeout,
 
 std::shared_ptr<std::string> TcpSocket::getMessageFromBuffer(boost::asio::streambuf& buffer)
 {
-    std::istream stream(&buffer);
-    std::string message;
-    message.reserve(maxMessageSize);
-    stream.readsome(&message[0], maxMessageSize);
-    // TODO: debug this function when server implementation get ready
+    std::string message((std::istreambuf_iterator<char>(&buffer)),
+        std::istreambuf_iterator<char>());
+
+    message.erase(std::remove(message.begin(), message.end(), iTcpSocketReadDelim),
+        message.end());
 
     return std::make_shared<std::string>(message);
 }
