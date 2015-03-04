@@ -36,7 +36,7 @@ void WorldUpdater::updateModel(bool isPlayerMoving)
     }
 
     std::shared_ptr<common::UpdateEnvironment> message = receiveUpdateEnvironmentMessage();
-    
+
     if (message != nullptr)
     {
         applyUpdatesToModel(*message);
@@ -69,7 +69,7 @@ common::UpdatePlayer WorldUpdater::getUpdatePlayerMessage(const model::ObjectPtr
 
 std::shared_ptr<common::UpdateEnvironment> WorldUpdater::receiveUpdateEnvironmentMessage()
 {
-    auto messageString = communicationServ_->getMessage(common::messagetype::UpdateEnvironment);
+    auto messageString = communicationServ_->getMessage(common::messagetype::UpdateEnvironment, false);
 
     if (messageString == nullptr)
     {

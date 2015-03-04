@@ -47,7 +47,7 @@ common::OkResponse CommunicationService::getResponse()
 
     for (unsigned i = 0; i < waitingForResponseCount; i++)
     {
-        response = getMessage(common::messagetype::OkResponse);
+        response = getMessage(common::messagetype::OkResponse, true);
         console_.debug << "Waiting for UpdatePlayer response: " << i + 1;
 
         if (response != nullptr)
@@ -73,14 +73,14 @@ common::OkResponse CommunicationService::getResponse()
 }
 
 std::shared_ptr<std::string> CommunicationService::getMessage(
-    const MessageType& type)
+    const MessageType& type, bool wait)
 {
     if (isMessageOfTypeAlreadyReceived(type))
     {
         return getMessageOfTypeAlreadyReceived(type);
     }
 
-    return getMessageOfTypeNotReceived(type);
+    return wait ? getMessageOfTypeNotReceived(type) : nullptr;
 }
 
 void CommunicationService::tearDown()

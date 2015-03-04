@@ -30,7 +30,8 @@ public:
 
     void startService();
     common::OkResponse putMessageInQueue(const common::UpdatePlayer& message);
-    std::shared_ptr<std::string> getMessage(const common::messagetype::MessageType& type);
+    std::shared_ptr<std::string> getMessage(
+        const common::messagetype::MessageType& type, bool wait);
     void tearDown();
 
 private:
