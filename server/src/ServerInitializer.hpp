@@ -1,18 +1,19 @@
 #ifndef SERVER_INITIALIZER_HPP_
 #define SERVER_INITIALIZER_HPP_
 
-#include <boost/asio.hpp>
+#include <boost/asio/io_service.hpp>
 #include <thread>
 #include "ServerSession.hpp"
 #include "common/utilities/Console.hpp"
 
-using boost::asio::ip::tcp;
+#include "IServerInitializer.hpp"
 
-class ServerInitializer
+class ServerInitializer : public IServerInitializer
 {
 public:
 	ServerInitializer(boost::asio::io_service& ioService);
 	void handleAccept(const boost::system::error_code& error);
+	void runAsyncAccept();
 
 private:
 	std::shared_ptr<tcp::acceptor> acceptor_;
