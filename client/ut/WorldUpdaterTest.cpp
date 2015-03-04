@@ -49,8 +49,9 @@ TEST_F(WorldUpdaterShould, throwIfUpdateEnvironmentMessageConversionFails)
 {
     std::shared_ptr<std::string> message = std::make_shared<std::string>();
 
-    EXPECT_CALL(*communicationServMock_, getMessage(common::messagetype::UpdateEnvironment))
-        .WillOnce(Return(message));
+    EXPECT_CALL(*communicationServMock_,
+        getMessage(common::messagetype::UpdateEnvironment, false))
+    .WillOnce(Return(message));
 
     EXPECT_THROW(worldUpdater_->updateModel(false), std::runtime_error);
 }

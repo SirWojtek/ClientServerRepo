@@ -48,7 +48,7 @@ protected:
                 .WillRepeatedly(Return(nullptr));
         }
 
-        auto ret = communicationServ_->getMessage(type);
+        auto ret = communicationServ_->getMessage(type, true);
 
         return ret;
     }
@@ -118,7 +118,7 @@ TEST_F(CommunicationServiceShould, getMessageOfTypeIfIsInQueue)
 {
     insertMessageIntoCommonicationServiceMultiMap();
 
-    auto rec = communicationServ_->getMessage(messageType_);
+    auto rec = communicationServ_->getMessage(messageType_, false);
 
     ASSERT_EQ(*message_, *rec);
 }

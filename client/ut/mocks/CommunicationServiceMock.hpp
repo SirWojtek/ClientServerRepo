@@ -14,8 +14,8 @@ class CommunicationServiceMock : public ICommunicationService
 public:
     MOCK_METHOD0(startService, void());
     MOCK_METHOD1(putMessageInQueue, common::OkResponse(const common::UpdatePlayer& message));
-    MOCK_METHOD1(getMessage, std::shared_ptr<std::string>(
-        const common::messagetype::MessageType& type));
+    MOCK_METHOD2(getMessage, std::shared_ptr<std::string>(
+        const common::messagetype::MessageType& type, bool wait));
     MOCK_METHOD0(tearDown, void());
 };
 typedef std::shared_ptr<CommunicationServiceMock> CommunicationServiceMockPtr;
