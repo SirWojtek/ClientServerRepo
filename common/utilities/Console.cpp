@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <chrono>
+#include <mutex>
 
 #include "Console.hpp"
 
@@ -47,10 +48,11 @@ Console::Console(std::string className) :
     debug(*debug_),
     error(*error_) {}
 
-const ILoger& InfoLoger::operator<<(bool val) const
+ILoger& InfoLoger::operator<<(bool val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -58,10 +60,11 @@ const ILoger& InfoLoger::operator<<(bool val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(short val) const
+ILoger& InfoLoger::operator<<(short val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -69,10 +72,11 @@ const ILoger& InfoLoger::operator<<(short val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(unsigned short val) const
+ILoger& InfoLoger::operator<<(unsigned short val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -80,10 +84,11 @@ const ILoger& InfoLoger::operator<<(unsigned short val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(int val) const
+ILoger& InfoLoger::operator<<(int val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -91,10 +96,11 @@ const ILoger& InfoLoger::operator<<(int val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(unsigned int val) const
+ILoger& InfoLoger::operator<<(unsigned int val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -102,10 +108,11 @@ const ILoger& InfoLoger::operator<<(unsigned int val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(long val) const
+ILoger& InfoLoger::operator<<(long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -113,10 +120,11 @@ const ILoger& InfoLoger::operator<<(long val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(unsigned long val) const
+ILoger& InfoLoger::operator<<(unsigned long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -124,10 +132,11 @@ const ILoger& InfoLoger::operator<<(unsigned long val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(long long val) const
+ILoger& InfoLoger::operator<<(long long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -135,10 +144,11 @@ const ILoger& InfoLoger::operator<<(long long val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(unsigned long long val) const
+ILoger& InfoLoger::operator<<(unsigned long long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -146,10 +156,11 @@ const ILoger& InfoLoger::operator<<(unsigned long long val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(float val) const
+ILoger& InfoLoger::operator<<(float val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -157,10 +168,11 @@ const ILoger& InfoLoger::operator<<(float val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(double val) const
+ILoger& InfoLoger::operator<<(double val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -168,10 +180,11 @@ const ILoger& InfoLoger::operator<<(double val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(long double val) const
+ILoger& InfoLoger::operator<<(long double val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -179,10 +192,11 @@ const ILoger& InfoLoger::operator<<(long double val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(void* val) const
+ILoger& InfoLoger::operator<<(void* val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -190,10 +204,11 @@ const ILoger& InfoLoger::operator<<(void* val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(const std::string& val) const
+ILoger& InfoLoger::operator<<(const std::string& val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -201,10 +216,11 @@ const ILoger& InfoLoger::operator<<(const std::string& val) const
     return *this;
 }
 
-const ILoger& InfoLoger::operator<<(const char* val) const
+ILoger& InfoLoger::operator<<(const char* val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " INFO: " << val << std::endl;
@@ -212,10 +228,11 @@ const ILoger& InfoLoger::operator<<(const char* val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(bool val) const
+ILoger& DebugLoger::operator<<(bool val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -223,10 +240,11 @@ const ILoger& DebugLoger::operator<<(bool val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(short val) const
+ILoger& DebugLoger::operator<<(short val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -234,10 +252,11 @@ const ILoger& DebugLoger::operator<<(short val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(unsigned short val) const
+ILoger& DebugLoger::operator<<(unsigned short val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -245,10 +264,11 @@ const ILoger& DebugLoger::operator<<(unsigned short val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(int val) const
+ILoger& DebugLoger::operator<<(int val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -256,10 +276,11 @@ const ILoger& DebugLoger::operator<<(int val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(unsigned int val) const
+ILoger& DebugLoger::operator<<(unsigned int val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -267,10 +288,11 @@ const ILoger& DebugLoger::operator<<(unsigned int val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(long val) const
+ILoger& DebugLoger::operator<<(long val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -278,10 +300,11 @@ const ILoger& DebugLoger::operator<<(long val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(unsigned long val) const
+ILoger& DebugLoger::operator<<(unsigned long val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -289,10 +312,11 @@ const ILoger& DebugLoger::operator<<(unsigned long val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(long long val) const
+ILoger& DebugLoger::operator<<(long long val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -300,10 +324,11 @@ const ILoger& DebugLoger::operator<<(long long val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(unsigned long long val) const
+ILoger& DebugLoger::operator<<(unsigned long long val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -311,10 +336,11 @@ const ILoger& DebugLoger::operator<<(unsigned long long val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(float val) const
+ILoger& DebugLoger::operator<<(float val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -322,10 +348,11 @@ const ILoger& DebugLoger::operator<<(float val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(double val) const
+ILoger& DebugLoger::operator<<(double val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -333,10 +360,11 @@ const ILoger& DebugLoger::operator<<(double val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(long double val) const
+ILoger& DebugLoger::operator<<(long double val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -344,10 +372,11 @@ const ILoger& DebugLoger::operator<<(long double val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(void* val) const
+ILoger& DebugLoger::operator<<(void* val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -355,10 +384,11 @@ const ILoger& DebugLoger::operator<<(void* val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(const std::string& val) const
+ILoger& DebugLoger::operator<<(const std::string& val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -366,10 +396,11 @@ const ILoger& DebugLoger::operator<<(const std::string& val) const
     return *this;
 }
 
-const ILoger& DebugLoger::operator<<(const char* val) const
+ILoger& DebugLoger::operator<<(const char* val)
 {
     if (debugPrint_ && !offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         printInfo(stream);
         stream << " DEBUG: " << val << std::endl;
@@ -377,10 +408,11 @@ const ILoger& DebugLoger::operator<<(const char* val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(bool val) const
+ILoger& ErrorLoger::operator<<(bool val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -389,10 +421,11 @@ const ILoger& ErrorLoger::operator<<(bool val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(short val) const
+ILoger& ErrorLoger::operator<<(short val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -401,10 +434,11 @@ const ILoger& ErrorLoger::operator<<(short val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(unsigned short val) const
+ILoger& ErrorLoger::operator<<(unsigned short val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -413,10 +447,11 @@ const ILoger& ErrorLoger::operator<<(unsigned short val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(int val) const
+ILoger& ErrorLoger::operator<<(int val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -425,10 +460,11 @@ const ILoger& ErrorLoger::operator<<(int val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(unsigned int val) const
+ILoger& ErrorLoger::operator<<(unsigned int val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -437,10 +473,11 @@ const ILoger& ErrorLoger::operator<<(unsigned int val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(long val) const
+ILoger& ErrorLoger::operator<<(long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -449,10 +486,11 @@ const ILoger& ErrorLoger::operator<<(long val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(unsigned long val) const
+ILoger& ErrorLoger::operator<<(unsigned long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -461,10 +499,11 @@ const ILoger& ErrorLoger::operator<<(unsigned long val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(long long val) const
+ILoger& ErrorLoger::operator<<(long long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -473,10 +512,11 @@ const ILoger& ErrorLoger::operator<<(long long val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(unsigned long long val) const
+ILoger& ErrorLoger::operator<<(unsigned long long val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -485,10 +525,11 @@ const ILoger& ErrorLoger::operator<<(unsigned long long val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(float val) const
+ILoger& ErrorLoger::operator<<(float val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -497,10 +538,11 @@ const ILoger& ErrorLoger::operator<<(float val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(double val) const
+ILoger& ErrorLoger::operator<<(double val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -509,10 +551,11 @@ const ILoger& ErrorLoger::operator<<(double val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(long double val) const
+ILoger& ErrorLoger::operator<<(long double val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -521,10 +564,11 @@ const ILoger& ErrorLoger::operator<<(long double val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(void* val) const
+ILoger& ErrorLoger::operator<<(void* val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -533,10 +577,11 @@ const ILoger& ErrorLoger::operator<<(void* val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(const std::string& val) const
+ILoger& ErrorLoger::operator<<(const std::string& val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
@@ -545,10 +590,11 @@ const ILoger& ErrorLoger::operator<<(const std::string& val) const
     return *this;
 }
 
-const ILoger& ErrorLoger::operator<<(const char* val) const
+ILoger& ErrorLoger::operator<<(const char* val)
 {
     if (!offPrint_)
     {
+        std::lock_guard<std::mutex> lockGuard(streamMutex_);
         std::ostream& stream = getStream();
         stream << "!!! ";
         printInfo(stream);
