@@ -21,13 +21,15 @@ else()
     message(FATAL_ERROR, " GTest not found")
 endif()
 
-set(CURSES_NEED_NCURSES true)
-find_package(Curses)
-if(CURSES_FOUND)
-    include_directories(${CURSES_INCLUDE_DIRS})
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(SFML 2 REQUIRED system window graphics)
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
 else()
-    message(FATAL_ERROR, " Curses not found")
+    message(FATAL_ERROR, " SFML not found")
 endif()
+
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
