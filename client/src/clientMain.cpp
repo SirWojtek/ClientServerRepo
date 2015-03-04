@@ -7,7 +7,9 @@
 #include "KeyGetter.hpp"
 #include "MovementManager.hpp"
 #include "WorldUpdater.hpp"
+
 #include "model/ObjectsFacade.hpp"
+#include "view/GameWindow.hpp"
 
 #include "common/socketServices/TcpSocket.hpp"
 #include "common/socketServices/MessageQueue.hpp"
@@ -49,15 +51,21 @@ WorldUpdaterPtr createWorldUpdater(model::ObjectsFacadePtr facade)
     return std::make_shared<WorldUpdater>(facade, communicationServ);
 }
 
+view::GameWindowPtr createGameWindow()
+{
+    return std::make_shared<view::GameWindow>();
+}
+
 int main(int argc, char** argv)
 {
     ILoger::setFilePrint(true);
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
+    view::GameWindowPtr gameWindow = createGameWindow();
 
     KeyboardControllerPtr keyboardController = createKeyboardController();
     MovementManagerPtr movementManager = createMovementManager(objectsFacade);
     WorldUpdaterPtr worldUpdater = createWorldUpdater(objectsFacade);
 
-	Client client(keyboardController, movementManager, worldUpdater);
+	Client client(keyboardController, movementManager, worldUpdater, gameWindow);
 	return client.start(argc, argv);
 }

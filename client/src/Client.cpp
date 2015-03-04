@@ -10,10 +10,12 @@
 
 Client::Client(KeyboardControllerPtr keyboardController,
     MovementManagerPtr movementManager,
-    WorldUpdaterPtr worldUpdater) :
+    WorldUpdaterPtr worldUpdater,
+    view::GameWindowPtr gameWindow) :
         keyboardController_(keyboardController),
         movementManager_(movementManager),
         worldUpdater_(worldUpdater),
+        gameWindow_(gameWindow),
         console_("Client") {}
 
 int Client::start(int argc, char** argv)
@@ -21,7 +23,10 @@ int Client::start(int argc, char** argv)
     try
     {
         worldUpdater_->init();
+        gameWindow_->startWindowThread();
         clientLoop();
+
+        gameWindow_->tearDown();
     }
     catch (std::runtime_error& e)
     {

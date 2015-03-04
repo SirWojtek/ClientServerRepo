@@ -7,13 +7,16 @@
 #include "IMovementManager.hpp"
 #include "IWorldUpdater.hpp"
 
+#include "view/IGameWindow.hpp"
+
 #include "common/utilities/Console.hpp"
 
 class Client
 {
 public:
     Client(KeyboardControllerPtr keyboardController,
-        MovementManagerPtr movementManager, WorldUpdaterPtr worldUpdater);
+        MovementManagerPtr movementManager, WorldUpdaterPtr worldUpdater,
+        view::GameWindowPtr gameWindow);
 
     int start(int argc, char** argv);
 
@@ -23,6 +26,7 @@ private:
     KeyboardControllerPtr keyboardController_;
     MovementManagerPtr movementManager_;
     WorldUpdaterPtr worldUpdater_;
+    view::GameWindowPtr gameWindow_;
     Console console_;
 };
 using ClientPtr = std::shared_ptr<Client>;
