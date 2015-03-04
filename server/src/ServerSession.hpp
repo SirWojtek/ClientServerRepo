@@ -8,7 +8,6 @@
 
 #include "common/utilities/Console.hpp"
 #include "common/socketServices/MessageQueue.hpp"
-#include "common/socketServices/IMessageCommander.hpp"
 #include "common/socketServices/MessageReader.hpp"
 #include "common/socketServices/MessageWriter.hpp"
 #include "common/messages/MessageUtilities.hpp"
