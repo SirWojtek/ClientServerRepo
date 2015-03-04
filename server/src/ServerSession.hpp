@@ -37,7 +37,6 @@ private:
   void runSession();
   int getMessage();
   void sendResponse();
-  void sendBlankUpdate();
 
 
   std::shared_ptr<ServerSocket> socket_;

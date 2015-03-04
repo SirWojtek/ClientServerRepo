@@ -44,10 +44,6 @@ void ServerSession::runSession()
         {
             sendResponse();
         }
-        else
-        {
-            sendBlankUpdate();
-        }
         if (stop_.load())
         {
             break;
@@ -82,11 +78,4 @@ void ServerSession::sendResponse()
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     writerQueue_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
-}
-
-void ServerSession::sendBlankUpdate()
-{
-    common::NoChanges noChange;
-    std::string json = common::getMessageJson<common::NoChanges>(noChange);
-    writerQueue_->pushMessage(json);
 }

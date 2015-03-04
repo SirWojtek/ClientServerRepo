@@ -4,7 +4,6 @@
 #include "UpdateEnvironment.hpp"
 #include "UpdatePlayer.hpp"
 #include "OkResponse.hpp"
-#include "NoChanges.hpp"
 
 #include "MessageTypes.hpp"
 
