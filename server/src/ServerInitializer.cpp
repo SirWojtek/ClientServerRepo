@@ -6,10 +6,10 @@
 
 using boost::asio::ip::tcp;
 
-ServerInitializer::ServerInitializer(boost::asio::io_service& ioService) :
+ServerInitializer::ServerInitializer(IoServiceWrapper& ioService) :
     console_("ServerInitializer")
 {
-    acceptor_ = std::make_shared<tcp::acceptor>(ioService,
+    acceptor_ = std::make_shared<tcp::acceptor>(ioService.getInstance(),
         tcp::endpoint(tcp::v4(), ServerInitializer::portNumber));
     session_ = std::make_shared<ServerSession>(acceptor_->get_io_service());
 }

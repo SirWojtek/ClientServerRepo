@@ -6,12 +6,13 @@
 #include "ServerSession.hpp"
 #include "common/utilities/Console.hpp"
 
+#include "IoServiceWrapper.hpp"
 #include "IServerInitializer.hpp"
 
 class ServerInitializer : public IServerInitializer
 {
 public:
-	ServerInitializer(boost::asio::io_service& ioService);
+	ServerInitializer(IoServiceWrapper& ioService);
 	void handleAccept(const boost::system::error_code& error);
 	void runAsyncAccept();
 

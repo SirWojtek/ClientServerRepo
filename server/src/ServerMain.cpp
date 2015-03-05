@@ -5,8 +5,7 @@
 #include <boost/bind.hpp>
 #include "ServerInitializer.hpp"
 
-void monitorKeyForQuittingServer(
-  std::shared_ptr<boost::asio::io_service> ioService)
+void monitorKeyForQuittingServer(IoServiceWrapper& ioService)
 {
   char c;
   do
@@ -14,20 +13,20 @@ void monitorKeyForQuittingServer(
     c=getchar();
     putchar(c);
   } while (c != 'q');
-  ioService->reset();
-  ioService->stop();
+  ioService.getInstance().reset();
+  ioService.getInstance().stop();
 }
 
 int main(int argc, char* argv[])
 {
   try
   {
-  	std::shared_ptr<boost::asio::io_service> ioService = 
-      std::make_shared<boost::asio::io_service>();
+  	IoServiceWrapper ioService;
+    ioService.createIoService();
     std::thread keyMonitor (boost::bind(monitorKeyForQuittingServer, ioService));
-    ServerInitializer s(*ioService);
+    ServerInitializer s(ioService);
     s.runAsyncAccept();
-    ioService->run();
+    ioService.getInstance().run();
     keyMonitor.join();
   }
   catch(const std::runtime_error& e)
