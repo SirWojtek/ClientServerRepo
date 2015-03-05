@@ -2,9 +2,10 @@
 #define ACCEPTOR_WRAPPER_HPP_
 
 #include <stdexcept>
-#include <boost/asio.hpp>
+#include "IAcceptorWrapper.hpp"
 
-class AcceptorWrapper{
+class AcceptorWrapper : public IAcceptorWrapper
+{
 public:
 	AcceptorWrapper()
 	{ }

@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <boost/asio/io_service.hpp>
 
-class IoServiceWrapper{
+class IoServiceWrapper
+{
 public:
 	IoServiceWrapper()
 	{ }
@@ -23,7 +24,7 @@ public:
 		throw std::invalid_argument("Attepted to get ininitialized ioService object.");
 	}
 
-private:
+protected:
 	std::shared_ptr<boost::asio::io_service> ioService_;
 };
 
