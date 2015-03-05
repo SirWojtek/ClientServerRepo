@@ -7,6 +7,7 @@
 #include "common/utilities/Console.hpp"
 
 #include "IoServiceWrapper.hpp"
+#include "AcceptorWrapper.hpp"
 #include "IServerInitializer.hpp"
 
 class ServerInitializer : public IServerInitializer
@@ -17,11 +18,10 @@ public:
 	void runAsyncAccept();
 
 private:
-	std::shared_ptr<tcp::acceptor> acceptor_;
+	AcceptorWrapper acceptor_;
 	std::shared_ptr<ServerSession> session_;
 	std::vector<std::shared_ptr<std::thread>> sessionArray_;
 	Console console_;
-	const static unsigned portNumber = 4001;
 };
 
 #endif
