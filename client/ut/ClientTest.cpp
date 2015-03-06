@@ -5,6 +5,7 @@
 #include "WorldUpdaterMock.hpp"
 #include "KeyboardControllerMock.hpp"
 #include "MovementManagerMock.hpp"
+#include "GameWindowMock.hpp"
 
 using namespace ::testing;
 
@@ -15,13 +16,16 @@ protected:
         keyboardControllerMock_(std::make_shared<KeyboardControllerMock>()),
         movementManagerMock_(std::make_shared<MovementManagerMock>()),
         worldUpdaterMock_(std::make_shared<WorldUpdaterMock>()),
+        gameWindowMock_(std::make_shared<GameWindowMock>()),
         client_(std::make_shared<Client>(keyboardControllerMock_,
-            movementManagerMock_, worldUpdaterMock_))
+            movementManagerMock_, worldUpdaterMock_, gameWindowMock_))
     {}
 
     void SetUp()
     {
         EXPECT_CALL(*worldUpdaterMock_, init());
+        EXPECT_CALL(*gameWindowMock_, startWindowThread());
+        EXPECT_CALL(*gameWindowMock_, tearDown());
     }
 
     void setClientLoopExpectations(unsigned loops,
@@ -47,11 +51,8 @@ protected:
     KeyboardControllerMockPtr keyboardControllerMock_;
     MovementManagerMockPtr movementManagerMock_;
     WorldUpdaterMockPtr worldUpdaterMock_;
+    GameWindowMockPtr gameWindowMock_;
     ClientPtr client_;
-
-    std::string host = "127.0.0.1";  // static from Client.cpp
-    std::string port = "4001";  // static from Client.cpp
-
 };
 
 TEST_F(ClientShould, ExitWhenExitKeyWasPressed)

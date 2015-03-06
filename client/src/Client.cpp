@@ -31,6 +31,8 @@ int Client::start(int argc, char** argv)
     catch (std::runtime_error& e)
     {
         console_.error << e.what();
+
+        gameWindow_->tearDown();
         return -1;
     }
 
