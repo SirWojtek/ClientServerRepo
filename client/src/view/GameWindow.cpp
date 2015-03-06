@@ -7,6 +7,8 @@
 
 #include <SFML/Window.hpp>
 
+#include "EventListener.hpp"
+
 namespace view
 {
 
@@ -41,7 +43,11 @@ void GameWindow::windowMain()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 exit_.store(true);
+            }
+
+            EventListener::receiveEvent(event);
         }
     }
 }
