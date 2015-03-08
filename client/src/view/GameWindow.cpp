@@ -1,18 +1,20 @@
 
 #include "GameWindow.hpp"
+#include "IModelPainter.hpp"
 
 #include <thread>
 #include <memory>
 #include <atomic>
 
-#include <SFML/Window.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "EventListener.hpp"
 
 namespace view
 {
 
-GameWindow::GameWindow() :
+GameWindow::GameWindow(ModelPainterPtr modelPainter) :
+    modelPainter_(modelPainter),
     exit_(false),
     console_("GameWindow") {}
 
@@ -35,21 +37,36 @@ void GameWindow::tearDown()
 
 void GameWindow::windowMain()
 {
-    sf::Window window(sf::VideoMode(800, 600), "My window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 
     while (!exit_)
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                exit_.store(true);
-            }
-
-            EventListener::receiveEvent(event);
-        }
+        pumpEvents(window);
+        display(window);
     }
+}
+
+void GameWindow::pumpEvents(sf::RenderWindow& window)
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            exit_.store(true);
+        }
+
+        EventListener::receiveEvent(event);
+    }
+}
+
+void GameWindow::display(sf::RenderWindow& window)
+{
+    window.clear();
+
+    modelPainter_->paint(window);
+
+    window.display();
 }
 
 }

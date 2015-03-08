@@ -47,6 +47,8 @@ void Client::clientLoop()
         console_.debug << "Keyboard input received";
 
         movementManager_->singleTickMove(direction);
+
+        // TODO: change to responce from MovementManager
         worldUpdater_->updateModel(direction != IKeyboardController::None);
     }
 }

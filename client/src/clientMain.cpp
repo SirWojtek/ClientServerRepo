@@ -9,6 +9,7 @@
 
 #include "model/ObjectsFacade.hpp"
 #include "view/GameWindow.hpp"
+#include "view/ModelPainter.hpp"
 
 #include "common/socketServices/TcpSocket.hpp"
 #include "common/socketServices/MessageQueue.hpp"
@@ -50,15 +51,15 @@ WorldUpdaterPtr createWorldUpdater(model::ObjectsFacadePtr facade)
     return std::make_shared<WorldUpdater>(facade, communicationServ);
 }
 
-view::GameWindowPtr createGameWindow()
+view::GameWindowPtr createGameWindow(model::ObjectsFacadePtr objectsFacade)
 {
-    return std::make_shared<view::GameWindow>();
+    return std::make_shared<view::GameWindow>(std::make_shared<view::ModelPainter>(objectsFacade));
 }
 
 int main(int argc, char** argv)
 {
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
-    view::GameWindowPtr gameWindow = createGameWindow();
+    view::GameWindowPtr gameWindow = createGameWindow(objectsFacade);
 
     KeyboardControllerPtr keyboardController = createKeyboardController();
     MovementManagerPtr movementManager = createMovementManager(objectsFacade);

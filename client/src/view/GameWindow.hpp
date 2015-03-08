@@ -6,8 +6,14 @@
 #include <atomic>
 
 #include "IGameWindow.hpp"
+#include "IModelPainter.hpp"
 
 #include "common/utilities/Console.hpp"
+
+namespace sf
+{
+class RenderWindow;
+}
 
 namespace view
 {
@@ -15,13 +21,17 @@ namespace view
 class GameWindow : public IGameWindow
 {
 public:
-    GameWindow();
+    GameWindow(ModelPainterPtr modelPainter);
 
     virtual void startWindowThread();
     virtual void tearDown();
 
 private:
     void windowMain();
+    void pumpEvents(sf::RenderWindow& window);
+    void display(sf::RenderWindow& window);
+
+    ModelPainterPtr modelPainter_;
 
     std::unique_ptr<std::thread> windowThread_;
     std::atomic<bool> exit_;

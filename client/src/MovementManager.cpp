@@ -39,10 +39,10 @@ Position MovementManager::getNewPosition(const Position& oldPos,
     switch (dir)
     {
         case KeyDirection::Up:
-            newPos.y += delta;
+            newPos.y -= delta;
             break;
         case KeyDirection::Down:
-            newPos.y -= delta;
+            newPos.y += delta;
             break;
         case KeyDirection::Right:
             newPos.x += delta;
@@ -54,8 +54,20 @@ Position MovementManager::getNewPosition(const Position& oldPos,
             throw std::runtime_error("Incorrect key direction");
     }
 
+    newPos = correctPosition(newPos);
+
     console_.debug << "Old player position: " << oldPos.x << oldPos.y;
     console_.debug << "New player position: " << newPos.x << newPos.y;
 
     return newPos;
+}
+
+Position MovementManager::correctPosition(const Position& pos) const
+{
+    Position corrected;
+
+    corrected.x = pos.x < 0 ? 0 : pos.x;
+    corrected.y = pos.y < 0 ? 0 : pos.y;
+
+    return corrected;
 }
