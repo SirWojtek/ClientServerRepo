@@ -10,9 +10,8 @@
 
 namespace view
 {
-using CallbackFunc = std::function<void(sf::Event)>;
 
-std::map<sf::Event::EventType, CallbackFunc> EventListener::subscribeMap;
+std::map<sf::Event::EventType, EventListener::CallbackFunc> EventListener::subscribeMap;
 
 void EventListener::subscribe(sf::Event::EventType type, CallbackFunc callback)
 {
@@ -24,7 +23,7 @@ void EventListener::subscribe(sf::Event::EventType type, CallbackFunc callback)
     subscribeMap.insert(std::make_pair(type, callback));
 }
 
-void EventListener::receiveEvent(sf::Event event)
+void EventListener::receiveEvent(const sf::Event& event)
 {
     auto it = subscribeMap.find(event.type);
 

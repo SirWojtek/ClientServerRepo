@@ -11,11 +11,11 @@ namespace view
 
 class EventListener
 {
-using CallbackFunc = std::function<void(sf::Event)>;
-
 public:
+	using CallbackFunc = std::function<void(const sf::Event&)>;
+
     static void subscribe(sf::Event::EventType type, CallbackFunc callback);
-    static void receiveEvent(sf::Event event);
+    static void receiveEvent(const sf::Event& event);
 
 private:
     static std::map<sf::Event::EventType, CallbackFunc> subscribeMap;

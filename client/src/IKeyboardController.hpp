@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <SFML/Window/Event.hpp>
+
 class IKeyboardController
 {
 public:
@@ -12,11 +14,13 @@ public:
         Up,
         Down,
         Right,
-        Left
+        Left,
+        Exit
     };
 
     virtual KeyDirection getKeyboardInput() = 0;
     virtual bool wasExitKeyPressed() = 0;
+    virtual void keyPressedCallback(const sf::Event&) = 0;
 };
 using KeyboardControllerPtr = std::shared_ptr<IKeyboardController>;
 

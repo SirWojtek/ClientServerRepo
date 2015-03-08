@@ -4,7 +4,6 @@
 #include "Client.hpp"
 #include "CommunicationService.hpp"
 #include "KeyboardController.hpp"
-#include "KeyGetter.hpp"
 #include "MovementManager.hpp"
 #include "WorldUpdater.hpp"
 
@@ -32,7 +31,7 @@ CommunicationServicePtr createCommunicationService()
 
 KeyboardControllerPtr createKeyboardController()
 {
-    return std::make_shared<KeyboardController>(std::make_shared<KeyGetter>());
+    return std::make_shared<KeyboardController>();
 }
 
 model::ObjectsFacadePtr createObjectsFacade()
@@ -58,7 +57,6 @@ view::GameWindowPtr createGameWindow()
 
 int main(int argc, char** argv)
 {
-    ILoger::setFilePrint(true);
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
     view::GameWindowPtr gameWindow = createGameWindow();
 
