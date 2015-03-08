@@ -7,7 +7,7 @@ add_library(inputController KeyboardController.cpp  CommunicationService.cpp Wor
 
 add_executable(client clientMain.cpp)
 
-target_link_libraries(inputController ncurses messages socketServices)
+target_link_libraries(inputController messages socketServices)
 target_link_libraries(clientCore inputController model view)
 target_link_libraries(client clientCore utilities)
 
