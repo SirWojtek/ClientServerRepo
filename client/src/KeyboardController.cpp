@@ -23,6 +23,8 @@ KeyboardController::KeyboardController() :
     using namespace std::placeholders;
     view::EventListener::subscribe(sf::Event::KeyPressed,
         std::bind(&KeyboardController::keyPressedCallback, this, _1));
+
+    safeEvent_.event.type = emptyEvent;
 }
 
 KeyboardController::KeyDirection KeyboardController::getKeyboardInput()
@@ -54,7 +56,7 @@ bool KeyboardController::wasExitKeyPressed()
 void KeyboardController::keyPressedCallback(const sf::Event& event)
 {
     std::unique_lock<std::mutex> lock(safeEvent_.mutex);
-    
+
     while (safeEvent_.event.type != emptyEvent)
         safeEvent_.conditional.wait(lock);
 

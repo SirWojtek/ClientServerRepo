@@ -16,6 +16,7 @@ public:
 
     static void subscribe(sf::Event::EventType type, CallbackFunc callback);
     static void receiveEvent(const sf::Event& event);
+    static void reset();
 
 private:
     static std::map<sf::Event::EventType, CallbackFunc> subscribeMap;

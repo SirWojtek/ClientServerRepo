@@ -33,4 +33,9 @@ void EventListener::receiveEvent(const sf::Event& event)
     }
 }
 
+void EventListener::reset()
+{
+    subscribeMap.clear();
+}
+
 }
