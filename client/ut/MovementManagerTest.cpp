@@ -13,10 +13,9 @@ using namespace ::testing;
 struct DirectionToPosition
 {
     IKeyboardController::KeyDirection direction;
-    model::Object::Position position;
+    model::Object::Position oldPosition;
+    model::Object::Position newPosition;
 };
-
-const int delta = 1;
 
 class MovementManagerShould : public TestWithParam<DirectionToPosition>
 {
@@ -26,6 +25,7 @@ protected:
         movementManager_(std::make_shared<MovementManager>(objectsFacadeMock_))
     {}
 
+
     ObjectsFacadeMockPtr objectsFacadeMock_;
     MovementManagerPtr movementManager_;
 };
@@ -33,22 +33,41 @@ protected:
 TEST_P(MovementManagerShould, changePlayerPosition)
 {
     DirectionToPosition param = GetParam();
-    model::ObjectPtr player = std::make_shared<model::Object>();
+    model::ObjectPtr player = std::make_shared<model::Object>(param.oldPosition);
 
     EXPECT_CALL(*objectsFacadeMock_, getPlayerObject())
         .WillOnce(Return(player));
 
     movementManager_->singleTickMove(param.direction);
 
-    EXPECT_EQ(player->position, param.position);
+    EXPECT_EQ(player->position, param.newPosition);
 }
 
 INSTANTIATE_TEST_CASE_P(playerPossibleMoves, MovementManagerShould, Values(
-        DirectionToPosition({IKeyboardController::Up, {0, delta} }),
-        DirectionToPosition({IKeyboardController::Down, {0, -delta} }),
-        DirectionToPosition({IKeyboardController::Right, {delta, 0} }),
-        DirectionToPosition({IKeyboardController::Left, {-delta, 0} })
-));
+        DirectionToPosition({IKeyboardController::Up,
+            {MovementManager::delta, MovementManager::delta},
+            {MovementManager::delta, 0} }),
+        DirectionToPosition({IKeyboardController::Down,
+            {MovementManager::delta, MovementManager::delta},
+            {MovementManager::delta, MovementManager::delta + MovementManager::delta} }),
+        DirectionToPosition({IKeyboardController::Right,
+            {MovementManager::delta, MovementManager::delta},
+            {MovementManager::delta + MovementManager::delta, MovementManager::delta} }),
+        DirectionToPosition({IKeyboardController::Left,
+            {MovementManager::delta, MovementManager::delta},
+            {0, MovementManager::delta} }),
+        DirectionToPosition({IKeyboardController::Up,
+            {0, 0},
+            {0, 0} }),
+        DirectionToPosition({IKeyboardController::Down,
+            {0, 0},
+            {0, MovementManager::delta} }),
+        DirectionToPosition({IKeyboardController::Right,
+            {0, 0},
+            {MovementManager::delta, 0} }),
+        DirectionToPosition({IKeyboardController::Left,
+            {0, 0},
+            {0, 0} })));
 
 TEST_F(MovementManagerShould, doNothingWhenReceiveNoneDirection)
 {

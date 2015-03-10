@@ -14,6 +14,7 @@ public:
 
     virtual void singleTickMove(const IKeyboardController::KeyDirection& direction);
 
+    static const int delta = 5;
 private:
     void changeUserPosition(const IKeyboardController::KeyDirection& direction);
     model::Object::Position getNewPosition(const model::Object::Position& oldPos,
@@ -22,7 +23,6 @@ private:
 
     model::ObjectsFacadePtr objectFacade_;
     Console console_;
-    static const unsigned delta = 5;
 };
 
 #endif  // MOVEMENT_MANAGER_HPP_
