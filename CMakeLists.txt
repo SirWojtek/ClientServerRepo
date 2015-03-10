@@ -6,6 +6,7 @@ project("ClientServer")
 # variables needed to find Boost and GTest
 set(BOOST_ROOT "/usr")
 set(GTEST_ROOT "/usr")
+set(BOX2D_INCLUDE_DIR "/usr/include")
 
 find_package(Boost 1.57)
 if(Boost_FOUND)
@@ -38,6 +39,7 @@ set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -pthread")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories("common/external/cereal/include")
+include_directories("common/external/tmxloader/include")
 
 add_subdirectory(client)
 add_subdirectory(common)
