@@ -5,6 +5,8 @@
 #include <set>
 #include "objects/Object.hpp"
 
+#include "common/maps/MapContainer.hpp"
+
 namespace model
 {
 
@@ -21,6 +23,9 @@ private:
     ObjectPtr playerObject_;
     std::set<ObjectPtr> activeObjects_;
     std::set<ObjectPtr> inactiveObjects_;
+
+    // TODO: change to interface
+    maps::MapContainer map;
 };
 
 }
