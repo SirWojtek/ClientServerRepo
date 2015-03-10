@@ -4,3 +4,4 @@
 [submodule "common/external/tmxloader"]
 	path = common/external/tmxloader
 	url = https://github.com/fallahn/sfml-tmxloader.git
+    ignore = dirty
