@@ -4,7 +4,6 @@
 #include <stdexcept>
 
 #include "client/src/WorldUpdater.hpp"
-// #include "common/messages/UpdatePlayer.hpp"
 #include "common/messages/MessageTypes.hpp"
 
 #include "ObjectsFacadeMock.hpp"
