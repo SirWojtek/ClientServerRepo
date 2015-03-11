@@ -30,6 +30,8 @@ protected:
         EXPECT_CALL(*communicationServMock_, startService());
         EXPECT_CALL(*objectsFacadeMock_, getPlayerObject())
             .WillOnce(Return(playerObject_));
+        EXPECT_CALL(*objectsFacadeMock_, loadMaps());
+
         worldUpdater_->init();
     }
 
