@@ -6,18 +6,20 @@
 
 using boost::asio::ip::tcp;
 
-ServerInitializer::ServerInitializer(IoServiceWrapper& ioService) :
+ServerInitializer::ServerInitializer(
+    std::shared_ptr<IAcceptorWrapper> acceptor) :
+    acceptor_(acceptor),
+    session_(acceptor_->createServerSession()),
     console_("ServerInitializer")
-{
-    acceptor_.createAcceptor(ioService.getInstance());
-    session_ = std::make_shared<ServerSession>(acceptor_.getInstance().get_io_service());
-}
+{ }
 
 void ServerInitializer::runAsyncAccept()
 {
-    acceptor_.getInstance().async_accept(session_->getSocket(),
-        boost::bind(&ServerInitializer::handleAccept, this, boost::asio::placeholders::error));
-    acceptor_.getInstance().get_io_service().run();
+    // acceptor_->getInstance().async_accept(session_->getSocket(),
+    //      boost::bind(&ServerInitializer::handleAccept,
+    //          this, boost::asio::placeholders::error));
+    acceptor_->startAccepting(*session_, this);
+    acceptor_->runIoService();
 }
 
 void ServerInitializer::handleAccept(const boost::system::error_code& error)
@@ -25,8 +27,10 @@ void ServerInitializer::handleAccept(const boost::system::error_code& error)
     if (!error)
     {
         sessionArray_.push_back(session_->start());
-        session_ = std::make_shared<ServerSession>(acceptor_.getInstance().get_io_service());
-        acceptor_.getInstance().async_accept(session_->getSocket(),
-            boost::bind(&ServerInitializer::handleAccept, this, boost::asio::placeholders::error));
+        session_ = acceptor_->createServerSession();
+        // acceptor_->getInstance().async_accept(session_->getSocket(),
+        //      boost::bind(&ServerInitializer::handleAccept,
+        //          this, boost::asio::placeholders::error));
+        acceptor_->startAccepting(*session_, this);
     }
 }

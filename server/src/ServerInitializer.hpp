@@ -6,19 +6,19 @@
 #include "ServerSession.hpp"
 #include "common/utilities/Console.hpp"
 
-#include "IoServiceWrapper.hpp"
-#include "AcceptorWrapper.hpp"
+#include "IIoServiceWrapper.hpp"
+#include "IAcceptorWrapper.hpp"
 #include "IServerInitializer.hpp"
 
 class ServerInitializer : public IServerInitializer
 {
 public:
-	ServerInitializer(IoServiceWrapper& ioService);
+	ServerInitializer(std::shared_ptr<IAcceptorWrapper> acceptor);
 	void handleAccept(const boost::system::error_code& error);
 	void runAsyncAccept();
 
 private:
-	AcceptorWrapper acceptor_;
+	std::shared_ptr<IAcceptorWrapper> acceptor_;
 	std::shared_ptr<ServerSession> session_;
 	std::vector<std::shared_ptr<std::thread>> sessionArray_;
 	Console console_;

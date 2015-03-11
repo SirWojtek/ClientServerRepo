@@ -9,8 +9,10 @@
 class AcceptorWrapperMock : public IAcceptorWrapper
 {
 public:
-    MOCK_METHOD1(createAcceptor, void(boost::asio::io_service& ioService);
+    MOCK_METHOD1(createAcceptor, void(boost::asio::io_service& ioService));
     MOCK_METHOD0(getInstance, boost::asio::ip::tcp::acceptor&());
 };
+
+using AcceptorWrapperMockPtr = std::shared_ptr<AcceptorWrapperMock>;
 
 #endif

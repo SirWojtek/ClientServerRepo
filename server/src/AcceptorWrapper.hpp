@@ -3,30 +3,51 @@
 
 #include <stdexcept>
 #include "IAcceptorWrapper.hpp"
+#include <boost/asio.hpp>
+
 
 class AcceptorWrapper : public IAcceptorWrapper
 {
 public:
-	AcceptorWrapper()
+	AcceptorWrapper(std::shared_ptr<boost::asio::io_service> ioService) :
+	ioService_(ioService)
 	{ }
 
-	void createAcceptor(boost::asio::io_service& ioService)
+	void createAcceptor()
 	{
-		acceptor_ = std::make_shared<tcp::acceptor>(ioService,
-        	tcp::endpoint(tcp::v4(), AcceptorWrapper::portNumber));
-	}
-	
-	boost::asio::ip::tcp::acceptor& getInstance()
-	{
-		if (acceptor_ != nullptr)
+		if(ioService_ != nullptr)
 		{
-			return *acceptor_;
+			acceptor_ = std::make_shared<tcp::acceptor>(*ioService_,
+	        	tcp::endpoint(tcp::v4(), AcceptorWrapper::portNumber));
+			ioService_ = nullptr;
 		}
-		throw std::invalid_argument("Attepted to get ininitialized Acceptor object.");
+		else
+		{
+			throw std::runtime_error("Attempted to initialize acceptor twice.");
+		}
+	}
+
+	std::shared_ptr<ServerSession> createServerSession()
+	{
+		return std::make_shared<ServerSession>(acceptor_->get_io_service());
+	}
+
+	void runIoService()
+	{
+		acceptor_->get_io_service().run();
+	}
+
+	void startAccepting(ServerSession& session,
+		IServerInitializer* instance)
+	{
+		acceptor_->async_accept(session.getSocket(),
+         boost::bind(&IServerInitializer::handleAccept,
+             instance, boost::asio::placeholders::error));
 	}
 
 private:
 	std::shared_ptr<boost::asio::ip::tcp::acceptor> acceptor_;
+	std::shared_ptr<boost::asio::io_service> ioService_;
 	const static unsigned portNumber = 4001;
 };
 
