@@ -3,8 +3,9 @@
 
 #include <stdexcept>
 #include <boost/asio/io_service.hpp>
+#include "IIoServiceWrapper.hpp"
 
-class IoServiceWrapper
+class IoServiceWrapper : public IIoServiceWrapper
 {
 public:
 	IoServiceWrapper()
@@ -15,11 +16,11 @@ public:
 		ioService_ = std::make_shared<boost::asio::io_service>();
 	}
 	
-	boost::asio::io_service& getInstance()
+	std::shared_ptr<boost::asio::io_service> getInstance()
 	{
 		if (ioService_ != nullptr)
 		{
-			return *ioService_;
+			return ioService_;
 		}
 		throw std::invalid_argument("Attepted to get ininitialized ioService object.");
 	}
