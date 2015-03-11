@@ -17,3 +17,6 @@ lib/
 # Sublime Project Files
 *.sublime-project
 *.sublime-workspace
+
+# Local backup files
+backups/
