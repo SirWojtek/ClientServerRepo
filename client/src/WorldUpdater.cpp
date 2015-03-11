@@ -26,6 +26,7 @@ void WorldUpdater::init()
 {
     communicationServ_->startService();
     previousPlayerObject_ = copyPlayerObject(objectsFacade_->getPlayerObject());
+    objectsFacade_->loadMaps();
 }
 
 void WorldUpdater::updateModel(bool isPlayerMoving)

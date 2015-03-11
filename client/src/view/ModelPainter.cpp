@@ -3,10 +3,12 @@
 
 #include "client/src/model/IObjectsFacade.hpp"
 
+#include "common/maps/IMapContainer.hpp"
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 
 namespace view
 {
@@ -19,7 +21,16 @@ ModelPainter::ModelPainter(model::ObjectsFacadePtr modelFacade) :
 
 void ModelPainter::paint(sf::RenderWindow& window)
 {
+    printMap(window);
     printPlayer(window);
+}
+
+void ModelPainter::printMap(sf::RenderWindow& window) const
+{
+    maps::MapContainerPtr currentMap = modelFacade_->getCurrentMap();
+    sf::Drawable& sfmlMap = currentMap->getSfmlMap();
+
+    window.draw(sfmlMap);
 }
 
 void ModelPainter::printPlayer(sf::RenderWindow& window)

@@ -5,8 +5,6 @@
 
 #include "client/src/model/IObjectsFacade.hpp"
 
-
-
 namespace sf
 {
 class RenderWindow;
@@ -24,6 +22,7 @@ public:
     virtual void paint(sf::RenderWindow& window);
 
 private:
+    void printMap(sf::RenderWindow& window) const;
     void printPlayer(sf::RenderWindow& window);
 
     model::ObjectsFacadePtr modelFacade_;

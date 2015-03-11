@@ -1,13 +1,31 @@
 #ifndef MAP_CONTAINER_HPP_
 #define MAP_CONTAINER_HPP_
 
+#include "IMapContainer.hpp"
+
+#include <memory>
+#include <string>
+
+#include <SFML/Graphics/Drawable.hpp>
+
+namespace tmx
+{
+class MapLoader;
+}
+
 namespace maps
 {
 
-class MapContainer
+class MapContainer : public IMapContainer
 {
 public:
-    MapContainer();
+    MapContainer(std::string mapFolder);
+
+    virtual bool loadMap(const std::string filename);
+    virtual sf::Drawable& getSfmlMap() const;
+
+private:
+    std::shared_ptr<tmx::MapLoader> tmxMapLoader_;
 };
 
 }
