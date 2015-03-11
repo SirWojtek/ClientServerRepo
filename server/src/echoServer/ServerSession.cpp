@@ -1,7 +1,7 @@
 #include <thread>
 #include <stdexcept>
 
-#include "ServerSession.hpp"
+#include "server/src/ServerSession.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
 using common::messagetype::MessageType;

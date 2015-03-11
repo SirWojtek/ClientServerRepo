@@ -1,7 +1,7 @@
-add_library(serverCore ServerInitializer.cpp ServerSocket.cpp ServerSession.cpp)
+add_library(echoServerCore ServerInitializer.cpp ServerSocket.cpp echoServer/ServerSession.cpp)
 
-add_executable(server ServerMain.cpp)
+add_executable(echoServer ServerMain.cpp)
 
-target_link_libraries(serverCore messages utilities socketServices boost_system)
-target_link_libraries(server serverCore)
+target_link_libraries(echoServerCore messages utilities socketServices boost_system)
+target_link_libraries(echoServer echoServerCore)
 

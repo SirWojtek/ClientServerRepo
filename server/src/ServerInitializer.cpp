@@ -7,7 +7,7 @@
 using boost::asio::ip::tcp;
 
 ServerInitializer::ServerInitializer(
-    std::shared_ptr<IAcceptorWrapper> acceptor) :
+    std::shared_ptr<AcceptorWrapper> acceptor) :
     acceptor_(acceptor),
     session_(acceptor_->createServerSession()),
     console_("ServerInitializer")
@@ -15,11 +15,7 @@ ServerInitializer::ServerInitializer(
 
 void ServerInitializer::runAsyncAccept()
 {
-    // acceptor_->getInstance().async_accept(session_->getSocket(),
-    //      boost::bind(&ServerInitializer::handleAccept,
-    //          this, boost::asio::placeholders::error));
     acceptor_->startAccepting(*session_, this);
-    acceptor_->runIoService();
 }
 
 void ServerInitializer::handleAccept(const boost::system::error_code& error)
@@ -28,9 +24,6 @@ void ServerInitializer::handleAccept(const boost::system::error_code& error)
     {
         sessionArray_.push_back(session_->start());
         session_ = acceptor_->createServerSession();
-        // acceptor_->getInstance().async_accept(session_->getSocket(),
-        //      boost::bind(&ServerInitializer::handleAccept,
-        //          this, boost::asio::placeholders::error));
         acceptor_->startAccepting(*session_, this);
     }
 }
