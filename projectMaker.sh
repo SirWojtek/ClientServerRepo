@@ -20,7 +20,15 @@ then
 		cmake -G "Unix Makefiles"
 		make
 	else
-		echo "Error checking database status. Either access is denied or databse does not exist."
+		echo "Error checking database status. Attempting to create database..."
+		RESULT=`mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS game_db;"`
+		if [ "$RESULT" == "" ];
+		then
+			echo "Database created successfully, running script again."
+			./projectMaker.sh
+		else
+			echo "Error: $RESULT"
+		fi
 	fi
 else
 	echo "MySQL is down or not installed. Fix that before trying again.";
