@@ -58,8 +58,8 @@ include_directories("common/external/cereal/include")
 include_directories("common/external/tmxloader/include")
 
 add_subdirectory(client)
-add_subdirectory(common)
 add_subdirectory(server)
+add_subdirectory(common)
 
 
 enable_testing()

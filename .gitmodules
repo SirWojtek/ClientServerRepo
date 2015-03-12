@@ -5,3 +5,6 @@
 	path = common/external/tmxloader
 	url = https://github.com/fallahn/sfml-tmxloader.git
     ignore = dirty
+[submodule "common/external/soci"]
+	path = common/external/soci
+	url = https://github.com/SOCI/soci

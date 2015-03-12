@@ -3,8 +3,8 @@
 
 #include <boost/asio/io_service.hpp>
 #include <thread>
-#include "ServerSession.hpp"
 #include "common/utilities/Console.hpp"
+#include "ServerSession.hpp"
 
 #include "IIoServiceWrapper.hpp"
 #include "AcceptorWrapper.hpp"
