@@ -36,7 +36,7 @@ common::OkResponse CommunicationService::putMessageInQueue(const common::UpdateP
 
     std::string json = common::getMessageJson<UpdatePlayer>(message);
     writerQueue_->pushMessage(json);
-    console_.info << "Message added to queue";
+    console_.debug << "Message added to queue";
 
     return getResponse();
 }

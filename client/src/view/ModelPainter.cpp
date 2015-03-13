@@ -14,9 +14,9 @@
 namespace view
 {
 
-const unsigned ModelPainter::playerSize = 25;
+const unsigned ModelPainter::playerSize = 10;
 const sf::Color ModelPainter::playerColor = sf::Color(100, 250, 50);
-const sf::Vector2f ModelPainter::viewportSize = sf::Vector2f(800, 600);
+const sf::Vector2f ModelPainter::viewportSize = sf::Vector2f(400, 300);
 
 ModelPainter::ModelPainter(model::ObjectsFacadePtr modelFacade) :
     modelFacade_(modelFacade)

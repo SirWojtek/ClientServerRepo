@@ -17,7 +17,7 @@ namespace model
 
 const std::vector<std::string> ObjectsFacade::mapFiles =
 {
-    "desert.tmx"
+    "main.tmx"
 };
 const std::string ObjectsFacade::mapPath = "maps/";
 
