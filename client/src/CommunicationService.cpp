@@ -89,7 +89,7 @@ void CommunicationService::tearDown()
     {
         messageReader_->stop();
         readerThread_->join();
-        console_.debug << "Reader thread joined";
+        console_.info << "Reader thread joined";
     }
 
     if (writerThread_ && writerThread_->joinable())
@@ -97,7 +97,7 @@ void CommunicationService::tearDown()
         writerQueue_->waitForEmptyQueue();
         messageWriter_->stop();
         writerThread_->join();
-        console_.debug << "Writer thread joined";
+        console_.info << "Writer thread joined";
     }
 
     console_.info << "Service ended";

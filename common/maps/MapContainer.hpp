@@ -8,6 +8,9 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 
+#include "common/utilities/Console.hpp"
+
+
 namespace tmx
 {
 class MapLoader;
@@ -26,6 +29,7 @@ public:
 
 private:
     std::shared_ptr<tmx::MapLoader> tmxMapLoader_;
+    Console console_;
 };
 
 }

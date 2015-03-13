@@ -58,6 +58,8 @@ view::GameWindowPtr createGameWindow(model::ObjectsFacadePtr objectsFacade)
 
 int main(int argc, char** argv)
 {
+    ILoger::setDebugPrint(false);
+
     model::ObjectsFacadePtr objectsFacade = createObjectsFacade();
     view::GameWindowPtr gameWindow = createGameWindow(objectsFacade);
 

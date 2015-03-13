@@ -31,13 +31,14 @@ void GameWindow::tearDown()
     {
         exit_.store(true);
         windowThread_->join();
-        console_.debug << "Window thread joined";
+        console_.info << "Window thread joined";
     }
 }
 
 void GameWindow::windowMain()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    console_.info << "Window creation OK";
 
     while (!exit_)
     {
@@ -53,6 +54,7 @@ void GameWindow::pumpEvents(sf::RenderWindow& window)
     {
         if (event.type == sf::Event::Closed)
         {
+            console_.debug << "Received close event";
             exit_.store(true);
         }
 

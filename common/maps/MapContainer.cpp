@@ -11,11 +11,14 @@ namespace maps
 {
 
 MapContainer::MapContainer(std::string mapFolder) :
-    tmxMapLoader_(std::make_shared<tmx::MapLoader>(mapFolder)) {}
+    tmxMapLoader_(std::make_shared<tmx::MapLoader>(mapFolder)),
+    console_("MapContainer") {}
 
 bool MapContainer::loadMap(const std::string filename)
 {
-    return tmxMapLoader_->Load(filename);
+    bool result = tmxMapLoader_->Load(filename);
+    console_.info << "Map loaded";
+    return result;
 }
 
 sf::Drawable& MapContainer::getSfmlMap() const

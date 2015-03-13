@@ -10,7 +10,7 @@ void MessageQueue::pushMessage(const std::string& message)
 {
     std::unique_lock<std::mutex> lock(mutex_);
     queue_.push(message);
-    console_.info << "Message queue size: " << queue_.size();
+    console_.debug << "Message queue size: " << queue_.size();
     conditional_.notify_all();
 }
 
@@ -31,7 +31,7 @@ std::shared_ptr<std::string> MessageQueue::popMessage()
 
     std::string message = queue_.front();
     queue_.pop();
-    console_.info << "Message queue size: " << queue_.size();
+    console_.debug << "Message queue size: " << queue_.size();
     conditional_.notify_all();
     return std::make_shared<std::string>(message);
 }

@@ -41,7 +41,7 @@ void MessageWriter::writerLoop(std::shared_ptr<MessageWriter> self)
 
 void MessageWriter::writeMessage(std::string& netMessage)
 {
-    console_.info << "Message to send: " << netMessage;
+    console_.debug << "Message to send: " << netMessage;
     tcpSocket_->write(netMessage);
-    console_.info << "Message sent";
+    console_.debug << "Message sent";
 }
