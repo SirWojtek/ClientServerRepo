@@ -26,7 +26,6 @@ public:
     virtual void paint(sf::RenderWindow& window);
 
 private:
-    void resetView();
     void printMap(sf::RenderWindow& window) const;
     void printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
     void setCamera(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
