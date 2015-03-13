@@ -5,6 +5,10 @@
 
 #include "client/src/model/IObjectsFacade.hpp"
 
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/System/Vector2.hpp>
+
 namespace sf
 {
 class RenderWindow;
@@ -22,13 +26,17 @@ public:
     virtual void paint(sf::RenderWindow& window);
 
 private:
+    void resetView();
     void printMap(sf::RenderWindow& window) const;
-    void printPlayer(sf::RenderWindow& window);
+    void printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
+    void setCamera(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
 
     model::ObjectsFacadePtr modelFacade_;
+    sf::View view_;
 
     static const unsigned playerSize;
     static const sf::Color playerColor;
+    static const sf::Vector2f viewportSize;
 };
 
 }

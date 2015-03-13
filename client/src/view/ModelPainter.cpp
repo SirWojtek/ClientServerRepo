@@ -9,20 +9,28 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace view
 {
 
 const unsigned ModelPainter::playerSize = 25;
 const sf::Color ModelPainter::playerColor = sf::Color(100, 250, 50);
+const sf::Vector2f ModelPainter::viewportSize = sf::Vector2f(800, 600);
 
 ModelPainter::ModelPainter(model::ObjectsFacadePtr modelFacade) :
-    modelFacade_(modelFacade) {}
+    modelFacade_(modelFacade)
+    {
+        view_.setSize(viewportSize);
+    }
 
 void ModelPainter::paint(sf::RenderWindow& window)
 {
+    model::ObjectPtr playerObj = modelFacade_->getPlayerObject();
+
     printMap(window);
-    printPlayer(window);
+    printPlayer(window, playerObj);
+    setCamera(window, playerObj);
 }
 
 void ModelPainter::printMap(sf::RenderWindow& window) const
@@ -33,15 +41,20 @@ void ModelPainter::printMap(sf::RenderWindow& window) const
     window.draw(sfmlMap);
 }
 
-void ModelPainter::printPlayer(sf::RenderWindow& window)
+void ModelPainter::printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj)
 {
     sf::RectangleShape player(sf::Vector2f(playerSize, playerSize));
-    model::ObjectPtr playerObj = modelFacade_->getPlayerObject();
 
     player.setPosition(playerObj->position.x, playerObj->position.y);
     player.setFillColor(playerColor);
 
     window.draw(player);
+}
+
+void ModelPainter::setCamera(sf::RenderWindow& window, const model::ObjectPtr& playerObj)
+{
+    view_.setCenter(sf::Vector2f(playerObj->position.x, playerObj->position.y));
+    window.setView(view_);
 }
 
 }
