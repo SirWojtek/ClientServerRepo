@@ -8,3 +8,4 @@
 [submodule "common/external/soci"]
 	path = common/external/soci
 	url = https://github.com/SOCI/soci
+    ignore = dirty
