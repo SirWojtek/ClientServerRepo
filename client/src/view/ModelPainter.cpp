@@ -8,8 +8,13 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+
+namespace sf
+{
+class Texture;
+}
 
 namespace view
 {
@@ -36,9 +41,10 @@ void ModelPainter::paint(sf::RenderWindow& window)
 void ModelPainter::printMap(sf::RenderWindow& window) const
 {
     maps::MapContainerPtr currentMap = modelFacade_->getCurrentMap();
-    sf::Drawable& sfmlMap = currentMap->getSfmlMap();
+    const sf::Texture& sfmlMap = currentMap->getSfmlMap();
+    sf::Sprite mapSprite(sfmlMap);
 
-    window.draw(sfmlMap);
+    window.draw(mapSprite);
 }
 
 void ModelPainter::printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj)

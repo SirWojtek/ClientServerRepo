@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 
 #include "common/utilities/Console.hpp"
 
@@ -14,6 +14,7 @@
 namespace tmx
 {
 class MapLoader;
+class Texture;
 }
 
 namespace maps
@@ -25,10 +26,13 @@ public:
     MapContainer(std::string mapFolder);
 
     virtual bool loadMap(const std::string filename);
-    virtual sf::Drawable& getSfmlMap() const;
+    virtual const sf::Texture& getSfmlMap() const;
 
 private:
+    void loadMapRenderTexture();
+
     std::shared_ptr<tmx::MapLoader> tmxMapLoader_;
+    sf::RenderTexture mapTexture_;
     Console console_;
 };
 
