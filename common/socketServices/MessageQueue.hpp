@@ -18,6 +18,7 @@ public:
     void pushMessage(const std::string& message);
     std::shared_ptr<std::string> popMessage();
     void waitForEmptyQueue();
+    void waitForEmptyQueueWithTimeout();
 
 private:
     std::queue<std::string> queue_;

@@ -33,7 +33,7 @@ void ServerSession::runSession()
     while(true)
     {
         messageIndex = getMessage();
-        writerQueue_->waitForEmptyQueue();
+        writerQueue_->waitForEmptyQueueWithTimeout();
         if (messageIndex != noMessage_)
         {
             sendResponse();

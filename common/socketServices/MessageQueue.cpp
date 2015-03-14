@@ -41,3 +41,9 @@ void MessageQueue::waitForEmptyQueue()
     std::unique_lock<std::mutex> lock(mutex_);
     while (!queue_.empty()) conditional_.wait(lock);
 }
+
+void MessageQueue::waitForEmptyQueueWithTimeout()
+{
+    std::unique_lock<std::mutex> lock(mutex_);
+    if (!queue_.empty()) conditional_.wait_for(lock, std::chrono::seconds(conditionalTimeout_));
+}
