@@ -17,7 +17,7 @@ void MessageQueue::pushMessage(const std::string& message)
 std::shared_ptr<std::string> MessageQueue::popMessage()
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    std::cv_status status;
+    std::cv_status status = std::cv_status::no_timeout;
 
     if (queue_.empty())
     {

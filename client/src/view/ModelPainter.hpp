@@ -5,9 +5,9 @@
 
 #include "client/src/model/IObjectsFacade.hpp"
 
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
+
 
 namespace sf
 {
