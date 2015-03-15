@@ -29,6 +29,7 @@ CREATE TABLE `users` (
   `xPosition` int(32) DEFAULT NULL,
   `yPosition` int(32) DEFAULT NULL,
   `zPosition` int(4) DEFAULT NULL,
+  `isOnline` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -40,7 +41,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Gettor','2015-03-11 22:45:56',20,20,0),(2,'SirWojtek','2015-03-11 22:46:11',10,10,0),(3,'RandomDude','2015-03-11 22:46:28',30,15,0);
+INSERT INTO `users` VALUES (1,'Gettor','2015-03-11 22:45:56',20,20,0,0),(2,'SirWojtek','2015-03-11 22:46:11',10,10,0,0),(3,'RandomDude','2015-03-11 22:46:28',30,15,0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-11 22:55:33
+-- Dump completed on 2015-03-15 14:17:09

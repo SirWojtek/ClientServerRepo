@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git submodule update --init
+
 if [ ! -d "backups" ]; 
 then
 	mkdir backups

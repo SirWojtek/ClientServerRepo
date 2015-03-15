@@ -2,4 +2,4 @@ set(CMAKE_CXX_FLAGS "-I${PROJECT_SOURCE_DIR}/common/external/soci/src/backends/m
 
 add_library(database MysqlDatabaseWrapper.cpp)
 
-target_link_libraries(database)
+target_link_libraries(database soci_core soci_mysql)
