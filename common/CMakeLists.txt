@@ -1,5 +1,5 @@
 
-set(CMAKE_CXX_FLAGS "-Wno-reorder -Wno-unused-function ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wno-reorder -Wno-unused-function  ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory(messages)
 add_subdirectory(utilities)

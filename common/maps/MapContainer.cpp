@@ -40,4 +40,15 @@ const sf::Texture& MapContainer::getSfmlMap() const
     return mapTexture_.getTexture();
 }
 
+void MapContainer::updateViewport(const sf::FloatRect& area)
+{
+    tmxMapLoader_->UpdateQuadTree(area);
+}
+
+std::vector<tmx::MapObject*> MapContainer::getCollisionObjects(
+        const sf::FloatRect& spriteArea) const
+{
+    return tmxMapLoader_->QueryQuadTree(spriteArea);
+}
+
 }
