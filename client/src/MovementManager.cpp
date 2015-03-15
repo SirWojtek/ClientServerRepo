@@ -1,11 +1,20 @@
 
 #include "MovementManager.hpp"
 
+#include <string>
 #include <stdexcept>
+#include <algorithm>
+#include <vector>
 
 #include "IKeyboardController.hpp"
 #include "model/IObjectsFacade.hpp"
 #include "model/objects/Object.hpp"
+
+#include <SFML/Graphics/Rect.hpp>
+
+#include <tmx/MapObject.h>
+
+const std::string MovementManager::collisionLayerName = "Collision";
 
 MovementManager::MovementManager(model::ObjectsFacadePtr objectFacade) :
     objectFacade_(objectFacade),
@@ -29,7 +38,11 @@ void MovementManager::changeUserPosition(const KeyDirection& direction)
 {
     model::ObjectPtr playerObj = objectFacade_->getPlayerObject();
     Position newPosition = getNewPosition(playerObj->position, direction);
-    playerObj->position = newPosition;
+    
+    if (!isPlayerColliding(playerObj, newPosition))
+    {
+        playerObj->position = newPosition;
+    }
 }
 
 Position MovementManager::getNewPosition(const Position& oldPos,
@@ -70,4 +83,21 @@ Position MovementManager::correctPosition(const Position& pos) const
     corrected.y = pos.y < 0 ? 0 : pos.y;
 
     return corrected;
+}
+
+bool MovementManager::isPlayerColliding(const model::ObjectPtr& playerObj,
+        model::Object::Position& newPosition) const
+{
+    using tmx::MapObject;    
+    std::vector<MapObject*> collidedObjects = objectFacade_->getCurrentMap()->getCollisionObjects(
+        playerObj->getPositionRect());
+
+    if (!collidedObjects.empty())
+        console_.info << "Player colliding with something";
+
+    return std::find_if(collidedObjects.begin(), collidedObjects.end(),
+        [this](const MapObject* object)
+        {
+            return object->GetParent() == collisionLayerName;
+        }) != collidedObjects.end();
 }

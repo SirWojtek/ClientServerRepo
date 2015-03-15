@@ -15,6 +15,12 @@
 namespace model
 {
 
+namespace
+{
+    const Object::Position playerPosition = {0, 0};
+    const unsigned playerSize = 10;
+}
+
 const std::vector<std::string> ObjectsFacade::mapFiles =
 {
     "main.tmx"
@@ -22,7 +28,7 @@ const std::vector<std::string> ObjectsFacade::mapFiles =
 const std::string ObjectsFacade::mapPath = "maps/";
 
 ObjectsFacade::ObjectsFacade() :
-    playerObject_(std::make_shared<PlayerObject>()) {}
+    playerObject_(std::make_shared<Object>(playerPosition, playerSize)) {}
 
 void ObjectsFacade::loadMaps()
 {

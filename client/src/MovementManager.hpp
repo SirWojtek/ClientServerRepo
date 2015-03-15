@@ -2,6 +2,9 @@
 #define MOVEMENT_MANAGER_HPP_
 
 #include "IMovementManager.hpp"
+
+#include <string>
+
 #include "IKeyboardController.hpp"
 #include "model/IObjectsFacade.hpp"
 
@@ -20,9 +23,13 @@ private:
     model::Object::Position getNewPosition(const model::Object::Position& oldPos,
         const IKeyboardController::KeyDirection& dir) const;
     model::Object::Position correctPosition(const model::Object::Position& pos) const;
+    bool isPlayerColliding(const model::ObjectPtr& playerObj,
+        model::Object::Position& newPosition) const;
 
     model::ObjectsFacadePtr objectFacade_;
     Console console_;
+
+    static const std::string collisionLayerName;
 };
 
 #endif  // MOVEMENT_MANAGER_HPP_

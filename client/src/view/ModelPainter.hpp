@@ -26,14 +26,14 @@ public:
     virtual void paint(sf::RenderWindow& window);
 
 private:
-    void printMap(sf::RenderWindow& window) const;
+    void printMap(sf::RenderWindow& window);
     void printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
     void setCamera(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
+    void updateViewportArea(maps::MapContainerPtr& map);
 
     model::ObjectsFacadePtr modelFacade_;
     sf::View view_;
 
-    static const unsigned playerSize;
     static const sf::Color playerColor;
     static const sf::Vector2f viewportSize;
 };

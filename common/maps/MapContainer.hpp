@@ -5,16 +5,22 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include "common/utilities/Console.hpp"
 
+namespace sf
+{
+class Texture;
+};
 
 namespace tmx
 {
 class MapLoader;
-class Texture;
+class MapObject;
 }
 
 namespace maps
@@ -27,6 +33,9 @@ public:
 
     virtual bool loadMap(const std::string filename);
     virtual const sf::Texture& getSfmlMap() const;
+    virtual void updateViewport(const sf::FloatRect& area);
+    virtual std::vector<tmx::MapObject*> getCollisionObjects(
+        const sf::FloatRect& spriteArea) const;
 
 private:
     void loadMapRenderTexture();

@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -19,7 +20,6 @@ class Texture;
 namespace view
 {
 
-const unsigned ModelPainter::playerSize = 10;
 const sf::Color ModelPainter::playerColor = sf::Color(100, 250, 50);
 const sf::Vector2f ModelPainter::viewportSize = sf::Vector2f(400, 300);
 
@@ -38,18 +38,19 @@ void ModelPainter::paint(sf::RenderWindow& window)
     setCamera(window, playerObj);
 }
 
-void ModelPainter::printMap(sf::RenderWindow& window) const
+void ModelPainter::printMap(sf::RenderWindow& window)
 {
     maps::MapContainerPtr currentMap = modelFacade_->getCurrentMap();
     const sf::Texture& sfmlMap = currentMap->getSfmlMap();
     sf::Sprite mapSprite(sfmlMap);
 
     window.draw(mapSprite);
+    updateViewportArea(currentMap);
 }
 
 void ModelPainter::printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj)
 {
-    sf::RectangleShape player(sf::Vector2f(playerSize, playerSize));
+    sf::RectangleShape player(sf::Vector2f(playerObj->size, playerObj->size));
 
     player.setPosition(playerObj->position.x, playerObj->position.y);
     player.setFillColor(playerColor);
@@ -61,6 +62,12 @@ void ModelPainter::setCamera(sf::RenderWindow& window, const model::ObjectPtr& p
 {
     view_.setCenter(sf::Vector2f(playerObj->position.x, playerObj->position.y));
     window.setView(view_);
+}
+
+void ModelPainter::updateViewportArea(maps::MapContainerPtr& map)
+{
+    const sf::FloatRect& viewportArea = view_.getViewport();
+    map->updateViewport(viewportArea);
 }
 
 }
