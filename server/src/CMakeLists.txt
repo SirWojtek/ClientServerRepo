@@ -1,4 +1,5 @@
 add_subdirectory(echoServer)
+add_subdirectory(modules)
 
 add_library(serverCore ServerInitializer.cpp AcceptorWrapper.cpp ServerSocket.cpp)
 
