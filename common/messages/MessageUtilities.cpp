@@ -21,7 +21,10 @@ std::map<std::string, messagetype::MessageType> encodingMap =
 {
     {UpdatePlayer::type(), messagetype::UpdatePlayer},
     {UpdateEnvironment::type(), messagetype::UpdateEnvironment},
-    {OkResponse::type(), messagetype::OkResponse}
+    {OkResponse::type(), messagetype::OkResponse},
+    {Login::type(), messagetype::Login},
+    {CurrentPlayerPosition::type(), messagetype::CurrentPlayerPosition},
+    {Logout::type(), messagetype::Logout},
 };
 
 }
@@ -81,9 +84,15 @@ std::string getMessageJson(const MessageT& msg)
 template std::shared_ptr<UpdateEnvironment> getMessage<UpdateEnvironment>(const std::string& jsonString);
 template std::shared_ptr<UpdatePlayer> getMessage<UpdatePlayer>(const std::string& jsonString);
 template std::shared_ptr<OkResponse> getMessage<OkResponse>(const std::string& jsonString);
+template std::shared_ptr<Login> getMessage<Login>(const std::string& jsonString);
+template std::shared_ptr<CurrentPlayerPosition> getMessage<CurrentPlayerPosition>(const std::string& jsonString);
+template std::shared_ptr<Logout> getMessage<Logout>(const std::string& jsonString);
 
 template std::string getMessageJson<UpdateEnvironment>(const UpdateEnvironment& msg);
 template std::string getMessageJson<UpdatePlayer>(const UpdatePlayer& msg);
 template std::string getMessageJson<OkResponse>(const OkResponse& msg);
+template std::string getMessageJson<Login>(const Login& msg);
+template std::string getMessageJson<CurrentPlayerPosition>(const CurrentPlayerPosition& msg);
+template std::string getMessageJson<Logout>(const Logout& msg);
 
 }

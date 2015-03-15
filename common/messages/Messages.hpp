@@ -4,6 +4,9 @@
 #include "UpdateEnvironment.hpp"
 #include "UpdatePlayer.hpp"
 #include "OkResponse.hpp"
+#include "Login.hpp"
+#include "Logout.hpp"
+#include "CurrentPlayerPosition.hpp"
 
 #include "MessageTypes.hpp"
 
