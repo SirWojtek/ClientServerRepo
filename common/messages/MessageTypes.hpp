@@ -10,7 +10,10 @@ enum MessageType
     Incorrect,
     UpdateEnvironment,
     UpdatePlayer,
-    OkResponse
+    OkResponse,
+    Login,
+    CurrentPlayerPosition,
+    Logout
 };
 }
 }
