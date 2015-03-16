@@ -11,6 +11,7 @@
 #include "model/objects/Object.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include <tmx/MapObject.h>
 
@@ -38,11 +39,14 @@ void MovementManager::changeUserPosition(const KeyDirection& direction)
 {
     model::ObjectPtr playerObj = objectFacade_->getPlayerObject();
     Position newPosition = getNewPosition(playerObj->position, direction);
-    
+
     if (!isPlayerColliding(playerObj, newPosition))
     {
         playerObj->position = newPosition;
+        return;
     }
+
+    console_.debug << "Player is colliding with something";
 }
 
 Position MovementManager::getNewPosition(const Position& oldPos,
@@ -88,16 +92,27 @@ Position MovementManager::correctPosition(const Position& pos) const
 bool MovementManager::isPlayerColliding(const model::ObjectPtr& playerObj,
         model::Object::Position& newPosition) const
 {
-    using tmx::MapObject;    
+    using tmx::MapObject;
     std::vector<MapObject*> collidedObjects = objectFacade_->getCurrentMap()->getCollisionObjects(
         playerObj->getPositionRect());
 
-    if (!collidedObjects.empty())
-        console_.info << "Player colliding with something";
 
     return std::find_if(collidedObjects.begin(), collidedObjects.end(),
-        [this](const MapObject* object)
+        [&playerObj, &newPosition](const MapObject* object)
         {
-            return object->GetParent() == collisionLayerName;
+            if (object->GetParent() == collisionLayerName)
+            {
+                return object->Contains(sf::Vector2f(
+                    newPosition.x, newPosition.y)) ||
+                object->Contains(sf::Vector2f(
+                    newPosition.x, newPosition.y + playerObj->size)) ||
+                object->Contains(sf::Vector2f(
+                    newPosition.x + playerObj->size, newPosition.y)) ||
+                object->Contains(sf::Vector2f(
+                    newPosition.x + playerObj->size, newPosition.y + playerObj->size));
+
+            }
+
+            return false;
         }) != collidedObjects.end();
 }
