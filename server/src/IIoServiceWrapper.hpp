@@ -1,7 +1,13 @@
 #ifndef I_IO_SERVICE_WRAPPER_HPP_
 #define I_IO_SERVICE_WRAPPER_HPP_
 
-#include <boost/asio.hpp>
+namespace boost
+{
+namespace asio
+{
+	class ioservice;
+}
+}
 
 class IIoServiceWrapper{
 public:

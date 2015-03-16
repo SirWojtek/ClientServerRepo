@@ -7,7 +7,7 @@
 using boost::asio::ip::tcp;
 
 ServerInitializer::ServerInitializer(
-    std::shared_ptr<AcceptorWrapper> acceptor) :
+    std::shared_ptr<IAcceptorWrapper> acceptor) :
     acceptor_(acceptor),
     session_(acceptor_->createServerSession()),
     console_("ServerInitializer")
