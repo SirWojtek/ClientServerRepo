@@ -16,9 +16,11 @@ class MessageReader : public IMessageCommander,
 {
 public:
     MessageReader(TcpSocketPtr tcpSocket,
-        MessageQueuePtr messageQueue) :
+        MessageQueuePtr messageQueue,
+        int socketNumber = -1) :
             tcpSocket_(tcpSocket),
             messageQueue_(messageQueue),
+            socketNumber_(socketNumber),
             console_("MessageReader") {}
 
     virtual ThreadPtr start();
@@ -28,6 +30,7 @@ private:
 
     TcpSocketPtr tcpSocket_;
     MessageQueuePtr messageQueue_;
+    int socketNumber_;
     Console console_;
 };
 

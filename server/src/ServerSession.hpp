@@ -1,6 +1,8 @@
 #ifndef SERVER_SESSION_HPP_
 #define SERVER_SESSION_HPP_
 
+#include "IServerSession.hpp"
+
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <atomic>
@@ -11,25 +13,25 @@
 #include "common/socketServices/MessageReader.hpp"
 #include "common/socketServices/MessageWriter.hpp"
 #include "common/messages/MessageUtilities.hpp"
-#include "ServerSocket.hpp"
+#include "IBoostWrapper.hpp"
 
 using boost::asio::ip::tcp;
 
-class ServerSession : public std::enable_shared_from_this<ServerSession>
+class ServerSession : public std::enable_shared_from_this<ServerSession>, public IServerSession
 {
 public:
-  ServerSession(boost::asio::io_service& io_service):
-    socket_(std::make_shared<ServerSocket>(std::make_shared<tcp::socket>(io_service))),
+  ServerSession(std::shared_ptr<IBoostWrapper> wrapper, int socketNumber):
+    wrapper_(wrapper),
+    socketNumber_(socketNumber),
     readerQueue_(std::make_shared<MessageQueue>()),
     writerQueue_(std::make_shared<MessageQueue>()),
-    reader_(std::make_shared<MessageReader>(socket_, readerQueue_)),
-    writer_(std::make_shared<MessageWriter>(socket_, writerQueue_)),
+    reader_(std::make_shared<MessageReader>(wrapper_, readerQueue_, socketNumber_)),
+    writer_(std::make_shared<MessageWriter>(wrapper_, writerQueue_, socketNumber_)),
     console_("ServerSession")
   { }
 
-  tcp::socket& getSocket();
   std::shared_ptr<std::thread> start();
-  void startThreadsAndRun(std::shared_ptr<ServerSession> self);
+  void startThreadsAndRun(std::shared_ptr<IServerSession> self);
   void stop();
 
 private:
@@ -38,7 +40,8 @@ private:
   void sendResponse();
 
 
-  std::shared_ptr<ServerSocket> socket_;
+  std::shared_ptr<IBoostWrapper> wrapper_;
+  int socketNumber_;
   std::multimap<common::messagetype::MessageType, std::shared_ptr<std::string>> receivedMessages_;
   std::atomic<bool> stop_;
 

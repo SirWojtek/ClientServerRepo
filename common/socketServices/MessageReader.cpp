@@ -19,7 +19,14 @@ void MessageReader::readerLoop(std::shared_ptr<MessageReader> self)
         std::shared_ptr<const std::string> message;
         try
         {
-            message = tcpSocket_->read();
+            if (socketNumber_ == -1)
+            {
+                message = tcpSocket_->read();
+            }
+            else
+            {
+                message = tcpSocket_->read(socketNumber_);
+            }
         }
         catch(const std::runtime_error& e)
         {

@@ -1,14 +1,13 @@
 #include <stdexcept>
 #include <stdio.h>
 #include <thread>
-#include <boost/asio/io_service.hpp>
+#include <boost/asio.hpp>
 #include <boost/bind.hpp>
+
+#include "BoostWrapper.hpp"
 #include "ServerInitializer.hpp"
 
-#include "AcceptorWrapper.hpp"
-#include "IoServiceWrapper.hpp"
-
-void monitorKeyForQuittingServer(IoServiceWrapper& ioService)
+void monitorKeyForQuittingServer(BoostWrapper& wrapper)
 {
   char c;
   do
@@ -16,25 +15,24 @@ void monitorKeyForQuittingServer(IoServiceWrapper& ioService)
     c=getchar();
     putchar(c);
   } while (c != 'q');
-  ioService.getInstance()->reset();
-  ioService.getInstance()->stop();
+  wrapper.resetIoService();
+  wrapper.stopIoService();
 }
 
 int main(int argc, char* argv[])
 {
   try
   {
-  	std::shared_ptr<IoServiceWrapper> ioService = 
-      std::make_shared<IoServiceWrapper>();
-    ioService->createIoService();
+  	std::shared_ptr<BoostWrapper> wrapper =
+      std::make_shared<BoostWrapper>();
+    wrapper->createIoService();
+    wrapper->createAcceptor();
+    wrapper->addSocket();
     std::thread keyMonitor (boost::bind(monitorKeyForQuittingServer,
-      *ioService));
-    std::shared_ptr<AcceptorWrapper> acceptor
-    = std::make_shared<AcceptorWrapper>(ioService->getInstance());
-    acceptor->createAcceptor();
-    ServerInitializer s(acceptor);
+      *wrapper));
+    ServerInitializer s(wrapper);
     s.runAsyncAccept();
-    ioService->getInstance()->run();
+    wrapper->runIoService();
     keyMonitor.join();
   }
   catch(const std::runtime_error& e)

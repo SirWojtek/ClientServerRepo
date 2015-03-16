@@ -4,18 +4,16 @@
 
 #include "ServerInitializer.hpp"
 
-using boost::asio::ip::tcp;
-
 ServerInitializer::ServerInitializer(
-    std::shared_ptr<IAcceptorWrapper> acceptor) :
-    acceptor_(acceptor),
-    session_(acceptor_->createServerSession()),
+    std::shared_ptr<IBoostWrapper> wrapper) :
+    wrapper_(wrapper),
+    session_(std::make_shared<ServerSession>(wrapper_, wrapper_->getLatestSocketNumber())),
     console_("ServerInitializer")
 { }
 
 void ServerInitializer::runAsyncAccept()
 {
-    acceptor_->startAccepting(*session_, this);
+    wrapper_->startAccepting(*session_, this, wrapper_->getLatestSocketNumber());
 }
 
 void ServerInitializer::handleAccept(const boost::system::error_code& error)
@@ -23,7 +21,8 @@ void ServerInitializer::handleAccept(const boost::system::error_code& error)
     if (!error)
     {
         sessionArray_.push_back(session_->start());
-        session_ = acceptor_->createServerSession();
-        acceptor_->startAccepting(*session_, this);
+        wrapper_->addSocket();
+        session_ = std::make_shared<ServerSession>(wrapper_, wrapper_->getLatestSocketNumber());
+        wrapper_->startAccepting(*session_, this,  wrapper_->getLatestSocketNumber());
     }
 }

@@ -7,18 +7,13 @@
 using common::messagetype::MessageType;
 using boost::asio::ip::tcp;
 
-tcp::socket& ServerSession::getSocket()
-{
-	return *(socket_->getSocket());
-}
-
 std::shared_ptr<std::thread> ServerSession::start()
 {
     return std::make_shared<std::thread>(&ServerSession::startThreadsAndRun,
         this, shared_from_this());
 }
 
-void ServerSession::startThreadsAndRun(std::shared_ptr<ServerSession> self)
+void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 {
     readerThread_ = reader_->start();
     writerThread_ = writer_->start();
