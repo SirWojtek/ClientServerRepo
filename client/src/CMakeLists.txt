@@ -2,7 +2,7 @@
 add_subdirectory(model)
 add_subdirectory(view)
 
-add_library(clientCore Client.cpp MovementManager.cpp)
+add_library(clientCore Client.cpp MovementManager.cpp FilePositionWriter.cpp)
 add_library(inputController KeyboardController.cpp  CommunicationService.cpp WorldUpdater.cpp)
 
 add_executable(client clientMain.cpp)

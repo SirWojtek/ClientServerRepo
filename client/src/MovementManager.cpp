@@ -17,12 +17,12 @@
 
 const std::string MovementManager::collisionLayerName = "Collision";
 
+using KeyDirection = IKeyboardController::KeyDirection;
+using Position = model::Object::Position;
+
 MovementManager::MovementManager(model::ObjectsFacadePtr objectFacade) :
     objectFacade_(objectFacade),
     console_("MovementManager") {}
-
-using KeyDirection = IKeyboardController::KeyDirection;
-using Position = model::Object::Position;
 
 void MovementManager::singleTickMove(const KeyDirection& direction)
 {
@@ -43,6 +43,7 @@ void MovementManager::changeUserPosition(const KeyDirection& direction)
     if (!isPlayerColliding(playerObj, newPosition))
     {
         playerObj->position = newPosition;
+        positionWriter_.writePosition(newPosition);
         return;
     }
 

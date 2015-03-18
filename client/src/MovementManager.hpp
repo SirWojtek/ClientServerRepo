@@ -6,6 +6,7 @@
 #include <string>
 
 #include "IKeyboardController.hpp"
+#include "FilePositionWriter.hpp"
 #include "model/IObjectsFacade.hpp"
 
 #include "common/utilities/Console.hpp"
@@ -27,6 +28,7 @@ private:
         model::Object::Position& newPosition) const;
 
     model::ObjectsFacadePtr objectFacade_;
+    FilePositionWriter positionWriter_;
     Console console_;
 
     static const std::string collisionLayerName;
