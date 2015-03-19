@@ -10,7 +10,7 @@ class MysqlDatabaseWrapperShould : public ::testing::Test
 {
 protected:
     MysqlDatabaseWrapperShould() :
-    wrapper_(std::make_shared<DatabaseWrapper>())
+    wrapper_(std::make_shared<DatabaseWrapper>(std::string("test_db")))
     {}
 
     std::shared_ptr<DatabaseWrapper> wrapper_;

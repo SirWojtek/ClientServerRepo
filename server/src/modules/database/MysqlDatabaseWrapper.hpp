@@ -15,13 +15,13 @@
 class DatabaseWrapper : public IDatabaseWrapper
 {
 public:
-	DatabaseWrapper() :
+	DatabaseWrapper(std::string databaseName) :
 		console_("DatabaseWrapper")
 	{
 		try
 		{
 			databaseConnector_ = std::make_shared<soci::session>(soci::mysql,
-				"db=game_db user=root password='root'");
+				"db=" + databaseName + " user=root password='root'");
 		}
 		catch(const std::runtime_error& e)
 		{
