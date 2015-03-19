@@ -23,5 +23,19 @@ protected:
 
 TEST_F(ServerInitializerShould, callAcceptorService)
 {
-	ASSERT_EQ(2, 2);
+	EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
+        	.WillOnce(Return(1));
+	EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _));
+	serverInitializer_->runAsyncAccept();
+}
+
+TEST_F(ServerInitializerShould, handleAcceptCorrectly)
+{
+	EXPECT_CALL(*boostWrapperMock_, addSocket());
+	EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
+    	.Times(2)
+    	.WillRepeatedly(Return(1));
+    EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _));	
+	serverInitializer_->handleAccept(boost::system::error_code());
+	serverInitializer_->joinThreads();
 }

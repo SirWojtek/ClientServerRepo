@@ -14,6 +14,7 @@ class IServerInitializer
 public:
 	virtual void handleAccept(const boost::system::error_code& error) = 0;
 	virtual void runAsyncAccept() = 0;
+	virtual void joinThreads() = 0;
 };
 
 #endif

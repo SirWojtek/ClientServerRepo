@@ -38,7 +38,27 @@ void ServerSession::runSession()
             break;
         }
     }
+    tearDown();
     console_.info << "Server session stopped.";
+}
+
+void ServerSession::tearDown()
+{
+    if (readerThread_ && readerThread_->joinable())
+    {
+        reader_->stop();
+        readerThread_->join();
+        console_.info << "Reader thread joined";
+    }
+
+    if (writerThread_ && writerThread_->joinable())
+    {
+        writerQueue_->waitForEmptyQueue();
+        writer_->stop();
+        writerThread_->join();
+        console_.info << "Writer thread joined";
+    }
+    console_.info << "Service ended";
 }
 
 void ServerSession::stop()

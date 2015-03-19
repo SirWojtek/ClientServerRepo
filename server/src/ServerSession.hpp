@@ -33,6 +33,7 @@ public:
   std::shared_ptr<std::thread> start();
   void startThreadsAndRun(std::shared_ptr<IServerSession> self);
   void stop();
+  void tearDown();
 
 private:
   void runSession();

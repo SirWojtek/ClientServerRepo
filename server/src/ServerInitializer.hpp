@@ -12,13 +12,16 @@ class ServerInitializer : public IServerInitializer
 {
 public:
 	ServerInitializer(std::shared_ptr<IBoostWrapper> wrapper);
+	~ServerInitializer();
 	void handleAccept(const boost::system::error_code& error);
 	void runAsyncAccept();
+	void joinThreads();
 
 private:
 	std::shared_ptr<IBoostWrapper> wrapper_;
 	std::shared_ptr<ServerSession> session_;
-	std::vector<std::shared_ptr<std::thread>> sessionArray_;
+	std::vector<std::shared_ptr<std::thread>> sessionThreadArray_;
+	std::vector<std::shared_ptr<ServerSession>> sessionArray_;
 	Console console_;
 };
 

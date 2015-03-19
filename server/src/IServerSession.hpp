@@ -14,6 +14,7 @@ public:
   virtual std::shared_ptr<std::thread> start() = 0;
   virtual void startThreadsAndRun(std::shared_ptr<IServerSession> self) = 0;
   virtual void stop() = 0;
+  virtual void tearDown() = 0;
 };
 
 #endif
