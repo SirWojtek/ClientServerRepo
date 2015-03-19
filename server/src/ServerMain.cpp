@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
     s.runAsyncAccept();
     wrapper->runIoService();
     keyMonitor.join();
+    s.joinThreads();
   }
   catch(const std::runtime_error& e)
   {
