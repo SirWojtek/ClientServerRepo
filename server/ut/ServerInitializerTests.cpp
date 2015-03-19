@@ -36,6 +36,22 @@ TEST_F(ServerInitializerShould, handleAcceptCorrectly)
     	.Times(2)
     	.WillRepeatedly(Return(1));
     EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _));	
-	serverInitializer_->handleAccept(boost::system::error_code());
+    
+    boost::system::error_code ec (0, boost::system::system_category ());
+	serverInitializer_->handleAccept(ec);
+	serverInitializer_->joinThreads();
+}
+
+TEST_F(ServerInitializerShould, notHandleAcceptIfErrorOccured)
+{
+	EXPECT_CALL(*boostWrapperMock_, addSocket())
+		.Times(0);
+	EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
+    	.Times(0);
+    EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _))
+    	.Times(0);	
+
+    boost::system::error_code ec (1, boost::system::system_category ());
+	serverInitializer_->handleAccept(ec);
 	serverInitializer_->joinThreads();
 }
