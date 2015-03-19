@@ -35,6 +35,8 @@ public:
 	Users getUsersBy(UserTypes type, std::vector<int> position);
 	Users getUsersBy(UserTypes type, bool isOnline);
 private:
+	MarkedPositions checkMarkedPositions(std::vector<int> position);
+
 	std::shared_ptr<soci::session> databaseConnector_;
 	Console console_;
 };

@@ -11,10 +11,20 @@ enum UserTypes{
 	ID = 0,
 	LOGIN = 1,
 	LASTVISIT = 2,
-	XPOS = 3,
-	YPOS = 4,
-	ZPOS = 5,
-	ISONLINE = 6
+	POS = 3,
+	ISONLINE = 4
+};
+
+enum MarkedPositions{
+	// X = 1 ; Y = 2 ; Z = 4 => XY = X+Y = 3 etc.
+	None = 0,
+	X = 1,
+	Y = 2,
+	XY = 3,
+	Z = 4,
+	XZ = 5,
+	YZ = 6,
+	XYZ = 7
 };
 
 // User - id, login, lastVisit, xPos, yPos, zPos, isOnline
