@@ -1,9 +1,6 @@
 #ifndef COMMUNICATION_SERVICE_HPP_
 #define COMMUNICATION_SERVICE_HPP_
 
-#include <memory>
-#include <thread>
-#include <string>
 #include <map>
 
 #include "ICommunicationService.hpp"
@@ -12,7 +9,6 @@
 #include "common/socketServices/IMessageCommander.hpp"
 #include "common/utilities/Console.hpp"
 
-#include "common/messages/Messages.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
 class CommunicationService : public ICommunicationService
@@ -30,11 +26,14 @@ public:
 
     void startService();
     common::OkResponse putMessageInQueue(const common::UpdatePlayer& message);
+    common::OkResponse putMessageInQueue(const common::Login& message);
     std::shared_ptr<std::string> getMessage(
         const common::messagetype::MessageType& type, bool wait);
     void tearDown();
 
 private:
+    template<typename MessageT>
+    common::OkResponse putMessage(const MessageT& message);
     common::OkResponse getResponse();
     void sendLogoutMessage();
     bool isMessageOfTypeAlreadyReceived(const common::messagetype::MessageType& type);

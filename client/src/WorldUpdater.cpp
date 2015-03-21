@@ -5,6 +5,7 @@
 
 #include "model/IObjectsFacade.hpp"
 #include "ICommunicationService.hpp"
+#include "LoginService.hpp"
 #include "model/objects/Object.hpp"
 
 #include "common/messages/UpdateEnvironment.hpp"
@@ -15,7 +16,8 @@
 WorldUpdater::WorldUpdater(model::ObjectsFacadePtr objectsFacade,
     CommunicationServicePtr communicationServ) :
         objectsFacade_(objectsFacade),
-        communicationServ_(communicationServ) {}
+        communicationServ_(communicationServ),
+        loginService_(std::make_shared<LoginService>(communicationServ)) {}
 
 WorldUpdater::~WorldUpdater()
 {
@@ -25,7 +27,11 @@ WorldUpdater::~WorldUpdater()
 void WorldUpdater::init()
 {
     communicationServ_->startService();
-    previousPlayerObject_ = copyPlayerObject(objectsFacade_->getPlayerObject());
+
+    model::ObjectPtr player = objectsFacade_->getPlayerObject();
+    player->position = loginService_->login();
+    previousPlayerObject_ = copyPlayerObject(player);
+
     objectsFacade_->loadMaps();
 }
 

@@ -32,9 +32,18 @@ void CommunicationService::startService()
 
 common::OkResponse CommunicationService::putMessageInQueue(const common::UpdatePlayer& message)
 {
-    using namespace common;
+    return putMessage(message);
+}
 
-    std::string json = common::getMessageJson<UpdatePlayer>(message);
+common::OkResponse CommunicationService::putMessageInQueue(const common::Login& message)
+{
+    return putMessage(message);
+}
+
+template<typename MessageT>
+common::OkResponse CommunicationService::putMessage(const MessageT& message)
+{
+    std::string json = common::getMessageJson<MessageT>(message);
     writerQueue_->pushMessage(json);
     console_.debug << "Message added to queue";
 
@@ -111,6 +120,8 @@ void CommunicationService::sendLogoutMessage()
     Logout logoutMessage;
     std::string json = common::getMessageJson(logoutMessage);
     writerQueue_->pushMessage(json);
+
+    getMessage(messagetype::OkResponse, true);
 }
 
 bool CommunicationService::isMessageOfTypeAlreadyReceived(const MessageType& type)

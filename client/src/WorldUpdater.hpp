@@ -5,6 +5,7 @@
 
 #include "model/IObjectsFacade.hpp"
 #include "ICommunicationService.hpp"
+#include "ILoginService.hpp"
 #include "model/objects/Object.hpp"
 
 #include "common/messages/UpdateEnvironment.hpp"
@@ -30,6 +31,7 @@ private:
     model::ObjectsFacadePtr objectsFacade_;
     model::ObjectPtr previousPlayerObject_;
     CommunicationServicePtr communicationServ_;
+    LoginServicePtr loginService_;
 };
 
 #endif  // WORLD_UPDATER_HPP_

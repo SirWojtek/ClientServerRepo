@@ -6,6 +6,7 @@
 #include <string>
 
 #include "common/messages/UpdatePlayer.hpp"
+#include "common/messages/Login.hpp"
 #include "common/messages/OkResponse.hpp"
 #include "common/messages/MessageTypes.hpp"
 
@@ -15,6 +16,7 @@ public:
     virtual ~ICommunicationService() {}
     virtual void startService() = 0;
     virtual common::OkResponse putMessageInQueue(const common::UpdatePlayer& message) = 0;
+    virtual common::OkResponse putMessageInQueue(const common::Login& message) = 0;
     virtual std::shared_ptr<std::string> getMessage(
         const common::messagetype::MessageType& type, bool wait) = 0;
     virtual void tearDown() = 0;
