@@ -20,3 +20,6 @@ lib/
 
 # Local backup files
 backups/
+
+# Local credencial info
+login.info
