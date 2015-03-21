@@ -36,6 +36,7 @@ public:
 
 private:
     common::OkResponse getResponse();
+    void sendLogoutMessage();
     bool isMessageOfTypeAlreadyReceived(const common::messagetype::MessageType& type);
     std::shared_ptr<std::string> getMessageOfTypeAlreadyReceived(
         const common::messagetype::MessageType& type);

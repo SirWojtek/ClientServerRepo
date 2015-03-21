@@ -94,6 +94,7 @@ void CommunicationService::tearDown()
 
     if (writerThread_ && writerThread_->joinable())
     {
+        sendLogoutMessage();
         writerQueue_->waitForEmptyQueue();
         messageWriter_->stop();
         writerThread_->join();
@@ -101,6 +102,15 @@ void CommunicationService::tearDown()
     }
 
     console_.info << "Service ended";
+}
+
+void CommunicationService::sendLogoutMessage()
+{
+    using namespace common;
+
+    Logout logoutMessage;
+    std::string json = common::getMessageJson(logoutMessage);
+    writerQueue_->pushMessage(json);
 }
 
 bool CommunicationService::isMessageOfTypeAlreadyReceived(const MessageType& type)
