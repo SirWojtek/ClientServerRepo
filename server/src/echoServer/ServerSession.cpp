@@ -25,13 +25,26 @@ void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 void ServerSession::runSession()
 {
     int messageIndex;
+    if (!wasClientLoggedInCorrectly())
+    {
+        tearDown();
+        console_.info << "Client was not logged in correctly, exiting.";
+        return;
+    }
     while(true)
     {
         messageIndex = getMessage();
         writerQueue_->waitForEmptyQueueWithTimeout();
         if (messageIndex != noMessage_)
         {
-            sendResponse();
+            if (receivedMessages_[messageIndex].first != MessageType::Logout)
+            {
+                sendOkResponse(true);
+            }
+            else
+            {
+                stop();
+            }
         }
         if (stop_.load())
         {
@@ -66,13 +79,27 @@ void ServerSession::stop()
     stop_.exchange(true);
 }
 
+bool ServerSession::wasClientLoggedInCorrectly()
+{
+    int messageIndex = getMessage();
+    if (messageIndex != noMessage_)
+    {
+        if (receivedMessages_[messageIndex].first == MessageType::Login)
+        {
+            sendOkResponse(true);
+            return true;
+        }
+    }
+    return false;
+}
+
 int ServerSession::getMessage()
 {
     std::shared_ptr<std::string> messageString;
     if (messageString = readerQueue_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
-        receivedMessages_.insert(
+        receivedMessages_.push_back(
                 std::pair<MessageType, std::shared_ptr<std::string>>(
                     receivedMessageType, messageString));
         return (receivedMessages_.size()-1); // index of just inserted value
@@ -80,10 +107,10 @@ int ServerSession::getMessage()
     return noMessage_;
 }
 
-void ServerSession::sendResponse()
+void ServerSession::sendOkResponse(bool serwerAllows)
 {
     common::OkResponse okMessage;
-    okMessage.serverAllows = true;
+    okMessage.serverAllows = serwerAllows;
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     writerQueue_->pushMessage(json);
     console_.debug << "OkMessage added to queue";

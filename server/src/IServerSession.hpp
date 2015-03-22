@@ -15,6 +15,7 @@ public:
   virtual void startThreadsAndRun(std::shared_ptr<IServerSession> self) = 0;
   virtual void stop() = 0;
   virtual void tearDown() = 0;
+  virtual bool wasClientLoggedInCorrectly() = 0;
 };
 
 #endif

@@ -34,16 +34,17 @@ public:
   void startThreadsAndRun(std::shared_ptr<IServerSession> self);
   void stop();
   void tearDown();
+  bool wasClientLoggedInCorrectly();
 
 private:
   void runSession();
   int getMessage();
-  void sendResponse();
-
+  void sendOkResponse(bool serverAllows);
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
-  std::multimap<common::messagetype::MessageType, std::shared_ptr<std::string>> receivedMessages_;
+  std::vector<std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> > >
+    receivedMessages_;
   std::atomic<bool> stop_;
 
   MessageQueuePtr readerQueue_;
