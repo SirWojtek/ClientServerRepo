@@ -16,15 +16,15 @@ public:
 	void createQueue();
 	void createReaderForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
 	void createWriterForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
-	std::shared_ptr<std::thread> startReader();
-	std::shared_ptr<std::thread> startWriter();
+	std::shared_ptr<std::thread> startCommander();
 
 	void pushMessage(const std::string& message);
 	std::shared_ptr<std::string> popMessage();
 	void waitForEmptyQueue();
     void waitForEmptyQueueWithTimeout();
 private:
-	bool commanderAlreadyExists();
+	bool queueExists();
+	bool commanderExists();
 
 	MessageQueuePtr queue_;
 	MessageCommanderPtr commander_;
