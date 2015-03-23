@@ -9,11 +9,11 @@
 class SocketServicesWrapper : public ISocketServicesWrapper
 {
 public:
-	SocketServicesWrapper() :
+	SocketServicesWrapper(MessageQueuePtr queue) :
+	queue_(queue),
 	console_("SocketServicesWrapper")
 	{ }
 
-	void createQueue();
 	void createReaderForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
 	void createWriterForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
 	std::shared_ptr<std::thread> startCommander();
@@ -23,7 +23,6 @@ public:
 	void waitForEmptyQueue();
     void waitForEmptyQueueWithTimeout();
 private:
-	bool queueExists();
 	bool commanderExists();
 
 	MessageQueuePtr queue_;
