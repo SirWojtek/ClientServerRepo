@@ -17,6 +17,7 @@ public:
 	void createReaderForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
 	void createWriterForQueue(std::shared_ptr<IBoostWrapper> boostWrapper, int socketNumber);
 	std::shared_ptr<std::thread> startCommander();
+	void stopCommander();
 
 	void pushMessage(const std::string& message);
 	std::shared_ptr<std::string> popMessage();

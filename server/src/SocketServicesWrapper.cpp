@@ -39,6 +39,18 @@ std::shared_ptr<std::thread> SocketServicesWrapper::startCommander()
 	return std::shared_ptr<std::thread>();
 }
 
+void SocketServicesWrapper::stopCommander()
+{
+	if (commanderExists())
+	{
+		commander_->stop();
+	}
+	else
+	{
+		console_.error << "Tried to stop uninitialized commander";
+	}
+}
+
 void SocketServicesWrapper::pushMessage(const std::string& message)
 {
 	queue_->pushMessage(message);
