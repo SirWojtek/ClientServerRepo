@@ -2,13 +2,12 @@
 #include "KeyboardController.hpp"
 
 #include <functional>
-#include <mutex>
-#include <condition_variable>
+#include <stdexcept>
+#include <algorithm>
 
 #include "view/EventListener.hpp"
 
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
+const sf::Keyboard::Key KeyboardController::noKeyPressed = sf::Keyboard::Key::Unknown;
 
 KeyboardController::KeyboardController() :
     keyMapping_(
@@ -22,18 +21,20 @@ KeyboardController::KeyboardController() :
 {
     using namespace std::placeholders;
     view::EventListener::subscribe(sf::Event::KeyPressed,
-        std::bind(&KeyboardController::keyPressedCallback, this, _1));
+        std::bind(&KeyboardController::keyCallback, this, _1));
+    view::EventListener::subscribe(sf::Event::KeyReleased,
+        std::bind(&KeyboardController::keyCallback, this, _1));
 
-    safeEvent_.event.type = emptyEvent;
+    safeEvent_.keyVector.emplace_back(noKeyPressed);
 }
 
 KeyboardController::KeyDirection KeyboardController::getKeyboardInput()
 {
-    getPressedKey();
+    sf::Keyboard::Key key = getPressedKey();
 
-    auto foundKeyIt = keyMapping_.find(safeEvent_.event.key.code);
+    auto foundKeyIt = keyMapping_.find(key);
 
-    if (foundKeyIt == keyMapping_.end())
+    if (foundKeyIt == keyMapping_.end() || key == noKeyPressed)
     {
         return None;
     }
@@ -53,24 +54,50 @@ bool KeyboardController::wasExitKeyPressed()
     return wasExitKeyPressed_;
 }
 
-void KeyboardController::keyPressedCallback(const sf::Event& event)
+void KeyboardController::keyCallback(const sf::Event& event)
 {
-    std::unique_lock<std::mutex> lock(safeEvent_.mutex);
-
-    while (safeEvent_.event.type != emptyEvent)
-        safeEvent_.conditional.wait(lock);
-
-    safeEvent_.event = event;
-    safeEvent_.conditional.notify_one();
+    if (event.type == sf::Event::KeyPressed)
+    {
+        processKeyPressed(event);
+    }
+    else if (event.type == sf::Event::KeyReleased)
+    {
+        processKeyReleased(event);
+    }
+    else
+    {
+        throw std::runtime_error("Unknown type of event received");
+    }
 }
 
-void KeyboardController::getPressedKey()
+void KeyboardController::processKeyPressed(const sf::Event& event)
 {
     std::unique_lock<std::mutex> lock(safeEvent_.mutex);
 
-    while (safeEvent_.event.type == emptyEvent)
-        safeEvent_.conditional.wait(lock);
+    auto it = std::find(safeEvent_.keyVector.begin(), safeEvent_.keyVector.end(), event.key.code);
 
-    safeEvent_.event.type = emptyEvent;
-    safeEvent_.conditional.notify_one();
+    if (it == safeEvent_.keyVector.end())
+    {
+        safeEvent_.keyVector.emplace_back(event.key.code);
+    }
+}
+
+void KeyboardController::processKeyReleased(const sf::Event& event)
+{
+    std::unique_lock<std::mutex> lock(safeEvent_.mutex);
+
+    auto it = std::find(safeEvent_.keyVector.begin(), safeEvent_.keyVector.end(), event.key.code);
+
+    if (it == safeEvent_.keyVector.end())
+    {
+        return;
+    }
+
+    safeEvent_.keyVector.erase(it);
+}
+
+sf::Keyboard::Key KeyboardController::getPressedKey()
+{
+    std::unique_lock<std::mutex> lock(safeEvent_.mutex);
+    return safeEvent_.keyVector.back();
 }

@@ -3,7 +3,7 @@
 
 #include <map>
 #include <mutex>
-#include <condition_variable>
+#include <vector>
 
 #include "IKeyboardController.hpp"
 
@@ -14,9 +14,8 @@ class KeyboardController : public IKeyboardController
 {
     struct ThreadSafeEvent
     {
-        sf::Event event;
+        std::vector<sf::Keyboard::Key> keyVector;
         std::mutex mutex;
-        std::condition_variable conditional;
     };
 
 public:
@@ -24,16 +23,18 @@ public:
 
     virtual KeyDirection getKeyboardInput();
     virtual bool wasExitKeyPressed();
-    virtual void keyPressedCallback(const sf::Event&);
+    virtual void keyCallback(const sf::Event&);
 
 private:
-    void getPressedKey();
+    void processKeyPressed(const sf::Event&);
+    void processKeyReleased(const sf::Event&);
+    sf::Keyboard::Key getPressedKey();
 
     std::map<sf::Keyboard::Key, KeyDirection> keyMapping_;
     ThreadSafeEvent safeEvent_;
     bool wasExitKeyPressed_ = false;
 
-    static const sf::Event::EventType emptyEvent = sf::Event::EventType::Count;
+    static const sf::Keyboard::Key noKeyPressed;
 };
 
 #endif  // KEYBOARD_CONTROLLER_HPP_

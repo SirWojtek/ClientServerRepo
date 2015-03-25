@@ -1,12 +1,14 @@
+
 #include <iostream>
 #include <exception>
+#include <chrono>
+#include <thread>
 
 #include "Client.hpp"
 #include "ICommunicationService.hpp"
-#include "IKeyboardController.hpp"
-#include "IMovementManager.hpp"
 
-#include "common/utilities/Console.hpp"
+
+const unsigned Client::delayTime = 50;
 
 Client::Client(KeyboardControllerPtr keyboardController,
     MovementManagerPtr movementManager,
@@ -44,12 +46,13 @@ void Client::clientLoop()
     while (!keyboardController_->wasExitKeyPressed())
     {
         IKeyboardController::KeyDirection direction = keyboardController_->getKeyboardInput();
-        console_.debug << "Keyboard input received";
 
         movementManager_->singleTickMove(direction);
 
         // TODO: change to responce from MovementManager
         worldUpdater_->updateModel(direction != IKeyboardController::None);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayTime));
     }
 }
 

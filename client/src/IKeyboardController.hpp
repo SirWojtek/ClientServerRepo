@@ -20,7 +20,7 @@ public:
 
     virtual KeyDirection getKeyboardInput() = 0;
     virtual bool wasExitKeyPressed() = 0;
-    virtual void keyPressedCallback(const sf::Event&) = 0;
+    virtual void keyCallback(const sf::Event&) = 0;
 };
 using KeyboardControllerPtr = std::shared_ptr<IKeyboardController>;
 

@@ -28,6 +28,8 @@ private:
     WorldUpdaterPtr worldUpdater_;
     view::GameWindowPtr gameWindow_;
     Console console_;
+
+    static const unsigned delayTime;
 };
 using ClientPtr = std::shared_ptr<Client>;
 

@@ -28,10 +28,10 @@ void MovementManager::singleTickMove(const KeyDirection& direction)
 {
     if (direction == KeyDirection::None)
     {
-        console_.debug << "Incorrect user input received";
         return;
     }
 
+    console_.debug << "Received user input";
     changeUserPosition(direction);
 }
 
