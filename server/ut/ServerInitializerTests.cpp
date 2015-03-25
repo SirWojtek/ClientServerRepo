@@ -12,8 +12,6 @@ protected:
 
     void SetUp()
     {
-        EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
-        	.WillOnce(Return(1));
         serverInitializer_ = std::make_shared<ServerInitializer>(boostWrapperMock_);
     }
 
@@ -24,7 +22,8 @@ protected:
 TEST_F(ServerInitializerShould, callAcceptorService)
 {
 	EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
-        	.WillOnce(Return(1));
+        	.Times(2)
+            .WillRepeatedly(Return(1));
 	EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _));
 	serverInitializer_->runAsyncAccept();
 }
@@ -33,11 +32,13 @@ TEST_F(ServerInitializerShould, handleAcceptCorrectly)
 {
 	EXPECT_CALL(*boostWrapperMock_, addSocket());
 	EXPECT_CALL(*boostWrapperMock_, getLatestSocketNumber())
-    	.Times(2)
+    	.Times(4)
     	.WillRepeatedly(Return(1));
-    EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _));	
+    EXPECT_CALL(*boostWrapperMock_, startAccepting(_, _, _))
+        .Times(2);
     
     boost::system::error_code ec (0, boost::system::system_category ());
+    serverInitializer_->runAsyncAccept();
 	serverInitializer_->handleAccept(ec);
 	serverInitializer_->joinThreads();
 }

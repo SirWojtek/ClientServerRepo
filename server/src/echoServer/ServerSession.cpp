@@ -15,8 +15,11 @@ std::shared_ptr<std::thread> ServerSession::start()
 
 void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 {
-    readerThread_ = reader_->start();
-    writerThread_ = writer_->start();
+    readerWrapper_->createReaderForQueue(wrapper_, socketNumber_);
+    writerWrapper_->createWriterForQueue(wrapper_, socketNumber_);
+
+    readerThread_ = readerWrapper_->startCommander();
+    writerThread_ = writerWrapper_->startCommander();
 
     console_.info << "Service started";
     runSession();
@@ -34,7 +37,7 @@ void ServerSession::runSession()
     while(true)
     {
         messageIndex = getMessage();
-        writerQueue_->waitForEmptyQueueWithTimeout();
+        writerWrapper_->waitForEmptyQueueWithTimeout();
         if (messageIndex != noMessage_)
         {
             if (receivedMessages_[messageIndex].first != MessageType::Logout)
@@ -59,15 +62,15 @@ void ServerSession::tearDown()
 {
     if (readerThread_ && readerThread_->joinable())
     {
-        reader_->stop();
+        readerWrapper_->stopCommander();
         readerThread_->join();
         console_.info << "Reader thread joined";
     }
 
     if (writerThread_ && writerThread_->joinable())
     {
-        writerQueue_->waitForEmptyQueue();
-        writer_->stop();
+        writerWrapper_->waitForEmptyQueue();
+        writerWrapper_->stopCommander();
         writerThread_->join();
         console_.info << "Writer thread joined";
     }
@@ -96,7 +99,7 @@ bool ServerSession::wasClientLoggedInCorrectly()
 int ServerSession::getMessage()
 {
     std::shared_ptr<std::string> messageString;
-    if (messageString = readerQueue_->popMessage())
+    if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
         receivedMessages_.push_back(
@@ -112,6 +115,6 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     common::OkResponse okMessage;
     okMessage.serverAllows = serwerAllows;
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
-    writerQueue_->pushMessage(json);
+    writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
 }

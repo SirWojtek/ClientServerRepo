@@ -12,13 +12,6 @@ public:
 	console_("BoostWrapper")
 	{}
 
-	// BoostWrapper(const BoostWrapper& wrapper) :
-	// ioService_(wrapper.ioService_),
-	// acceptor_(wrapper.acceptor_),
-	// tcpSockets_(wrapper.tcpSockets_),
-	// console_("BoostWrapper")
-	// {}
-
 	void createIoService();
 	void createAcceptor();
 	void addSocket();

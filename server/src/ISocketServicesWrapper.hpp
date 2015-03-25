@@ -21,4 +21,6 @@ public:
     virtual void waitForEmptyQueueWithTimeout() = 0;
 };
 
+using SocketServicePtr = std::shared_ptr<ISocketServicesWrapper>;
+
 #endif

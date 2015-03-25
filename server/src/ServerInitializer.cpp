@@ -3,11 +3,12 @@
 #include <stdexcept>
 
 #include "ServerInitializer.hpp"
+#include "SocketServicesWrapper.hpp"
+#include "common/socketServices/MessageQueue.hpp"
 
 ServerInitializer::ServerInitializer(
     std::shared_ptr<IBoostWrapper> wrapper) :
     wrapper_(wrapper),
-    session_(std::make_shared<ServerSession>(wrapper_, wrapper_->getLatestSocketNumber())),
     console_("ServerInitializer")
 { }
 
@@ -16,6 +17,11 @@ ServerInitializer::~ServerInitializer()
 
 void ServerInitializer::runAsyncAccept()
 {
+
+    session_ = std::make_shared<ServerSession>(wrapper_,
+        std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
+        std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
+        wrapper_->getLatestSocketNumber());
     wrapper_->startAccepting(*session_, this, wrapper_->getLatestSocketNumber());
 }
 
@@ -23,10 +29,13 @@ void ServerInitializer::handleAccept(const boost::system::error_code& error)
 {
     if (!error)
     {
-        sessionArray_.push_back(session_);
         sessionThreadArray_.push_back(session_->start());
+        sessionArray_.push_back(session_);
         wrapper_->addSocket();
-        session_ = std::make_shared<ServerSession>(wrapper_, wrapper_->getLatestSocketNumber());
+        session_ = std::make_shared<ServerSession>(wrapper_,
+            std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
+            std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
+            wrapper_->getLatestSocketNumber());
         wrapper_->startAccepting(*session_, this,  wrapper_->getLatestSocketNumber());
     }
 }
