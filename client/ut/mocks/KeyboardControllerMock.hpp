@@ -13,7 +13,7 @@ class KeyboardControllerMock : public IKeyboardController
 public:
     MOCK_METHOD0(getKeyboardInput, KeyDirection());
     MOCK_METHOD0(wasExitKeyPressed, bool());
-    MOCK_METHOD1(keyPressedCallback, void(const sf::Event&));
+    MOCK_METHOD1(keyCallback, void(const sf::Event&));
 };
 using KeyboardControllerMockPtr = std::shared_ptr<KeyboardControllerMock>;
 

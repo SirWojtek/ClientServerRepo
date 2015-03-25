@@ -44,7 +44,7 @@ TEST_P(KeyboardControllerShould, returnCorrectDirection)
     KeyToDirection param = GetParam();
     sf::Event event = createEvent(param.key);
 
-    keyboardController_->keyPressedCallback(event);
+    keyboardController_->keyCallback(event);
 
     EXPECT_EQ(keyboardController_->getKeyboardInput(), param.direction);
     EXPECT_EQ(keyboardController_->wasExitKeyPressed(), false);
@@ -67,7 +67,7 @@ TEST_F(KeyboardControllerShould, returnTrueIfExitKeyWasPressed)
     EXPECT_EQ(keyboardController_->wasExitKeyPressed(), false);
 
     sf::Event event = createEvent(sf::Keyboard::Key::Escape);
-    keyboardController_->keyPressedCallback(event);
+    keyboardController_->keyCallback(event);
 
     EXPECT_EQ(keyboardController_->getKeyboardInput(), KeyboardController::None);
     EXPECT_EQ(keyboardController_->wasExitKeyPressed(), true);
