@@ -25,7 +25,18 @@ protected:
     std::shared_ptr<ServerSession> serverSession_;
 };
 
-TEST_F(ServerSessionShould, Dummy)
+TEST_F(ServerSessionShould, StartAndStopServicesWhenClientNotLogged)
 {
-	ASSERT_EQ(2, 2);
+    EXPECT_CALL(*readerMock_, createReaderForQueue(_, _));
+    EXPECT_CALL(*writerMock_, createWriterForQueue(_, _));
+
+	EXPECT_CALL(*readerMock_, startCommander())
+        .WillOnce(Return(ThreadPtr()));
+    EXPECT_CALL(*writerMock_, startCommander())
+        .WillOnce(Return(ThreadPtr()));
+
+    EXPECT_CALL(*readerMock_, popMessage())
+        .WillOnce(Return(std::shared_ptr<std::string>()));
+
+    serverSession_->startThreadsAndRun(serverSession_);
 }
