@@ -13,7 +13,7 @@ FilePositionWriter::FilePositionWriter() : console_("FilePositionWriter")
 
     stream << time_point_cast<seconds>(system_clock::now()).time_since_epoch().count();
 
-    std::string filename("position_" + stream.str() + ".log");
+    std::string filename("position_logs/position_" + stream.str() + ".log");
     dumpFile_.open(filename);
 
     console_.info << "Opened position dump file:" << filename;
