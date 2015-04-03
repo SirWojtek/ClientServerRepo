@@ -10,8 +10,10 @@
 namespace prediction
 {
 
-KNeighborsFinder<InputRecord, DeltaRecord> buildKNeighborsFinder(const std::string& dataFile,
-    unsigned recordSize, std::function<unsigned(InputRecord)> distFunc);
+using BasicKNeighborFinder = KNeighborsFinder<InputRecord, DeltaRecord>;
+
+BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
+    unsigned recordSize, std::function<unsigned(const InputRecord&)> distFunc);
 
 }
 

@@ -12,7 +12,7 @@ template<class T_input, class T_output>
 class KNeighborsFinder
 {
 public:
-    using DistanceFunction = std::function<unsigned(T_input)>;
+    using DistanceFunction = std::function<unsigned(const T_input&)>;
 
     KNeighborsFinder(DistanceFunction func);
 

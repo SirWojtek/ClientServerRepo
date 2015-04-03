@@ -10,12 +10,12 @@ namespace prediction
 struct DeltaRecord
 {
     DeltaRecord();
-    DeltaRecord(unsigned deltaX, unsigned deltaY);
+    DeltaRecord(int deltaX, int deltaY);
     DeltaRecord(const std::vector<std::pair<unsigned, unsigned>>& dataVector);
 
     bool operator<(const DeltaRecord& a) const;
 
-    unsigned deltaX, deltaY;
+    int deltaX, deltaY;
 };
 
 struct InputRecord

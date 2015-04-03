@@ -42,7 +42,7 @@ std::vector<DataVector> splitDataVector(const DataVector& dataVector, unsigned f
     return result;
 }
 
-void feedKNeighborsFinder(KNeighborsFinder<InputRecord, DeltaRecord>& finder,
+void feedKNeighborsFinder(BasicKNeighborFinder& finder,
     const std::vector<DataVector> partitionedData)
 {
     for (const auto& part : partitionedData)
@@ -59,10 +59,10 @@ std::vector<DataVector> getPartitionedData(const std::string& dataFile, unsigned
     return splitDataVector(rawData, recordSize);
 }
 
-KNeighborsFinder<InputRecord, DeltaRecord> buildKNeighborsFinder(const std::string& dataFile,
-    unsigned recordSize, std::function<unsigned(InputRecord)> distFunc)
+BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
+    unsigned recordSize, std::function<unsigned(const InputRecord&)> distFunc)
 {
-    KNeighborsFinder<InputRecord, DeltaRecord> finder(distFunc);
+    BasicKNeighborFinder finder(distFunc);
     std::vector<DataVector> partitionedData = getPartitionedData(dataFile, recordSize);
 
     feedKNeighborsFinder(finder, partitionedData);

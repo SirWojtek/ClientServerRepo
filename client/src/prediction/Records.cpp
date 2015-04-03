@@ -8,7 +8,7 @@ namespace prediction
 
 DeltaRecord::DeltaRecord() {}
 
-DeltaRecord::DeltaRecord(unsigned deltaX, unsigned deltaY) :
+DeltaRecord::DeltaRecord(int deltaX, int deltaY) :
     deltaX(deltaX),
     deltaY(deltaY) {}
 
@@ -27,13 +27,13 @@ InputRecord::InputRecord(const std::vector<std::pair<unsigned, unsigned>>& dataV
     beginX(dataVector[0].first),
     beginY(dataVector[0].second)
 {
-    unsigned prevStepX = beginX;
-    unsigned prevStepY = beginY;
+    int prevStepX = beginX;
+    int prevStepY = beginY;
 
     for (unsigned i = 1; i < dataVector.size() - 1; i++)
     {
-        unsigned stepX = dataVector[i].first - prevStepX;
-        unsigned stepY = dataVector[i].second - prevStepY;
+        int stepX = dataVector[i].first - prevStepX;
+        int stepY = dataVector[i].second - prevStepY;
 
         steps.emplace_back(stepX, stepY);
 
