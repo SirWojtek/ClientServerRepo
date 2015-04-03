@@ -19,6 +19,12 @@ void KNeighborsFinder<T_input, T_output>::insert(const T_input& input, const T_o
 }
 
 template<class T_input, class T_output>
+void KNeighborsFinder<T_input, T_output>::setDistanceFunction(DistanceFunction func)
+{
+    distanceFunc_ = func;
+}
+
+template<class T_input, class T_output>
 std::vector<T_output> KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
 {
     std::vector<T_output> result;

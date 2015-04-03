@@ -17,6 +17,7 @@ public:
     KNeighborsFinder(DistanceFunction func);
 
     void insert(const T_input& input, const T_output& output);
+    void setDistanceFunction(DistanceFunction func);
     std::vector<T_output> getNeighbors(unsigned k) const;
 
 private:
