@@ -16,6 +16,7 @@
 using boost::asio::ip::tcp;
 using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
 using messagePairVec = std::vector<messagePair>;
+using messageCounter = std::map<common::messagetype::MessageType, unsigned>;
 
 class ServerSession : public std::enable_shared_from_this<ServerSession>, public IServerSession
 {
@@ -27,7 +28,15 @@ public:
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
     console_("ServerSession")
-  { }
+  {
+    messageCounter_[common::messagetype::Incorrect] = 0;
+    messageCounter_[common::messagetype::UpdateEnvironment] = 0;
+    messageCounter_[common::messagetype::UpdatePlayer] = 0;
+    messageCounter_[common::messagetype::OkResponse] = 0;
+    messageCounter_[common::messagetype::Login] = 0;
+    messageCounter_[common::messagetype::CurrentPlayerPosition] = 0;
+    messageCounter_[common::messagetype::Logout] = 0;
+  }
 
   std::shared_ptr<std::thread> start();
   void startThreadsAndRun(std::shared_ptr<IServerSession> self);
@@ -45,6 +54,7 @@ private:
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
   messagePairVec receivedMessages_;
+  messageCounter messageCounter_;
   std::atomic<bool> stop_;
 
   SocketServicePtr readerWrapper_;

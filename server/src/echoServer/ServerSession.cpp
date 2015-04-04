@@ -102,6 +102,7 @@ int ServerSession::getMessage()
     if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
+        messageCounter_[receivedMessageType]++;
         cyclicPushReceivedMessages(receivedMessageType, messageString);
         return (receivedMessages_.size()-1); // index of just inserted value
     }
