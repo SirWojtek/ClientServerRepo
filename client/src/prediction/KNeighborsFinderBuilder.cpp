@@ -9,7 +9,7 @@
 namespace prediction
 {
 
-using DataVector = std::vector<std::pair<unsigned, unsigned>>;
+using DataVector = std::vector<std::pair<int, int>>;
 
 DataVector readDataFile(const std::string& dataFile)
 {
@@ -18,7 +18,7 @@ DataVector readDataFile(const std::string& dataFile)
 
     while(file)
     {
-        unsigned x, y;
+        int x, y;
         file >> x >> y;
 
         result.emplace_back(x, y);
@@ -60,7 +60,7 @@ std::vector<DataVector> getPartitionedData(const std::string& dataFile, unsigned
 }
 
 BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
-    unsigned recordSize, std::function<unsigned(const InputRecord&)> distFunc)
+    unsigned recordSize, std::function<int(const InputRecord&)> distFunc)
 {
     BasicKNeighborFinder finder(distFunc);
     std::vector<DataVector> partitionedData = getPartitionedData(dataFile, recordSize);

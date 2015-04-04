@@ -28,7 +28,8 @@ int main(int argc, char** argv)
 
     for (const auto& neighbor : neighbors)
     {
-        std::cout << "deltaX: " << neighbor.deltaX << " deltaY: " << neighbor.deltaY;
+        std::cout << "positionX: " << neighbor.first.beginX << " positionY: " << neighbor.first.beginY << std::endl; 
+        std::cout << "deltaX: " << neighbor.second.deltaX << " deltaY: " << neighbor.second.deltaY << std::endl;
     }
 
     return 0;

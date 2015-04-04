@@ -11,7 +11,7 @@ struct DeltaRecord
 {
     DeltaRecord();
     DeltaRecord(int deltaX, int deltaY);
-    DeltaRecord(const std::vector<std::pair<unsigned, unsigned>>& dataVector);
+    DeltaRecord(const std::vector<std::pair<int, int>>& dataVector);
 
     bool operator<(const DeltaRecord& a) const;
 
@@ -21,11 +21,11 @@ struct DeltaRecord
 struct InputRecord
 {
     InputRecord();
-    InputRecord(const std::vector<std::pair<unsigned, unsigned>>& dataVector);
+    InputRecord(const std::vector<std::pair<int, int>>& dataVector);
 
     bool operator<(const InputRecord& a) const;
 
-    unsigned beginX, beginY;
+    int beginX, beginY;
     std::vector<DeltaRecord> steps;
 };
 

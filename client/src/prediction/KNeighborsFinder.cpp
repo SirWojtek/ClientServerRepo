@@ -25,14 +25,16 @@ void KNeighborsFinder<T_input, T_output>::setDistanceFunction(DistanceFunction f
 }
 
 template<class T_input, class T_output>
-std::vector<T_output> KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
+std::vector<std::pair<T_input, T_output>>
+KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
 {
-    std::vector<T_output> result;
-    std::map<unsigned, T_input> score = getInputDataScore();
+    NeighborsVector result;
+    std::map<int, T_input> score = getInputDataScore();
 
     for (unsigned i = 0; i < k; i++)
     {
-        result.emplace_back(neighborMap_.at(score.begin()->second));
+        auto closestNeighbor = score.begin();
+        result.emplace_back(closestNeighbor->second, neighborMap_.at(closestNeighbor->second));
         score.erase(score.begin());
     }
 
@@ -40,9 +42,9 @@ std::vector<T_output> KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned
 }
 
 template<class T_input, class T_output>
-std::map<unsigned, T_input> KNeighborsFinder<T_input, T_output>::getInputDataScore() const
+std::map<int, T_input> KNeighborsFinder<T_input, T_output>::getInputDataScore() const
 {
-    std::map<unsigned, T_input> result;
+    std::map<int, T_input> result;
 
     for (const auto& record : neighborMap_)
     {

@@ -13,7 +13,7 @@ namespace prediction
 using BasicKNeighborFinder = KNeighborsFinder<InputRecord, DeltaRecord>;
 
 BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
-    unsigned recordSize, std::function<unsigned(const InputRecord&)> distFunc);
+    unsigned recordSize, std::function<int(const InputRecord&)> distFunc);
 
 }
 

@@ -12,7 +12,7 @@ DeltaRecord::DeltaRecord(int deltaX, int deltaY) :
     deltaX(deltaX),
     deltaY(deltaY) {}
 
-DeltaRecord::DeltaRecord(const std::vector<std::pair<unsigned, unsigned>>& data) :
+DeltaRecord::DeltaRecord(const std::vector<std::pair<int, int>>& data) :
     deltaX(data[data.size() - 1].first - data[data.size() - 2].first),
     deltaY(data[data.size() - 1].second - data[data.size() - 2].second) {}
 
@@ -23,7 +23,7 @@ bool DeltaRecord::operator<(const DeltaRecord& a) const
 
 InputRecord::InputRecord() {}
 
-InputRecord::InputRecord(const std::vector<std::pair<unsigned, unsigned>>& dataVector) :
+InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :
     beginX(dataVector[0].first),
     beginY(dataVector[0].second)
 {
