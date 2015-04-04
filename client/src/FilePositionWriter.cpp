@@ -21,5 +21,5 @@ FilePositionWriter::FilePositionWriter() : console_("FilePositionWriter")
 
 void FilePositionWriter::writePosition(const model::Object::Position& pos)
 {
-    dumpFile_ << pos.x << "\t" << pos.y << std::endl;
+    dumpFile_ << pos.x << " " << pos.y << " ";
 }
