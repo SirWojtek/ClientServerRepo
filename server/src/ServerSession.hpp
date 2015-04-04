@@ -14,6 +14,8 @@
 #include "ISocketServicesWrapper.hpp"
 
 using boost::asio::ip::tcp;
+using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
+using messagePairVec = std::vector<messagePair>;
 
 class ServerSession : public std::enable_shared_from_this<ServerSession>, public IServerSession
 {
@@ -37,11 +39,12 @@ private:
   void runSession();
   int getMessage();
   void sendOkResponse(bool serverAllows);
+  void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
+    std::shared_ptr<std::string> messageString);
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
-  std::vector<std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> > >
-    receivedMessages_;
+  messagePairVec receivedMessages_;
   std::atomic<bool> stop_;
 
   SocketServicePtr readerWrapper_;

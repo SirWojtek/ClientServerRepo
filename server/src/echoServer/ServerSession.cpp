@@ -102,12 +102,27 @@ int ServerSession::getMessage()
     if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
-        receivedMessages_.push_back(
-                std::pair<MessageType, std::shared_ptr<std::string>>(
-                    receivedMessageType, messageString));
+        cyclicPushReceivedMessages(receivedMessageType, messageString);
         return (receivedMessages_.size()-1); // index of just inserted value
     }
     return noMessage_;
+}
+
+void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
+    std::shared_ptr<std::string> messageString)
+{
+    if (receivedMessages_.size() < 100)
+    {
+        receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
+    }
+    else
+    {
+        std::rotate(receivedMessages_.begin(), receivedMessages_.begin()+1,
+            receivedMessages_.end());
+        receivedMessages_.erase(receivedMessages_.end()-1);
+        receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
+    }
+    console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
 void ServerSession::sendOkResponse(bool serwerAllows)
