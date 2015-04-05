@@ -14,7 +14,8 @@ class KNeighborsFinder
 {
 public:
     using DistanceFunction = std::function<int(const T_input&)>;
-    using NeighborsVector = std::vector<std::pair<T_input, T_output>>;
+    using OutputHistogram = std::map<T_output, unsigned>;
+    using NeighborsVector = std::vector<std::pair<T_input, OutputHistogram>>;
 
     KNeighborsFinder(DistanceFunction func);
 
@@ -24,8 +25,10 @@ public:
 
 private:
     std::map<int, T_input> getInputDataScore() const;
+    void updateExistingRecord(
+    	std::pair<const T_input, OutputHistogram>& record, const T_output& output);
 
-    std::map<T_input, T_output> neighborMap_;
+    std::map<T_input, OutputHistogram> neighborMap_;
     DistanceFunction distanceFunc_;
 };
 

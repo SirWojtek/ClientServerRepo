@@ -15,7 +15,32 @@ KNeighborsFinder<T_input, T_output>::KNeighborsFinder(DistanceFunction distanceF
 template<class T_input, class T_output>
 void KNeighborsFinder<T_input, T_output>::insert(const T_input& input, const T_output& output)
 {
-    neighborMap_.emplace(input, output);
+    auto neighborMapIt = neighborMap_.find(input);
+
+    if (neighborMapIt == neighborMap_.end())
+    {
+        OutputHistogram temp = {{output, 1}};
+        neighborMap_.emplace(input, temp);
+        return;
+    }
+
+    updateExistingRecord(*neighborMapIt, output);
+}
+
+template<class T_input, class T_output>
+void KNeighborsFinder<T_input, T_output>::updateExistingRecord(
+    std::pair<const T_input, OutputHistogram>& record, const T_output& output)
+{
+    OutputHistogram& histogram = record.second;
+    auto histogramIt = histogram.find(output);
+
+    if (histogramIt == histogram.end())
+    {
+        histogram.emplace(output, 1);
+        return;
+    }
+
+    histogramIt->second++;
 }
 
 template<class T_input, class T_output>
@@ -25,7 +50,7 @@ void KNeighborsFinder<T_input, T_output>::setDistanceFunction(DistanceFunction f
 }
 
 template<class T_input, class T_output>
-std::vector<std::pair<T_input, T_output>>
+typename KNeighborsFinder<T_input, T_output>::NeighborsVector
 KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
 {
     NeighborsVector result;

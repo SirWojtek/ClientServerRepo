@@ -56,7 +56,16 @@ void feedKNeighborsFinder(BasicKNeighborFinder& finder,
 std::vector<DataVector> getPartitionedData(const std::string& dataFile, unsigned recordSize)
 {
     DataVector rawData = readDataFile(dataFile);
-    return splitDataVector(rawData, recordSize);
+    std::vector<DataVector> result;
+
+    for (unsigned i = 0; i < recordSize; i++)
+    {
+        const auto splitedData = splitDataVector(rawData, recordSize);
+        result.insert(result.end(), splitedData.begin(), splitedData.end());
+        rawData.erase(rawData.begin());
+    }
+
+    return result;
 }
 
 BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
