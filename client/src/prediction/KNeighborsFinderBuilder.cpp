@@ -1,7 +1,6 @@
 
 #include "KNeighborsFinderBuilder.hpp"
 
-#include <vector>
 #include <utility>
 #include <fstream>
 #include <algorithm>
@@ -22,6 +21,18 @@ DataVector readDataFile(const std::string& dataFile)
         file >> x >> y;
 
         result.emplace_back(x, y);
+    }
+
+    return result;
+}
+
+std::vector<DataVector> readFiles(const FileVector& dataFiles)
+{
+    std::vector<DataVector> result;
+
+    for (const auto& file : dataFiles)
+    {
+        result.emplace_back(readDataFile(file));
     }
 
     return result;
@@ -53,26 +64,35 @@ void feedKNeighborsFinder(BasicKNeighborFinder& finder,
     }
 }
 
-std::vector<DataVector> getPartitionedData(const std::string& dataFile, unsigned recordSize)
+void fillPartitionedData(DataVector& rawData,
+    std::vector<DataVector>& partitionedData, unsigned recordSize)
 {
-    DataVector rawData = readDataFile(dataFile);
-    std::vector<DataVector> result;
-
     for (unsigned i = 0; i < recordSize; i++)
     {
         const auto splitedData = splitDataVector(rawData, recordSize);
-        result.insert(result.end(), splitedData.begin(), splitedData.end());
+        partitionedData.insert(partitionedData.end(), splitedData.begin(), splitedData.end());
         rawData.erase(rawData.begin());
-    }
-
-    return result;
+    }   
 }
 
-BasicKNeighborFinder buildKNeighborsFinder(const std::string& dataFile,
+std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned recordSize)
+{
+    std::vector<DataVector> rawData = readFiles(dataFiles);
+    std::vector<DataVector> partitionedData;
+
+    for (DataVector& dataFromFile : rawData)
+    {
+        fillPartitionedData(dataFromFile, partitionedData, recordSize);
+    }
+
+    return partitionedData;
+}
+
+BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFiles,
     unsigned recordSize, std::function<int(const InputRecord&)> distFunc)
 {
     BasicKNeighborFinder finder(distFunc);
-    std::vector<DataVector> partitionedData = getPartitionedData(dataFile, recordSize);
+    std::vector<DataVector> partitionedData = getPartitionedData(dataFiles, recordSize);
 
     feedKNeighborsFinder(finder, partitionedData);
 
