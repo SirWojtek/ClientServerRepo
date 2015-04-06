@@ -25,6 +25,7 @@ public:
     void addTestFile(const std::string& file);
 
     void initPredictionAlgorithm();
+    void runTest() const;
 
 private:
     FileVector databaseFiles_;

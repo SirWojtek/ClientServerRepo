@@ -29,4 +29,9 @@ void PredictionAssistant::initPredictionAlgorithm()
         std::bind(distanceFunction_, &functions_, _1))));
 }
 
+void PredictionAssistant::runTest() const
+{
+    // TODO: read DataVector from test files and form test data
+}
+
 }
