@@ -44,12 +44,15 @@ public:
   void tearDown();
   bool wasClientLoggedInCorrectly();
 
+  messageCounter getMessageCounter();
+  messagePairVec getMessagePairVector();
+  void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
+    std::shared_ptr<std::string> messageString);
+
 private:
   void runSession();
   int getMessage();
   void sendOkResponse(bool serverAllows);
-  void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
-    std::shared_ptr<std::string> messageString);
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;

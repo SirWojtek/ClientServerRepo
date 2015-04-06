@@ -84,3 +84,37 @@ TEST_F(ServerSessionShould, StartAndStopServicesWhenLogoutSignalOccurs)
 
     serverSession_->startThreadsAndRun(serverSession_);
 }
+
+TEST_F(ServerSessionShould, KeepReceivedMessagesVectorAtMaximumSize)
+{
+    for (int i=0; i<150; i++)
+    {
+        std::shared_ptr<std::string> messageString =
+            std::make_shared<std::string>(std::to_string(i));
+        serverSession_->cyclicPushReceivedMessages(common::messagetype::OkResponse, messageString);
+    }
+    ASSERT_EQ(serverSession_->getMessagePairVector().size(), 100);
+    ASSERT_EQ(*(serverSession_->getMessagePairVector()[99].second), "149");
+}
+
+TEST_F(ServerSessionShould, KeepTrackOfMessageTypesAmount)
+{
+    std::shared_ptr<std::string> messageString = std::make_shared<std::string>("Dummy");
+    for (int i=0; i<50; i++)
+    {
+        serverSession_->cyclicPushReceivedMessages(common::messagetype::OkResponse, messageString);
+    }
+    for (int i=0; i<20; i++)
+    {
+        serverSession_->cyclicPushReceivedMessages(common::messagetype::Login, messageString);
+    }
+    for (int i=0; i<30; i++)
+    {
+        serverSession_->cyclicPushReceivedMessages(common::messagetype::UpdateEnvironment,
+            messageString);
+    }
+    auto counter = serverSession_->getMessageCounter();
+    ASSERT_EQ(counter[common::messagetype::OkResponse], 50);
+    ASSERT_EQ(counter[common::messagetype::Login], 20);
+    ASSERT_EQ(counter[common::messagetype::UpdateEnvironment], 30);
+}

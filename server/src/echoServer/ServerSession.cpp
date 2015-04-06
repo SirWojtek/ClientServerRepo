@@ -102,7 +102,6 @@ int ServerSession::getMessage()
     if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
-        messageCounter_[receivedMessageType]++;
         cyclicPushReceivedMessages(receivedMessageType, messageString);
         return (receivedMessages_.size()-1); // index of just inserted value
     }
@@ -123,6 +122,7 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.erase(receivedMessages_.end()-1);
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
+    messageCounter_[receivedMessageType]++;
     console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
@@ -133,4 +133,13 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
+}
+
+messageCounter ServerSession::getMessageCounter()
+{
+    return messageCounter_;
+}
+messagePairVec ServerSession::getMessagePairVector()
+{
+    return receivedMessages_;
 }
