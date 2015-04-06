@@ -7,7 +7,7 @@
 namespace prediction
 {
 
-void DistanceFunctions::setInput(const InputRecord input)
+void DistanceFunctions::setInput(const InputRecord& input)
 {
     this->input = input;
 }

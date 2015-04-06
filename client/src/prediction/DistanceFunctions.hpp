@@ -1,9 +1,10 @@
 #ifndef DISTANCE_FUNCTIONS_HPP_
 #define DISTANCE_FUNCTIONS_HPP_
 
+#include "Records.hpp"
+
 namespace prediction
 {
-struct InputRecord;
 
 class DistanceFunctions
 {

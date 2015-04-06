@@ -75,7 +75,7 @@ void fillPartitionedData(DataVector& rawData,
         const auto splitedData = splitDataVector(rawData, recordSize);
         partitionedData.insert(partitionedData.end(), splitedData.begin(), splitedData.end());
         rawData.erase(rawData.begin());
-    }   
+    }
 }
 
 std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned recordSize)
@@ -92,7 +92,7 @@ std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned
 }
 
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFiles,
-    unsigned recordSize, std::function<int(const InputRecord&)> distFunc)
+    unsigned recordSize, std::function<float(const InputRecord&)> distFunc)
 {
     BasicKNeighborFinder finder(distFunc);
     std::vector<DataVector> partitionedData = getPartitionedData(dataFiles, recordSize);

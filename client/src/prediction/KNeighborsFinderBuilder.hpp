@@ -3,16 +3,12 @@
 
 #include "KNeighborsFinder.hpp"
 #include "Records.hpp"
+#include "PredictionDefinitions.hpp"
 
-#include <vector>
-#include <string>
 #include <functional>
 
 namespace prediction
 {
-
-using BasicKNeighborFinder = KNeighborsFinder<InputRecord, DeltaRecord>;
-using FileVector = std::vector<std::string>;
 
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFile,
     unsigned recordSize, std::function<float(const InputRecord&)> distFunc);
