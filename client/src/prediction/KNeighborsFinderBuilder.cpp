@@ -14,12 +14,10 @@ DataVector readDataFile(const std::string& dataFile)
 {
     std::ifstream file(dataFile);
     DataVector result;
+    int x, y;
 
-    while(file)
+    while((file >> x >> y))
     {
-        int x, y;
-        file >> x >> y;
-
         result.emplace_back(x, y);
     }
 
@@ -69,6 +67,11 @@ void fillPartitionedData(DataVector& rawData,
 {
     for (unsigned i = 0; i < recordSize; i++)
     {
+        if (rawData.size() < recordSize)
+        {
+            break;
+        }
+
         const auto splitedData = splitDataVector(rawData, recordSize);
         partitionedData.insert(partitionedData.end(), splitedData.begin(), splitedData.end());
         rawData.erase(rawData.begin());

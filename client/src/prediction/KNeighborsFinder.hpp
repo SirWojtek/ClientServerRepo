@@ -13,7 +13,7 @@ template<class T_input, class T_output>
 class KNeighborsFinder
 {
 public:
-    using DistanceFunction = std::function<int(const T_input&)>;
+    using DistanceFunction = std::function<float(const T_input&)>;
     using OutputHistogram = std::map<T_output, unsigned>;
     using NeighborsVector = std::vector<std::pair<T_input, OutputHistogram>>;
 
@@ -24,7 +24,7 @@ public:
     NeighborsVector getNeighbors(unsigned k) const;
 
 private:
-    std::map<int, T_input> getInputDataScore() const;
+    std::map<float, T_input> getInputDataScore() const;
     void updateExistingRecord(
     	std::pair<const T_input, OutputHistogram>& record, const T_output& output);
 

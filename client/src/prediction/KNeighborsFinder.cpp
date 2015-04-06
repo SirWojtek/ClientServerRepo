@@ -54,10 +54,15 @@ typename KNeighborsFinder<T_input, T_output>::NeighborsVector
 KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
 {
     NeighborsVector result;
-    std::map<int, T_input> score = getInputDataScore();
+    std::map<float, T_input> score = getInputDataScore();
 
     for (unsigned i = 0; i < k; i++)
     {
+        if (score.empty())
+        {
+            break;
+        }
+
         auto closestNeighbor = score.begin();
         result.emplace_back(closestNeighbor->second, neighborMap_.at(closestNeighbor->second));
         score.erase(score.begin());
@@ -67,9 +72,9 @@ KNeighborsFinder<T_input, T_output>::getNeighbors(unsigned k) const
 }
 
 template<class T_input, class T_output>
-std::map<int, T_input> KNeighborsFinder<T_input, T_output>::getInputDataScore() const
+std::map<float, T_input> KNeighborsFinder<T_input, T_output>::getInputDataScore() const
 {
-    std::map<int, T_input> result;
+    std::map<float, T_input> result;
 
     for (const auto& record : neighborMap_)
     {
