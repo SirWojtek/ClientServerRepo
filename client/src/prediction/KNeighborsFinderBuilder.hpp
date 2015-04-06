@@ -15,7 +15,7 @@ using BasicKNeighborFinder = KNeighborsFinder<InputRecord, DeltaRecord>;
 using FileVector = std::vector<std::string>;
 
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFile,
-    unsigned recordSize, std::function<int(const InputRecord&)> distFunc);
+    unsigned recordSize, std::function<float(const InputRecord&)> distFunc);
 
 }
 
