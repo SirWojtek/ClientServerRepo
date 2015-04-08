@@ -55,6 +55,7 @@ void ServerSession::runSession()
         }
     }
     tearDown();
+    printMessageCounter();
     console_.info << "Server session stopped.";
 }
 
@@ -133,6 +134,20 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
+}
+
+void ServerSession::printMessageCounter()
+{
+    console_.info << "____________________";
+    console_.info << "Message Counter:";
+    console_.info << "Incorrect:             " + std::to_string(messageCounter_[common::messagetype::Incorrect]);
+    console_.info << "UpdateEnvironment:     " + std::to_string(messageCounter_[common::messagetype::UpdateEnvironment]);
+    console_.info << "UpdatePlayer:          " + std::to_string(messageCounter_[common::messagetype::UpdatePlayer]);
+    console_.info << "OkResponse:            " + std::to_string(messageCounter_[common::messagetype::OkResponse]);
+    console_.info << "Login:                 " + std::to_string(messageCounter_[common::messagetype::Login]);
+    console_.info << "CurrentPlayerPosition: " + std::to_string(messageCounter_[common::messagetype::CurrentPlayerPosition]);
+    console_.info << "Logout:                " + std::to_string(messageCounter_[common::messagetype::Logout]);
+    console_.info << "____________________";
 }
 
 messageCounter ServerSession::getMessageCounter()

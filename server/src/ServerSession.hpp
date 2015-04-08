@@ -53,6 +53,7 @@ private:
   void runSession();
   int getMessage();
   void sendOkResponse(bool serverAllows);
+  void printMessageCounter();
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
