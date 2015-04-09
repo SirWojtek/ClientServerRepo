@@ -1,0 +1,1 @@
+add_library(fullServerCore ServerSession.cpp)

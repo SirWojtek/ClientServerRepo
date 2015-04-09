@@ -13,6 +13,8 @@
 #include "IBoostWrapper.hpp"
 #include "ISocketServicesWrapper.hpp"
 
+#include "modules/database/MysqlDatabaseWrapper.hpp"
+
 using boost::asio::ip::tcp;
 using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
 using messagePairVec = std::vector<messagePair>;
@@ -66,6 +68,8 @@ private:
 
   ThreadPtr readerThread_;
   ThreadPtr writerThread_;
+
+  std::shared_ptr<DatabaseWrapper> databaseConnector_;
   
   Console console_;
 
