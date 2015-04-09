@@ -46,11 +46,12 @@ public:
   void stop();
   void tearDown();
   bool wasClientLoggedInCorrectly();
-
   messageCounter getMessageCounter();
   messagePairVec getMessagePairVector();
   void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
     std::shared_ptr<std::string> messageString);
+
+  void makeDatabaseConnection(std::string name);
 
 private:
   void runSession();
@@ -62,7 +63,9 @@ private:
   int socketNumber_;
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
+
   std::atomic<bool> stop_;
+  std::shared_ptr<std::string> databaseName_;
 
   SocketServicePtr readerWrapper_;
   SocketServicePtr writerWrapper_;

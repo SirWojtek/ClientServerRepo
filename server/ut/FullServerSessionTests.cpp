@@ -19,7 +19,9 @@ protected:
     readerMock_(std::make_shared<SocketServicesWrapperMock>()),
     writerMock_(std::make_shared<SocketServicesWrapperMock>()),
     serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1))
-    {}
+    {
+        serverSession_->makeDatabaseConnection(std::string("test_db"));
+    }
 
     void setStartSessionExpectations()
     {
@@ -79,7 +81,6 @@ TEST_F(ServerSessionShould, StartAndStopServicesWhenLogoutSignalOccurs)
     EXPECT_CALL(*writerMock_, pushMessage(json3));
     EXPECT_CALL(*writerMock_, waitForEmptyQueueWithTimeout());
 
-
     setTearDownExpectations();
 
     serverSession_->startThreadsAndRun(serverSession_);
@@ -117,4 +118,40 @@ TEST_F(ServerSessionShould, KeepTrackOfMessageTypesAmount)
     ASSERT_EQ(counter[common::messagetype::OkResponse], 50);
     ASSERT_EQ(counter[common::messagetype::Login], 20);
     ASSERT_EQ(counter[common::messagetype::UpdateEnvironment], 30);
+}
+
+TEST_F(ServerSessionShould, ValidateUserLoginWithCorrectLogin)
+{
+    common::Login loginMessage;
+    loginMessage.playerName = "Gettor";
+    std::string json = common::getMessageJson<common::Login>(loginMessage);
+
+    common::OkResponse okMessage;
+    okMessage.serverAllows = true;;
+    std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    EXPECT_CALL(*readerMock_, popMessage())
+        .WillOnce(Return(std::make_shared<std::string>(json)));
+
+    EXPECT_CALL(*writerMock_, pushMessage(json2));
+
+    ASSERT_TRUE(serverSession_->wasClientLoggedInCorrectly());
+}
+
+TEST_F(ServerSessionShould, ValidateUserLoginWithIncorrectLogin)
+{
+    common::Login loginMessage;
+    loginMessage.playerName = "Gettor69857498";
+    std::string json = common::getMessageJson<common::Login>(loginMessage);
+
+    common::OkResponse okMessage;
+    okMessage.serverAllows = false;;
+    std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    EXPECT_CALL(*readerMock_, popMessage())
+        .WillOnce(Return(std::make_shared<std::string>(json)));
+
+    EXPECT_CALL(*writerMock_, pushMessage(json2));
+    
+    ASSERT_TRUE(!serverSession_->wasClientLoggedInCorrectly());
 }

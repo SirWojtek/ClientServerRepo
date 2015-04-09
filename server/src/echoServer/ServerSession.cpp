@@ -163,3 +163,6 @@ messagePairVec ServerSession::getMessagePairVector()
 {
     return receivedMessages_;
 }
+
+void ServerSession::makeDatabaseConnection(std::string name)
+{ }

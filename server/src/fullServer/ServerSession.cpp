@@ -14,9 +14,17 @@ std::shared_ptr<std::thread> ServerSession::start()
         this, shared_from_this());
 }
 
+void ServerSession::makeDatabaseConnection(std::string name)
+{
+    databaseConnector_ = std::make_shared<DatabaseWrapper>(name);
+}
+
 void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 {
-    databaseConnector_ = std::make_shared<DatabaseWrapper>("test_db");
+    if (databaseConnector_ == nullptr)
+    {
+        databaseConnector_ = std::make_shared<DatabaseWrapper>("game_db");
+    }
 
     readerWrapper_->createReaderForQueue(wrapper_, socketNumber_);
     writerWrapper_->createWriterForQueue(wrapper_, socketNumber_);
