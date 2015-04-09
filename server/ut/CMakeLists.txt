@@ -5,6 +5,11 @@ include_directories("mocks")
 
 file(GLOB TEST_SOURCE "*.cpp")
 
-add_executable(serverTest ${TEST_SOURCE})
-target_link_libraries(serverTest utilities database echoServerCore serverCore socketServicesWrapper ${GTEST_BOTH_LIBRARIES} gmock boost_system messages)
+add_executable(serverCoreTest MysqlDatabaseWrapperTests.cpp ServerInitializerTests.cpp SocketServicesWrapperTests.cpp)
+add_executable(echoServerTest EchoServerSessionTests.cpp)
+add_executable(fullServerTest FullServerSessionTests.cpp)
+
+target_link_libraries(serverCoreTest serverCore echoServerCore ${GTEST_BOTH_LIBRARIES} gmock)
+target_link_libraries(echoServerTest serverCore echoServerCore ${GTEST_BOTH_LIBRARIES} gmock)
+target_link_libraries(fullServerTest serverCore fullServerCore ${GTEST_BOTH_LIBRARIES} gmock)
 
