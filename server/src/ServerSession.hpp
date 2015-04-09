@@ -31,6 +31,7 @@ public:
     writerWrapper_(writerWrapper),
     console_("ServerSession")
   {
+    console_.info << "New server session with socket number: " + std::to_string(socketNumber_);
     messageCounter_[common::messagetype::Incorrect] = 0;
     messageCounter_[common::messagetype::UpdateEnvironment] = 0;
     messageCounter_[common::messagetype::UpdatePlayer] = 0;

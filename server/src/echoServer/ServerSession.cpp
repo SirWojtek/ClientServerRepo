@@ -103,6 +103,11 @@ int ServerSession::getMessage()
     if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
+
+        std::size_t foundSemiColon = messageString->find(";");
+        messageString = std::make_shared<std::string>(
+            messageString->substr(0, foundSemiColon)); // remove needless semi-colon at the end
+        
         cyclicPushReceivedMessages(receivedMessageType, messageString);
         return (receivedMessages_.size()-1); // index of just inserted value
     }
