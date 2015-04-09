@@ -8,7 +8,6 @@
 #include <memory>
 #include <map>
 #include <stdexcept>
-#include <iostream>
 
 #include <cereal/archives/json.hpp>
 #include <cereal/details/helpers.hpp>
@@ -60,8 +59,9 @@ std::shared_ptr<MessageT> getMessage(const std::string& jsonString)
     }
     catch (cereal::Exception e)
     {
-        std::cout << "SIEMANO: ";
-        std::cout << e.what() << std::endl;
+        /* Uncomment below lines and include iostream for debug messages */
+        // std::cout << "SIEMANO: ";
+        // std::cout << e.what() << std::endl;
         result = nullptr;
     }
 
