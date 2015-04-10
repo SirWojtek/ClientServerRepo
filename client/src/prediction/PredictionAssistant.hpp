@@ -8,6 +8,7 @@
 #include <functional>
 #include <memory>
 #include <vector>
+#include <map>
 
 namespace prediction
 {
@@ -17,21 +18,28 @@ class PredictionAssistant
 public:
     using PredictionFunction =
         std::function<float(const DistanceFunctions*, const InputRecord&)>;
+    using TestData = std::map<InputRecord, DeltaRecord>;
 
-    PredictionAssistant(unsigned recordSize,
+    PredictionAssistant(unsigned recordSize, unsigned k,
         PredictionFunction distanceFunc);
+    ~PredictionAssistant();
 
     void addDatabaseFile(const std::string& file);
     void addTestFile(const std::string& file);
 
     void initPredictionAlgorithm();
-    void runTest() const;
+    std::vector<bool> runTest();
 
 private:
+    TestData getTestData() const;
+    std::pair<InputRecord, DeltaRecord> convertToTestData(const DataVector& raw) const;
+    bool getTestResult(const std::pair<InputRecord, DeltaRecord>& test);
+
     FileVector databaseFiles_;
     FileVector testFiles_;
 
     const unsigned recordSize_;
+    const unsigned k_;
     const PredictionFunction distanceFunction_;
 
     DistanceFunctions functions_;

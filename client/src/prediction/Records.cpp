@@ -21,6 +21,11 @@ bool DeltaRecord::operator<(const DeltaRecord& a) const
     return std::tie(deltaX, deltaY) < std::tie(a.deltaX, a.deltaY);
 }
 
+bool DeltaRecord::operator==(const DeltaRecord& a) const
+{
+    return deltaX == a.deltaX && deltaY == a.deltaY;
+}
+
 InputRecord::InputRecord() {}
 
 InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :

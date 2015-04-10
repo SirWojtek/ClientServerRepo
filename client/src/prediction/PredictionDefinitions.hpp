@@ -14,6 +14,7 @@ struct DeltaRecord;
 
 using BasicKNeighborFinder = KNeighborsFinder<InputRecord, DeltaRecord>;
 using FileVector = std::vector<std::string>;
+using DataVector = std::vector<std::pair<int, int>>;
 
 }
 

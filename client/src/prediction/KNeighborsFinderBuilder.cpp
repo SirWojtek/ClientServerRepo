@@ -8,8 +8,6 @@
 namespace prediction
 {
 
-using DataVector = std::vector<std::pair<int, int>>;
-
 DataVector readDataFile(const std::string& dataFile)
 {
     std::ifstream file(dataFile);

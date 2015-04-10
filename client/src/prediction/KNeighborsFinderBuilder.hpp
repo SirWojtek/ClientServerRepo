@@ -13,6 +13,8 @@ namespace prediction
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFile,
     unsigned recordSize, std::function<float(const InputRecord&)> distFunc);
 
+std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned recordSize);
+
 }
 
 #endif  // K_NEIGHBORS_FINDER_BUILDER_HPP_

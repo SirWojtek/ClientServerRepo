@@ -14,6 +14,7 @@ struct DeltaRecord
     DeltaRecord(const std::vector<std::pair<int, int>>& dataVector);
 
     bool operator<(const DeltaRecord& a) const;
+    bool operator==(const DeltaRecord& a) const;
 
     int deltaX, deltaY;
 };
