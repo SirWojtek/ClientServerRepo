@@ -13,6 +13,8 @@
 #include "IBoostWrapper.hpp"
 #include "ISocketServicesWrapper.hpp"
 
+#include "modules/database/IDatabaseWrapper.hpp"
+
 using boost::asio::ip::tcp;
 using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
 using messagePairVec = std::vector<messagePair>;
@@ -22,13 +24,16 @@ class ServerSession : public std::enable_shared_from_this<ServerSession>, public
 {
 public:
   ServerSession(std::shared_ptr<IBoostWrapper> wrapper, SocketServicePtr readerWrapper,
-    SocketServicePtr writerWrapper, int socketNumber):
+    SocketServicePtr writerWrapper, int socketNumber,
+    std::shared_ptr<IDatabaseWrapper> databaseConnector):
     wrapper_(wrapper),
     socketNumber_(socketNumber),
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
+    databaseConnector_(databaseConnector),
     console_("ServerSession")
   {
+    console_.info << "New server session with socket number: " + std::to_string(socketNumber_);
     messageCounter_[common::messagetype::Incorrect] = 0;
     messageCounter_[common::messagetype::UpdateEnvironment] = 0;
     messageCounter_[common::messagetype::UpdatePlayer] = 0;
@@ -43,7 +48,6 @@ public:
   void stop();
   void tearDown();
   bool wasClientLoggedInCorrectly();
-
   messageCounter getMessageCounter();
   messagePairVec getMessagePairVector();
   void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
@@ -53,11 +57,13 @@ private:
   void runSession();
   int getMessage();
   void sendOkResponse(bool serverAllows);
+  void printMessageCounter();
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
+
   std::atomic<bool> stop_;
 
   SocketServicePtr readerWrapper_;
@@ -65,6 +71,8 @@ private:
 
   ThreadPtr readerThread_;
   ThreadPtr writerThread_;
+
+  std::shared_ptr<IDatabaseWrapper> databaseConnector_;
   
   Console console_;
 

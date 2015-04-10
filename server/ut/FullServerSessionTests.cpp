@@ -1,5 +1,8 @@
+#include <ctime>
+
 #include "mocks/BoostWrapperMock.hpp"
 #include "mocks/SocketServicesWrapperMock.hpp"
+#include "mocks/DatabaseWrapperMock.hpp"
 #include "server/src/ServerSession.hpp"
 
 #include "common/messages/MessageUtilities.hpp"
@@ -18,8 +21,10 @@ protected:
     boostWrapperMock_(std::make_shared<BoostWrapperMock>()),
     readerMock_(std::make_shared<SocketServicesWrapperMock>()),
     writerMock_(std::make_shared<SocketServicesWrapperMock>()),
-    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1))
-    {}
+    databaseWrapperMock_(std::make_shared<DatabaseWrapperMock>()),
+    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1,
+        databaseWrapperMock_))
+    { }
 
     void setStartSessionExpectations()
     {
@@ -39,9 +44,28 @@ protected:
         EXPECT_CALL(*writerMock_, stopCommander());
     }
 
+    void setValidDatabaseGetUserExpect(std::string& login)
+    {
+        const long int dummyTime = 10000;
+        User dummyTuple{1, std::string("Gettor"), *localtime(&dummyTime), 1, 20, 20, 0};
+        Users dummyTupleVector;
+        dummyTupleVector.push_back(dummyTuple);
+
+        EXPECT_CALL(*databaseWrapperMock_, getUsersBy(UserTypes::LOGIN, login))
+            .WillOnce(Return(dummyTupleVector));
+    }
+
+    void setInvalidDatabaseGetUserExpect(std::string& login)
+    {
+        Users dummyTupleVector;
+        EXPECT_CALL(*databaseWrapperMock_, getUsersBy(UserTypes::LOGIN, login))
+            .WillOnce(Return(dummyTupleVector));
+    }
+
     std::shared_ptr<BoostWrapperMock> boostWrapperMock_;
     std::shared_ptr<SocketServicesWrapperMock> readerMock_;
     std::shared_ptr<SocketServicesWrapperMock> writerMock_;
+    std::shared_ptr<DatabaseWrapperMock> databaseWrapperMock_;
     std::shared_ptr<ServerSession> serverSession_;
 };
 
@@ -70,6 +94,8 @@ TEST_F(ServerSessionShould, StartAndStopServicesWhenLogoutSignalOccurs)
     okMessage.serverAllows = true;;
     std::string json3 = common::getMessageJson<common::OkResponse>(okMessage);
 
+    setValidDatabaseGetUserExpect(loginMessage.playerName);
+
     setStartSessionExpectations();
 
     EXPECT_CALL(*readerMock_, popMessage())
@@ -78,7 +104,6 @@ TEST_F(ServerSessionShould, StartAndStopServicesWhenLogoutSignalOccurs)
 
     EXPECT_CALL(*writerMock_, pushMessage(json3));
     EXPECT_CALL(*writerMock_, waitForEmptyQueueWithTimeout());
-
 
     setTearDownExpectations();
 
@@ -117,4 +142,44 @@ TEST_F(ServerSessionShould, KeepTrackOfMessageTypesAmount)
     ASSERT_EQ(counter[common::messagetype::OkResponse], 50);
     ASSERT_EQ(counter[common::messagetype::Login], 20);
     ASSERT_EQ(counter[common::messagetype::UpdateEnvironment], 30);
+}
+
+TEST_F(ServerSessionShould, ValidateUserLoginWithCorrectLogin)
+{
+    common::Login loginMessage;
+    loginMessage.playerName = "Gettor";
+    std::string json = common::getMessageJson<common::Login>(loginMessage);
+
+    common::OkResponse okMessage;
+    okMessage.serverAllows = true;;
+    std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    setValidDatabaseGetUserExpect(loginMessage.playerName);
+
+    EXPECT_CALL(*readerMock_, popMessage())
+        .WillOnce(Return(std::make_shared<std::string>(json)));
+
+    EXPECT_CALL(*writerMock_, pushMessage(json2));
+
+    ASSERT_TRUE(serverSession_->wasClientLoggedInCorrectly());
+}
+
+TEST_F(ServerSessionShould, ValidateUserLoginWithIncorrectLogin)
+{
+    common::Login loginMessage;
+    loginMessage.playerName = "Gettor69857498";
+    std::string json = common::getMessageJson<common::Login>(loginMessage);
+
+    common::OkResponse okMessage;
+    okMessage.serverAllows = false;;
+    std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    setInvalidDatabaseGetUserExpect(loginMessage.playerName);
+
+    EXPECT_CALL(*readerMock_, popMessage())
+        .WillOnce(Return(std::make_shared<std::string>(json)));
+
+    EXPECT_CALL(*writerMock_, pushMessage(json2));
+    
+    ASSERT_TRUE(!serverSession_->wasClientLoggedInCorrectly());
 }

@@ -4,6 +4,7 @@
 #include "server/src/ServerSession.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
+using namespace common;
 using common::messagetype::MessageType;
 using boost::asio::ip::tcp;
 
@@ -90,10 +91,25 @@ bool ServerSession::wasClientLoggedInCorrectly()
     {
         if (receivedMessages_[messageIndex].first == MessageType::Login)
         {
-            sendOkResponse(true);
-            return true;
+            auto loginMessage = common::getMessage<common::Login>(
+                *receivedMessages_[messageIndex].second);
+            if (loginMessage == nullptr)
+            {
+                console_.error << "Something went wrong with deserializing: " + *receivedMessages_[messageIndex].second;
+                sendOkResponse(false);
+                return false;
+            }
+            Users loginData = databaseConnector_->getUsersBy(
+                UserTypes::LOGIN, loginMessage->playerName);
+            if (loginData.size() == 1)
+            {
+                console_.info << "Login failed for user: " + loginMessage->playerName;
+                sendOkResponse(true);
+                return true;
+            }
         }
     }
+    sendOkResponse(false);
     return false;
 }
 
@@ -129,7 +145,7 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
     messageCounter_[receivedMessageType]++;
-    console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
+    //console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
 void ServerSession::sendOkResponse(bool serwerAllows)

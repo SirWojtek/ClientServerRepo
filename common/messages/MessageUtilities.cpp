@@ -59,6 +59,9 @@ std::shared_ptr<MessageT> getMessage(const std::string& jsonString)
     }
     catch (cereal::Exception e)
     {
+        /* Uncomment below lines and include iostream for debug messages */
+        // std::cout << "SIEMANO: ";
+        // std::cout << e.what() << std::endl;
         result = nullptr;
     }
 
