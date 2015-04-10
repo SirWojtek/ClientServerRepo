@@ -28,6 +28,16 @@ int main(int argc, char** argv)
     FileVector files = getFiles(argc, argv);
     PredictionAssistant assistant(3, 3, &DistanceFunctions::startPointsDistance);
 
+    for (unsigned i = 0; i < files.size() - 1; i++)
+    {
+        std::cout << "Adding " << files[i] << " as database file" << std::endl;
+        assistant.addDatabaseFile(files[i]);
+    }
+
+    std::cout << "Adding " << files.back() << " as test file" << std::endl;
+    assistant.addTestFile(files.back());
+    assistant.initPredictionAlgorithm();
+    std::cout << "Successful loaded prediction algorithm" << std::endl;
 
     return 0;
 }
