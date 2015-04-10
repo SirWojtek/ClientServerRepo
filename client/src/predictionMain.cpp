@@ -3,6 +3,7 @@
 #include "prediction/DistanceFunctions.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 prediction::FileVector getFiles(int argc, char** argv)
 {
@@ -38,6 +39,13 @@ int main(int argc, char** argv)
     assistant.addTestFile(files.back());
     assistant.initPredictionAlgorithm();
     std::cout << "Successful loaded prediction algorithm" << std::endl;
+
+    std::cout << "Running test..." << std::endl;
+    std::vector<bool> results = assistant.runTest();
+
+    int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
+    float floatPassed = static_cast<float>(passed)/static_cast<float>(results.size());
+    std::cout << "Percent prediction match: " << floatPassed * 100 << std::endl;
 
     return 0;
 }
