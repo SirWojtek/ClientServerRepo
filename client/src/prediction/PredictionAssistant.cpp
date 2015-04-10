@@ -37,6 +37,7 @@ void PredictionAssistant::initPredictionAlgorithm()
         buildKNeighborsFinder(databaseFiles_, recordSize_,
         std::bind(distanceFunction_, &functions_, _1))));
     std::cout << "Successful loaded prediction algorithm" << std::endl;
+    // finder_->printInfo();
 }
 
 std::vector<bool> PredictionAssistant::runTest()

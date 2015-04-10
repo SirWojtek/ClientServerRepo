@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <iostream>
 
 namespace prediction
 {
@@ -25,6 +26,20 @@ void KNeighborsFinder<T_input, T_output>::insert(const T_input& input, const T_o
     }
 
     updateExistingRecord(*neighborMapIt, output);
+}
+
+template<class T_input, class T_output>
+void KNeighborsFinder<T_input, T_output>::printInfo() const
+{
+    for (const auto& record : neighborMap_)
+    {
+        std::cout << "Input: " << record.first << std::endl;
+        for (const auto& histogramRecord : record.second)
+        {
+            std::cout << "Output: " << histogramRecord.first <<
+                " count: " << histogramRecord.second << std::endl;
+        }
+    }
 }
 
 template<class T_input, class T_output>

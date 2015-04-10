@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <ostream>
 
 namespace prediction
 {
@@ -19,6 +20,8 @@ struct DeltaRecord
     int deltaX, deltaY;
 };
 
+std::ostream& operator<<(std::ostream& stream, const DeltaRecord& x);
+
 struct InputRecord
 {
     InputRecord();
@@ -30,6 +33,7 @@ struct InputRecord
     std::vector<DeltaRecord> steps;
 };
 
+std::ostream& operator<<(std::ostream& stream, const InputRecord& x);
 
 }
 

@@ -26,6 +26,11 @@ bool DeltaRecord::operator==(const DeltaRecord& a) const
     return deltaX == a.deltaX && deltaY == a.deltaY;
 }
 
+std::ostream& operator<<(std::ostream& stream, const DeltaRecord& x)
+{
+    return stream << "( " << x.deltaX << " , " << x.deltaY << ")";
+}
+
 InputRecord::InputRecord() {}
 
 InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :
@@ -50,6 +55,19 @@ InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :
 bool InputRecord::operator<(const InputRecord& a) const
 {
     return std::tie(beginX, beginY, steps) < std::tie(a.beginX, a.beginY, a.steps);
+}
+
+std::ostream& operator<<(std::ostream& stream, const InputRecord& x)
+{
+    stream << "( " << x.beginX << " , " << x.beginY << ") -> ";
+
+    for (unsigned i = 0; i < x.steps.size() - 1; i++)
+    {
+        stream << x.steps[i] << " -> ";
+    }
+    stream << x.steps.back();
+
+    return stream;
 }
 
 }

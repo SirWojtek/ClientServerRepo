@@ -20,6 +20,7 @@ public:
     KNeighborsFinder(DistanceFunction func);
 
     void insert(const T_input& input, const T_output& output);
+    void printInfo() const;
     void setDistanceFunction(DistanceFunction func);
     NeighborsVector getNeighbors(unsigned k) const;
 
