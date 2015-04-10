@@ -6,7 +6,9 @@
 namespace prediction
 {
 
-DeltaRecord::DeltaRecord() {}
+DeltaRecord::DeltaRecord() :
+    deltaX(0),
+    deltaY(0) {}
 
 DeltaRecord::DeltaRecord(int deltaX, int deltaY) :
     deltaX(deltaX),
@@ -24,6 +26,11 @@ bool DeltaRecord::operator<(const DeltaRecord& a) const
 bool DeltaRecord::operator==(const DeltaRecord& a) const
 {
     return deltaX == a.deltaX && deltaY == a.deltaY;
+}
+
+DeltaRecord DeltaRecord::operator+(const DeltaRecord& a) const
+{
+    return DeltaRecord(deltaX + a.deltaX, deltaY + a.deltaY);
 }
 
 std::ostream& operator<<(std::ostream& stream, const DeltaRecord& x)

@@ -16,6 +16,7 @@ struct DeltaRecord
 
     bool operator<(const DeltaRecord& a) const;
     bool operator==(const DeltaRecord& a) const;
+    DeltaRecord operator+(const DeltaRecord& a) const;
 
     int deltaX, deltaY;
 };
