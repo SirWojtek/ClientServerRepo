@@ -31,16 +31,11 @@ int main(int argc, char** argv)
 
     for (unsigned i = 0; i < files.size() - 1; i++)
     {
-        std::cout << "Adding " << files[i] << " as database file" << std::endl;
         assistant.addDatabaseFile(files[i]);
     }
 
-    std::cout << "Adding " << files.back() << " as test file" << std::endl;
     assistant.addTestFile(files.back());
     assistant.initPredictionAlgorithm();
-    std::cout << "Successful loaded prediction algorithm" << std::endl;
-
-    std::cout << "Running test..." << std::endl;
     std::vector<bool> results = assistant.runTest();
 
     int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });

@@ -4,6 +4,7 @@
 #include <utility>
 #include <fstream>
 #include <algorithm>
+#include <iostream>
 
 namespace prediction
 {
@@ -19,6 +20,7 @@ DataVector readDataFile(const std::string& dataFile)
         result.emplace_back(x, y);
     }
 
+    std::cout << "Readed " << result.size() << " positions from " << dataFile << std::endl;
     return result;
 }
 
@@ -50,8 +52,10 @@ std::vector<DataVector> splitDataVector(const DataVector& dataVector, unsigned f
 }
 
 void feedKNeighborsFinder(BasicKNeighborFinder& finder,
-    const std::vector<DataVector> partitionedData)
+    const std::vector<DataVector>& partitionedData)
 {
+    std::cout << "Feeding finder with " << partitionedData.size() << " records" << std::endl;
+
     for (const auto& part : partitionedData)
     {
         InputRecord inputRecord(part);

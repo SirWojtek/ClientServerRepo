@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 namespace prediction
 {
@@ -20,11 +21,13 @@ PredictionAssistant::~PredictionAssistant() {}
 
 void PredictionAssistant::addDatabaseFile(const std::string& file)
 {
+    std::cout << "Adding " << file << " as database file" << std::endl;
     databaseFiles_.emplace_back(file);
 }
 
 void PredictionAssistant::addTestFile(const std::string& file)
 {
+    std::cout << "Adding " << file << " as test file" << std::endl;
     testFiles_.emplace_back(file);
 }
 
@@ -33,13 +36,16 @@ void PredictionAssistant::initPredictionAlgorithm()
     finder_.reset(new BasicKNeighborFinder(
         buildKNeighborsFinder(databaseFiles_, recordSize_,
         std::bind(distanceFunction_, &functions_, _1))));
+    std::cout << "Successful loaded prediction algorithm" << std::endl;
 }
 
 std::vector<bool> PredictionAssistant::runTest()
 {
     TestData testData = getTestData();
     std::vector<bool> testResults;
+    std::cout << "Test iterations: " << testData.size() << std::endl;
 
+    std::cout << "Running test..." << std::endl;
     std::transform(testData.begin(), testData.end(), std::back_inserter(testResults),
         std::bind(&PredictionAssistant::getTestResult, this, _1));
 
