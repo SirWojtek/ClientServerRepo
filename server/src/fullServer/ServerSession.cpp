@@ -14,18 +14,8 @@ std::shared_ptr<std::thread> ServerSession::start()
         this, shared_from_this());
 }
 
-void ServerSession::makeDatabaseConnection(std::string name)
-{
-    databaseConnector_ = std::make_shared<DatabaseWrapper>(name);
-}
-
 void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 {
-    if (databaseConnector_ == nullptr)
-    {
-        databaseConnector_ = std::make_shared<DatabaseWrapper>("game_db");
-    }
-
     readerWrapper_->createReaderForQueue(wrapper_, socketNumber_);
     writerWrapper_->createWriterForQueue(wrapper_, socketNumber_);
 
@@ -155,7 +145,7 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
     messageCounter_[receivedMessageType]++;
-    console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
+    //console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
 void ServerSession::sendOkResponse(bool serwerAllows)

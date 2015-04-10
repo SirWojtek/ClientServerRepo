@@ -13,7 +13,7 @@
 #include "IBoostWrapper.hpp"
 #include "ISocketServicesWrapper.hpp"
 
-#include "modules/database/MysqlDatabaseWrapper.hpp"
+#include "modules/database/IDatabaseWrapper.hpp"
 
 using boost::asio::ip::tcp;
 using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
@@ -24,11 +24,13 @@ class ServerSession : public std::enable_shared_from_this<ServerSession>, public
 {
 public:
   ServerSession(std::shared_ptr<IBoostWrapper> wrapper, SocketServicePtr readerWrapper,
-    SocketServicePtr writerWrapper, int socketNumber):
+    SocketServicePtr writerWrapper, int socketNumber,
+    std::shared_ptr<IDatabaseWrapper> databaseConnector):
     wrapper_(wrapper),
     socketNumber_(socketNumber),
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
+    databaseConnector_(databaseConnector),
     console_("ServerSession")
   {
     console_.info << "New server session with socket number: " + std::to_string(socketNumber_);
@@ -51,8 +53,6 @@ public:
   void cyclicPushReceivedMessages(common::messagetype::MessageType receivedMessageType,
     std::shared_ptr<std::string> messageString);
 
-  void makeDatabaseConnection(std::string name);
-
 private:
   void runSession();
   int getMessage();
@@ -65,7 +65,6 @@ private:
   messageCounter messageCounter_;
 
   std::atomic<bool> stop_;
-  std::shared_ptr<std::string> databaseName_;
 
   SocketServicePtr readerWrapper_;
   SocketServicePtr writerWrapper_;
@@ -73,7 +72,7 @@ private:
   ThreadPtr readerThread_;
   ThreadPtr writerThread_;
 
-  std::shared_ptr<DatabaseWrapper> databaseConnector_;
+  std::shared_ptr<IDatabaseWrapper> databaseConnector_;
   
   Console console_;
 

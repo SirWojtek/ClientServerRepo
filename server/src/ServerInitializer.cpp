@@ -9,6 +9,7 @@
 ServerInitializer::ServerInitializer(
     std::shared_ptr<IBoostWrapper> wrapper) :
     wrapper_(wrapper),
+    databaseConnector_(std::make_shared<DatabaseWrapper>(std::string("game_db"))),
     console_("ServerInitializer")
 { }
 
@@ -21,7 +22,7 @@ void ServerInitializer::runAsyncAccept()
     session_ = std::make_shared<ServerSession>(wrapper_,
         std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
         std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
-        wrapper_->getLatestSocketNumber());
+        wrapper_->getLatestSocketNumber(), databaseConnector_);
     wrapper_->startAccepting(*session_, this, wrapper_->getLatestSocketNumber());
 }
 
@@ -35,7 +36,7 @@ void ServerInitializer::handleAccept(const boost::system::error_code& error)
         session_ = std::make_shared<ServerSession>(wrapper_,
             std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
             std::make_shared<SocketServicesWrapper>(std::make_shared<MessageQueue>()),
-            wrapper_->getLatestSocketNumber());
+            wrapper_->getLatestSocketNumber(), databaseConnector_);
         wrapper_->startAccepting(*session_, this,  wrapper_->getLatestSocketNumber());
     }
 }

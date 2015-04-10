@@ -16,7 +16,6 @@ public:
   virtual void stop() = 0;
   virtual void tearDown() = 0;
   virtual bool wasClientLoggedInCorrectly() = 0;
-  virtual void makeDatabaseConnection(std::string name) = 0;
 };
 
 #endif

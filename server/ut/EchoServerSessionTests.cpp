@@ -1,5 +1,6 @@
 #include "mocks/BoostWrapperMock.hpp"
 #include "mocks/SocketServicesWrapperMock.hpp"
+#include "mocks/DatabaseWrapperMock.hpp"
 #include "server/src/ServerSession.hpp"
 
 #include "common/messages/MessageUtilities.hpp"
@@ -18,7 +19,9 @@ protected:
     boostWrapperMock_(std::make_shared<BoostWrapperMock>()),
     readerMock_(std::make_shared<SocketServicesWrapperMock>()),
     writerMock_(std::make_shared<SocketServicesWrapperMock>()),
-    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1))
+    databaseWrapperMock_(std::make_shared<DatabaseWrapperMock>()),
+    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1,
+        databaseWrapperMock_))
     {}
 
     void setStartSessionExpectations()
@@ -42,6 +45,7 @@ protected:
     std::shared_ptr<BoostWrapperMock> boostWrapperMock_;
     std::shared_ptr<SocketServicesWrapperMock> readerMock_;
     std::shared_ptr<SocketServicesWrapperMock> writerMock_;
+    std::shared_ptr<DatabaseWrapperMock> databaseWrapperMock_;
     std::shared_ptr<ServerSession> serverSession_;
 };
 

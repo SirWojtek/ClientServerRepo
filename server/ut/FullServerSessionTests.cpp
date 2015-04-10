@@ -1,5 +1,8 @@
+#include <ctime>
+
 #include "mocks/BoostWrapperMock.hpp"
 #include "mocks/SocketServicesWrapperMock.hpp"
+#include "mocks/DatabaseWrapperMock.hpp"
 #include "server/src/ServerSession.hpp"
 
 #include "common/messages/MessageUtilities.hpp"
@@ -18,10 +21,10 @@ protected:
     boostWrapperMock_(std::make_shared<BoostWrapperMock>()),
     readerMock_(std::make_shared<SocketServicesWrapperMock>()),
     writerMock_(std::make_shared<SocketServicesWrapperMock>()),
-    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1))
-    {
-        serverSession_->makeDatabaseConnection(std::string("test_db"));
-    }
+    databaseWrapperMock_(std::make_shared<DatabaseWrapperMock>()),
+    serverSession_(std::make_shared<ServerSession>(boostWrapperMock_, readerMock_, writerMock_, 1,
+        databaseWrapperMock_))
+    { }
 
     void setStartSessionExpectations()
     {
@@ -41,9 +44,28 @@ protected:
         EXPECT_CALL(*writerMock_, stopCommander());
     }
 
+    void setValidDatabaseGetUserExpect(std::string& login)
+    {
+        const long int dummyTime = 10000;
+        User dummyTuple{1, std::string("Gettor"), *localtime(&dummyTime), 1, 20, 20, 0};
+        Users dummyTupleVector;
+        dummyTupleVector.push_back(dummyTuple);
+
+        EXPECT_CALL(*databaseWrapperMock_, getUsersBy(UserTypes::LOGIN, login))
+            .WillOnce(Return(dummyTupleVector));
+    }
+
+    void setInvalidDatabaseGetUserExpect(std::string& login)
+    {
+        Users dummyTupleVector;
+        EXPECT_CALL(*databaseWrapperMock_, getUsersBy(UserTypes::LOGIN, login))
+            .WillOnce(Return(dummyTupleVector));
+    }
+
     std::shared_ptr<BoostWrapperMock> boostWrapperMock_;
     std::shared_ptr<SocketServicesWrapperMock> readerMock_;
     std::shared_ptr<SocketServicesWrapperMock> writerMock_;
+    std::shared_ptr<DatabaseWrapperMock> databaseWrapperMock_;
     std::shared_ptr<ServerSession> serverSession_;
 };
 
@@ -71,6 +93,8 @@ TEST_F(ServerSessionShould, StartAndStopServicesWhenLogoutSignalOccurs)
     common::OkResponse okMessage;
     okMessage.serverAllows = true;;
     std::string json3 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    setValidDatabaseGetUserExpect(loginMessage.playerName);
 
     setStartSessionExpectations();
 
@@ -130,6 +154,8 @@ TEST_F(ServerSessionShould, ValidateUserLoginWithCorrectLogin)
     okMessage.serverAllows = true;;
     std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
 
+    setValidDatabaseGetUserExpect(loginMessage.playerName);
+
     EXPECT_CALL(*readerMock_, popMessage())
         .WillOnce(Return(std::make_shared<std::string>(json)));
 
@@ -147,6 +173,8 @@ TEST_F(ServerSessionShould, ValidateUserLoginWithIncorrectLogin)
     common::OkResponse okMessage;
     okMessage.serverAllows = false;;
     std::string json2 = common::getMessageJson<common::OkResponse>(okMessage);
+
+    setInvalidDatabaseGetUserExpect(loginMessage.playerName);
 
     EXPECT_CALL(*readerMock_, popMessage())
         .WillOnce(Return(std::make_shared<std::string>(json)));
