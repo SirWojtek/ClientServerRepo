@@ -55,7 +55,7 @@ std::vector<bool> PredictionAssistant::runTest()
 
 PredictionAssistant::TestData PredictionAssistant::getTestData() const
 {
-    std::vector<DataVector> rawData = getPartitionedData(testFiles_, 2);
+    std::vector<DataVector> rawData = getPartitionedData(testFiles_, recordSize_);
     TestData result;
 
     std::transform(rawData.begin(), rawData.end(), std::inserter(result, result.begin()),

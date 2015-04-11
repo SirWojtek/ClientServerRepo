@@ -11,9 +11,22 @@ class DistanceFunctions
 public:
     void setInput(const InputRecord& input);
     float startPointsDistance(const InputRecord& comp) const;
+    float startPointsDistanceAndDirection(const InputRecord& comp) const;
+    float weightStartPointsDistanceAndDirection(const InputRecord& comp) const;
+    float reversedWeightStartPointsDistanceAndDirection(const InputRecord& comp) const;
+    float directionDistance(const InputRecord& comp) const;
+
+    static void setWeight(float newWeight);
 
 private:
+    struct Sums
+    {
+        DeltaRecord inputSum, compSum;
+    };
+    Sums getSumedDeltas(const InputRecord& comp) const;
+
     InputRecord input;
+    static float weight;
 };
 
 }
