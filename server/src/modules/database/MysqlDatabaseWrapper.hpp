@@ -25,7 +25,7 @@ public:
 		}
 		catch(const std::runtime_error& e)
 		{
-		  throw std::runtime_error(e.what());
+		  //throw std::runtime_error(e.what());
 		}
 	}
 
@@ -34,8 +34,11 @@ public:
 	Users getUsersBy(UserTypes type, std::string& login);
 	Users getUsersBy(UserTypes type, std::vector<int> position);
 	Users getUsersBy(UserTypes type, bool isOnline);
+	bool updateUser(User userToUpdate);
 private:
 	MarkedPositions checkMarkedPositions(std::vector<int> position);
+	bool userIsEqualToPattern(unsigned idToCheck, User userToCheck);
+	bool areUsersEqual(User alice, User bob);
 
 	std::shared_ptr<soci::session> databaseConnector_;
 	Console console_;

@@ -38,7 +38,7 @@ public:
 	virtual Users getUsersBy(UserTypes type, std::string& login) = 0; // getUsersByLogin
 	virtual Users getUsersBy(UserTypes type, std::vector<int> position) = 0; // getUsersByOneOfPositions
 	virtual Users getUsersBy(UserTypes type, bool isOnline) = 0; // getUsersByOnlineStatus
-
+	virtual bool updateUser(User userToUpdate) = 0;
 };
 
 #endif

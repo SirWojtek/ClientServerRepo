@@ -147,3 +147,16 @@ TEST_F(MysqlDatabaseWrapperShould, giveNothingWhenGetUsersByOnlineStatusGetsWron
 	Users userData = wrapper_->getUsersBy(UserTypes::ID, isOnline);
 	ASSERT_EQ(userData.size(), 0);
 }
+
+TEST_F(MysqlDatabaseWrapperShould, setNewUserValueCorrectly)
+{
+	unsigned idToSet = 1;
+	User userData = wrapper_->getUsersBy(UserTypes::ID, idToSet)[0];
+	userData.get<1>() = std::string("Zepsute");
+	ASSERT_TRUE(wrapper_->updateUser(userData));
+	User userData2 = wrapper_->getUsersBy(UserTypes::ID, idToSet)[0];
+	ASSERT_EQ(userData.get<1>(), std::string("Zepsute"));
+
+	userData.get<1>() = std::string("Gettor");
+	wrapper_->updateUser(userData);
+}
