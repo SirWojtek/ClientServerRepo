@@ -9,7 +9,7 @@ add_executable(serverCoreTest MysqlDatabaseWrapperTests.cpp ServerInitializerTes
 add_executable(echoServerTest EchoServerSessionTests.cpp)
 add_executable(fullServerTest FullServerSessionTests.cpp)
 
-target_link_libraries(serverCoreTest serverCore echoServerCore ${GTEST_BOTH_LIBRARIES} gmock)
-target_link_libraries(echoServerTest serverCore echoServerCore ${GTEST_BOTH_LIBRARIES} gmock)
-target_link_libraries(fullServerTest serverCore fullServerCore ${GTEST_BOTH_LIBRARIES} gmock)
+target_link_libraries(serverCoreTest serverCore echoServerCore database ${GTEST_BOTH_LIBRARIES} gmock)
+target_link_libraries(echoServerTest serverCore echoServerCore database ${GTEST_BOTH_LIBRARIES} gmock)
+target_link_libraries(fullServerTest serverCore fullServerCore database ${GTEST_BOTH_LIBRARIES} gmock)
 

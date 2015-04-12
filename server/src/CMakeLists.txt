@@ -12,7 +12,7 @@ add_library(serverCore ServerInitializer.cpp)
 add_executable(echoServer ServerMain.cpp)
 add_executable(fullServer ServerMain.cpp)
 
-target_link_libraries(serverCore boostWrapper socketServicesWrapper messages utilities socketServices boost_system database)
+target_link_libraries(serverCore boostWrapper socketServicesWrapper messages utilities socketServices boost_system)
 target_link_libraries(echoServer serverCore echoServerCore)
-target_link_libraries(fullServer serverCore fullServerCore)
+target_link_libraries(fullServer serverCore fullServerCore database)
 
