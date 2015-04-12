@@ -1,6 +1,7 @@
 
 #include "prediction/PredictionAssistant.hpp"
 #include "prediction/DistanceFunctions.hpp"
+#include "prediction/DirectionChooseFunctions.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -21,7 +22,7 @@ FileVector getFiles(int argc, char** argv)
 
 void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func)
 {
-    PredictionAssistant assistant(3, 3, func);
+    PredictionAssistant assistant(3, 3, func, prediction::getClosestNeighborDirectionWithMaxOccurence);
 
     for (unsigned i = 0; i < files.size() - 1; i++)
     {

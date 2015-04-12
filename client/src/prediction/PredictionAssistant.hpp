@@ -3,6 +3,7 @@
 
 #include "DistanceFunctions.hpp"
 #include "PredictionDefinitions.hpp"
+#include "KNeighborsFinder.hpp"
 
 #include <string>
 #include <functional>
@@ -18,10 +19,12 @@ class PredictionAssistant
 public:
     using PredictionFunction =
         std::function<float(const DistanceFunctions*, const InputRecord&)>;
+    using DirectionChooseFunction =
+        std::function<DeltaRecord(const BasicKNeighborFinder::NeighborsVector& neighbors)>;
     using TestData = std::map<InputRecord, DeltaRecord>;
 
     PredictionAssistant(unsigned recordSize, unsigned k,
-        PredictionFunction distanceFunc);
+        PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc);
     ~PredictionAssistant();
 
     void addDatabaseFile(const std::string& file);
@@ -41,6 +44,7 @@ private:
     const unsigned recordSize_;
     const unsigned k_;
     const PredictionFunction distanceFunction_;
+    const DirectionChooseFunction chooseFunction_;
 
     DistanceFunctions functions_;
     std::unique_ptr<BasicKNeighborFinder> finder_;

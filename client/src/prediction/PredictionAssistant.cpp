@@ -12,10 +12,11 @@ namespace prediction
 using namespace std::placeholders;
 
 PredictionAssistant::PredictionAssistant(unsigned recordSize, unsigned k,
-    PredictionFunction distanceFunc) :
+    PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc) :
         recordSize_(recordSize),
         k_(k),
-        distanceFunction_(distanceFunc) {}
+        distanceFunction_(distanceFunc),
+        chooseFunction_(chooseFunc) {}
 
 PredictionAssistant::~PredictionAssistant() {}
 
@@ -80,15 +81,7 @@ bool PredictionAssistant::getTestResult(const std::pair<InputRecord, DeltaRecord
         throw std::runtime_error("KNeighborsFinder returns empty vector");
     }
 
-    BasicKNeighborFinder::OutputHistogram histogram = finderResults[0].second;
-
-    auto bestMatch = std::max_element(histogram.begin(), histogram.end(),
-        [](const std::pair<DeltaRecord, unsigned>& a, const std::pair<DeltaRecord, unsigned>& b)
-        {
-            return a.second < b.second;
-        });
-
-    return bestMatch->first == test.second;
+    return chooseFunction_(finderResults) == test.second;
 }
 
 }
