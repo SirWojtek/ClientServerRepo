@@ -47,7 +47,7 @@ float DistanceFunctions::weightStartPointsDistanceAndDirection(const InputRecord
 float DistanceFunctions::reversedWeightStartPointsDistanceAndDirection(
     const InputRecord& comp) const
 {
-    return (1.0f - weight) * directionDistance(comp) + weight * startPointsDistance(comp);
+    return weight * directionDistance(comp) + (1.0f - weight) * startPointsDistance(comp);
 }
 
 DistanceFunctions::Sums DistanceFunctions::getSumedDeltas(const InputRecord& comp) const
