@@ -28,6 +28,7 @@ public:
     std::shared_ptr<IDatabaseWrapper> databaseConnector):
     wrapper_(wrapper),
     socketNumber_(socketNumber),
+    stop_(false),
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
     databaseConnector_(databaseConnector),

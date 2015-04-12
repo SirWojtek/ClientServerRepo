@@ -103,7 +103,7 @@ bool ServerSession::wasClientLoggedInCorrectly()
                 UserTypes::LOGIN, loginMessage->playerName);
             if (loginData.size() == 1)
             {
-                console_.info << "Login failed for user: " + loginMessage->playerName;
+                console_.info << "Login OK for user: " + loginMessage->playerName;
                 sendOkResponse(true);
                 return true;
             }
@@ -119,11 +119,9 @@ int ServerSession::getMessage()
     if (messageString = readerWrapper_->popMessage())
     {
         MessageType receivedMessageType = common::getMessageType(*messageString);
-
         std::size_t foundSemiColon = messageString->find(";");
         messageString = std::make_shared<std::string>(
             messageString->substr(0, foundSemiColon)); // remove needless semi-colon at the end
-        
         cyclicPushReceivedMessages(receivedMessageType, messageString);
         return (receivedMessages_.size()-1); // index of just inserted value
     }
