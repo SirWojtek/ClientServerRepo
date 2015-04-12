@@ -12,6 +12,7 @@ public:
 	MOCK_METHOD2(getUsersBy, Users(UserTypes type, std::string& login));
 	MOCK_METHOD2(getUsersBy, Users(UserTypes type, std::vector<int> position));
 	MOCK_METHOD2(getUsersBy, Users(UserTypes type, bool isOnline));
+	MOCK_METHOD1(updateUser, bool(User userToUpdate));
 };
 
 #endif

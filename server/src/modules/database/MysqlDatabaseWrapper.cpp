@@ -3,6 +3,8 @@
 #include <istream>
 #include <ostream>
 
+#include "boost/tuple/tuple_comparison.hpp"
+
 Users DatabaseWrapper::getUsers()
 {
 	Users foundUsers;
@@ -53,6 +55,23 @@ Users DatabaseWrapper::getUsersBy(UserTypes type, bool isOnline)
 		"SELECT * from users where isOnline = :isOnline", soci::use(isOnlineIntValue));
 	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
 	return foundUsers;
+}
+
+bool DatabaseWrapper::updateUser(User userToUpdate)
+{
+	*databaseConnector_ << "UPDATE users SET login = :login, lastVisit = :lastVisit, xPosition = :xPos, yPosition = :yPos, zPosition = :zPos, isOnline = :isOn WHERE id = :id",
+		soci::use(userToUpdate.get<1>()), soci::use(userToUpdate.get<2>()),
+		soci::use(userToUpdate.get<3>()), soci::use(userToUpdate.get<4>()),
+		soci::use(userToUpdate.get<5>()), soci::use(userToUpdate.get<6>()),
+		soci::use(userToUpdate.get<0>());
+	if (userIsEqualToPattern(userToUpdate.get<0>(), userToUpdate))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 Users DatabaseWrapper::getUsersBy(UserTypes type, std::vector<int> position)
@@ -122,4 +141,42 @@ MarkedPositions DatabaseWrapper::checkMarkedPositions(std::vector<int> position)
 	if (position[1] != -1) marker += 2;
 	if (position[2] != -1) marker += 4;
 	return static_cast<MarkedPositions>(marker);
+}
+
+bool DatabaseWrapper::userIsEqualToPattern(unsigned idToCheck, User userToCheck)
+{
+	auto UsersFromDb = getUsersBy(UserTypes::ID, idToCheck);
+	if (UsersFromDb.size() != 1)
+	{
+		return false;
+	}
+	if (areUsersEqual(UsersFromDb[0], userToCheck))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool DatabaseWrapper::areUsersEqual(User alice, User bob) // excludes std::tm part
+{
+	if (alice.get<0>() == bob.get<0>())
+	{
+		if (alice.get<1>() == bob.get<1>())
+		{
+			if (alice.get<3>() == bob.get<3>())
+			{
+				if (alice.get<4>() == bob.get<4>())
+				{
+					if (alice.get<5>() == bob.get<5>())
+					{
+						if (alice.get<6>() == bob.get<6>())
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
+	return false;
 }
