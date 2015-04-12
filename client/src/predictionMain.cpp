@@ -52,6 +52,14 @@ int main(int argc, char** argv)
     runTest(files, &DistanceFunctions::directionDistance);
     std::cout << std::endl << "**** Testing with start points and direction distance ***" << std::endl;
     runTest(files, &DistanceFunctions::startPointsDistanceAndDirection);
+    
+    for (float i = 0.0; i < 1.0; i += 0.1)
+    {
+        std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
+            << i << " ***" << std::endl;
+        DistanceFunctions::setWeight(i);
+        runTest(files, &DistanceFunctions::reversedWeightStartPointsDistanceAndDirection);
+    }
 
     return 0;
 }
