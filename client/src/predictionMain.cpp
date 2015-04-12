@@ -22,7 +22,7 @@ FileVector getFiles(int argc, char** argv)
 
 void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func)
 {
-    PredictionAssistant assistant(3, 3, func, prediction::getClosestNeighborDirectionWithMaxOccurence);
+    PredictionAssistant assistant(3, 3, func, prediction::getDirectionWithMaxOccurence);
 
     for (unsigned i = 0; i < files.size() - 1; i++)
     {
