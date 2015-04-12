@@ -7,6 +7,7 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <atomic>
 #include <thread>
+#include <ctime>
 
 #include "common/utilities/Console.hpp"
 #include "common/messages/MessageUtilities.hpp"
@@ -42,6 +43,9 @@ public:
     messageCounter_[common::messagetype::Login] = 0;
     messageCounter_[common::messagetype::CurrentPlayerPosition] = 0;
     messageCounter_[common::messagetype::Logout] = 0;
+    amountOfMessagesSent_ = 0;
+    timeBetweenMessageReceiveAndSend_ = 0;
+    totalTimeBetweenMessageReceiveAndSend_ = 0;
   }
 
   std::shared_ptr<std::thread> start();
@@ -64,6 +68,9 @@ private:
   int socketNumber_;
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
+  unsigned amountOfMessagesSent_; 
+  unsigned long long totalTimeBetweenMessageReceiveAndSend_;
+  unsigned timeBetweenMessageReceiveAndSend_;
 
   std::atomic<bool> stop_;
 

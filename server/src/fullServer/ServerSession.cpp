@@ -118,6 +118,7 @@ int ServerSession::getMessage()
     std::shared_ptr<std::string> messageString;
     if (messageString = readerWrapper_->popMessage())
     {
+        timeBetweenMessageReceiveAndSend_ = clock();
         MessageType receivedMessageType = common::getMessageType(*messageString);
         std::size_t foundSemiColon = messageString->find(";");
         messageString = std::make_shared<std::string>(
@@ -151,6 +152,8 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     common::OkResponse okMessage;
     okMessage.serverAllows = serwerAllows;
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
+    totalTimeBetweenMessageReceiveAndSend_ += clock() - timeBetweenMessageReceiveAndSend_;
+    amountOfMessagesSent_++;
     writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
 }
@@ -166,6 +169,8 @@ void ServerSession::printMessageCounter()
     console_.info << "Login:                 " + std::to_string(messageCounter_[common::messagetype::Login]);
     console_.info << "CurrentPlayerPosition: " + std::to_string(messageCounter_[common::messagetype::CurrentPlayerPosition]);
     console_.info << "Logout:                " + std::to_string(messageCounter_[common::messagetype::Logout]);
+    console_.info << "Total amount of messages sent: " + std::to_string(amountOfMessagesSent_);
+    console_.info << "Mean time between message receive and message send [ms] : " + std::to_string(totalTimeBetweenMessageReceiveAndSend_/amountOfMessagesSent_);
     console_.info << "____________________";
 }
 
