@@ -47,19 +47,27 @@ int main(int argc, char** argv)
 
     FileVector files = getFiles(argc, argv);
 
-    std::cout << "**** Testing with start points distance ***" << std::endl;
-    runTest(files, &DistanceFunctions::startPointsDistance);
-    std::cout << std::endl << "**** Testing with direction distance ***" << std::endl;
-    runTest(files, &DistanceFunctions::directionDistance);
-    std::cout << std::endl << "**** Testing with start points and direction distance ***" << std::endl;
-    runTest(files, &DistanceFunctions::startPointsDistanceAndDirection);
-    
-    for (float i = 0.0; i < 1.0; i += 0.1)
+    // std::cout << "**** Testing with start points distance ***" << std::endl;
+    // runTest(files, &DistanceFunctions::startPointsDistance);
+    // std::cout << std::endl << "**** Testing with direction distance ***" << std::endl;
+    // runTest(files, &DistanceFunctions::directionDistance);
+    // std::cout << std::endl << "**** Testing with start points and direction distance ***" << std::endl;
+    // runTest(files, &DistanceFunctions::startPointsDistanceAndDirection);
+
+    for (float i = 0.0; i < 0.1; i += 0.01)
     {
         std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
             << i << " ***" << std::endl;
         DistanceFunctions::setWeight(i);
-        runTest(files, &DistanceFunctions::reversedWeightStartPointsDistanceAndDirection);
+        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
+    }
+
+    for (float i = 0.1; i < 1.0; i += 0.1)
+    {
+        std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
+            << i << " ***" << std::endl;
+        DistanceFunctions::setWeight(i);
+        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
     }
 
     return 0;

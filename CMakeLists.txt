@@ -66,6 +66,7 @@ enable_testing()
 
 # add test binaries here
 add_test(clientTest bin/clientTest)
+add_test(clientTest bin/predictionTest)
 add_test(socketServiceTest bin/socketServiceTest)
 add_test(serverCoreTest bin/serverCoreTest)
 add_test(echoServerTest bin/echoServerTest)
