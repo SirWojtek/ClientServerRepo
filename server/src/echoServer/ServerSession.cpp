@@ -170,6 +170,10 @@ bool ServerSession::loginService()
 {
     return false;
 }
+bool ServerSession::updatePlayerPositionByJson(std::string json)
+{
+    return false;
+}
 
 void ServerSession::sendPlayerPosition(int x, int y, int z)
 {

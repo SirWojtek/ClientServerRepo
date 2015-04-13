@@ -65,6 +65,7 @@ private:
   void sendPlayerPosition(int x, int y, int z);
   void printMessageCounter();
   bool loginService();
+  bool updatePlayerPositionByJson(std::string json);
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;

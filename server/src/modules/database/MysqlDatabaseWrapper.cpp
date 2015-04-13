@@ -70,6 +70,7 @@ bool DatabaseWrapper::updateUser(User userToUpdate)
 	}
 	else
 	{
+		console_.error << "Failed to update player!";
 		return false;
 	}
 }

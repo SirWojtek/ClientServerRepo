@@ -41,13 +41,23 @@ void ServerSession::runSession()
         writerWrapper_->waitForEmptyQueueWithTimeout();
         if (messageIndex != noMessage_)
         {
-            if (receivedMessages_[messageIndex].first != MessageType::Logout)
+            switch(receivedMessages_[messageIndex].first)
             {
-                sendOkResponse(true);
-            }
-            else
-            {
-                stop();
+                case MessageType::UpdatePlayer:
+                    if (updatePlayerPositionByJson(*receivedMessages_[messageIndex].second))
+                    {
+                        sendOkResponse(true);
+                    }
+                    else
+                    {
+                        sendOkResponse(false);
+                    }
+                    break;
+                case MessageType::Logout:
+                    stop();
+                    break;
+                default:
+                    sendOkResponse(true);
             }
         }
         if (stop_.load())
@@ -120,13 +130,13 @@ bool ServerSession::loginService()
     {
         return false;
     }
+    int messageIndex = getMessage();
     if (userForSession_.get<LOGIN_ID>() != "") // emptiness of Login implies emptiness of tuple
     {
         userForSession_.get<ISONLINE_ID>() = true;
-        databaseConnector_->updateUser(userForSession_);
         sendPlayerPosition(userForSession_.get<XPOS_ID>(),
             userForSession_.get<YPOS_ID>(), userForSession_.get<ZPOS_ID>());
-        return true;
+        return (databaseConnector_->updateUser(userForSession_));
     }
     console_.error << "userForSession object is null";
     return false;
@@ -184,6 +194,14 @@ void ServerSession::sendPlayerPosition(int x, int y, int z)
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
     writerWrapper_->pushMessage(json);
     console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
+}
+
+bool ServerSession::updatePlayerPositionByJson(std::string json)
+{
+    auto message = common::getMessage<common::UpdatePlayer>(json);
+    userForSession_.get<XPOS_ID>() += message->delta.first;
+    userForSession_.get<YPOS_ID>() += message->delta.second;
+    return (databaseConnector_->updateUser(userForSession_));
 }
 
 void ServerSession::printMessageCounter()
