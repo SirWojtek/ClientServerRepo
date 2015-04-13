@@ -206,6 +206,7 @@ bool ServerSession::updatePlayerPositionByJson(std::string json)
 
 void ServerSession::printMessageCounter()
 {
+    double totalTicks = float(totalTimeBetweenMessageReceiveAndSend_/amountOfMessagesSent_);
     console_.info << "____________________";
     console_.info << "Message Counter:";
     console_.info << "Incorrect:             " + std::to_string(messageCounter_[common::messagetype::Incorrect]);
@@ -216,7 +217,7 @@ void ServerSession::printMessageCounter()
     console_.info << "CurrentPlayerPosition: " + std::to_string(messageCounter_[common::messagetype::CurrentPlayerPosition]);
     console_.info << "Logout:                " + std::to_string(messageCounter_[common::messagetype::Logout]);
     console_.info << "Total amount of messages sent: " + std::to_string(amountOfMessagesSent_);
-    console_.info << "Mean time between message receive and message send [ms] : " + std::to_string(totalTimeBetweenMessageReceiveAndSend_/amountOfMessagesSent_);
+    console_.info << "Mean time between message receive and message send [ms] : " + std::to_string(totalTicks/float(CLOCKS_PER_SEC));
     console_.info << "____________________";
 }
 
