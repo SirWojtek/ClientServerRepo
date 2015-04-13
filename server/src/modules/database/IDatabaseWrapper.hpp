@@ -31,6 +31,14 @@ enum MarkedPositions{
 using User = boost::tuple<unsigned, std::string, std::tm, int, int, int, int>;
 using Users = std::vector<User>;
 
+const static int ID_ID = 0;
+const static int LOGIN_ID = 1;
+const static int LASTVISIT_ID = 2;
+const static int XPOS_ID = 3;
+const static int YPOS_ID = 4;
+const static int ZPOS_ID = 5;
+const static int ISONLINE_ID = 6;
+
 class IDatabaseWrapper{
 public:
 	virtual Users getUsers() = 0;

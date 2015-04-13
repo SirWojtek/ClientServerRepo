@@ -29,7 +29,7 @@ void ServerSession::startThreadsAndRun(std::shared_ptr<IServerSession> self)
 void ServerSession::runSession()
 {
     int messageIndex;
-    if (!wasClientLoggedInCorrectly())
+    if (!loginService())
     {
         tearDown();
         console_.info << "Client was not logged in correctly, exiting.";
@@ -103,6 +103,7 @@ bool ServerSession::wasClientLoggedInCorrectly()
                 UserTypes::LOGIN, loginMessage->playerName);
             if (loginData.size() == 1)
             {
+                userForSession_ = loginData[0];
                 console_.info << "Login OK for user: " + loginMessage->playerName;
                 sendOkResponse(true);
                 return true;
@@ -110,6 +111,24 @@ bool ServerSession::wasClientLoggedInCorrectly()
         }
     }
     sendOkResponse(false);
+    return false;
+}
+
+bool ServerSession::loginService()
+{
+    if (!wasClientLoggedInCorrectly())
+    {
+        return false;
+    }
+    if (userForSession_.get<LOGIN_ID>() != "") // emptiness of Login implies emptiness of tuple
+    {
+        userForSession_.get<ISONLINE_ID>() = true;
+        databaseConnector_->updateUser(userForSession_);
+        sendPlayerPosition(userForSession_.get<XPOS_ID>(),
+            userForSession_.get<YPOS_ID>(), userForSession_.get<ZPOS_ID>());
+        return true;
+    }
+    console_.error << "userForSession object is null";
     return false;
 }
 
@@ -156,6 +175,15 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     amountOfMessagesSent_++;
     writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
+}
+
+void ServerSession::sendPlayerPosition(int x, int y, int z)
+{
+    common::CurrentPlayerPosition position;
+    position.position = std::make_tuple(x, y, z);
+    std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
+    writerWrapper_->pushMessage(json);
+    console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
 }
 
 void ServerSession::printMessageCounter()

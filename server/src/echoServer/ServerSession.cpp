@@ -34,6 +34,8 @@ void ServerSession::runSession()
         console_.info << "Client was not logged in correctly, exiting.";
         return;
     }
+    messageIndex = getMessage();
+    sendPlayerPosition(0, 0, 0);
     while(true)
     {
         messageIndex = getMessage();
@@ -162,4 +164,18 @@ messageCounter ServerSession::getMessageCounter()
 messagePairVec ServerSession::getMessagePairVector()
 {
     return receivedMessages_;
+}
+
+bool ServerSession::loginService()
+{
+    return false;
+}
+
+void ServerSession::sendPlayerPosition(int x, int y, int z)
+{
+    common::CurrentPlayerPosition position;
+    position.position = std::make_tuple(x, y, z);
+    std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
+    writerWrapper_->pushMessage(json);
+    console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
 }

@@ -62,7 +62,9 @@ private:
   void runSession();
   int getMessage();
   void sendOkResponse(bool serverAllows);
+  void sendPlayerPosition(int x, int y, int z);
   void printMessageCounter();
+  bool loginService();
 
   std::shared_ptr<IBoostWrapper> wrapper_;
   int socketNumber_;
@@ -71,6 +73,7 @@ private:
   unsigned amountOfMessagesSent_; 
   unsigned long long totalTimeBetweenMessageReceiveAndSend_;
   unsigned timeBetweenMessageReceiveAndSend_;
+  User userForSession_;
 
   std::atomic<bool> stop_;
 

@@ -65,6 +65,7 @@ void BoostWrapper::write(std::string& message, int socketNumber)
     try
     {
         message += readDelim;
+        console_.debug << "Writing message:" << message;
         boost::asio::write(
             *tcpSockets_[socketNumber], boost::asio::buffer(message.c_str(), message.size()));
     }
