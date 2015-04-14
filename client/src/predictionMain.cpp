@@ -54,21 +54,24 @@ int main(int argc, char** argv)
     // std::cout << std::endl << "**** Testing with start points and direction distance ***" << std::endl;
     // runTest(files, &DistanceFunctions::startPointsDistanceAndDirection);
 
-    for (float i = 0.0; i < 0.1; i += 0.01)
-    {
-        std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
-            << i << " ***" << std::endl;
-        DistanceFunctions::setWeight(i);
-        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
-    }
+    // for (float i = 0.0; i < 0.01; i += 0.002)
+    // {
+    //     std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
+    //         << i << " ***" << std::endl;
+    //     DistanceFunctions::setWeight(i);
+    //     runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
+    // }
 
-    for (float i = 0.1; i < 1.0; i += 0.1)
-    {
-        std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
-            << i << " ***" << std::endl;
-        DistanceFunctions::setWeight(i);
+    // for (float i = 0.01; i < 0.1; i += 0.01)
+    // {
+    //     std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
+    //         << i << " ***" << std::endl;
+    //     DistanceFunctions::setWeight(i);
+    //     runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
+    // }
+
+        DistanceFunctions::setWeight(1.0);
         runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
-    }
 
     return 0;
 }
