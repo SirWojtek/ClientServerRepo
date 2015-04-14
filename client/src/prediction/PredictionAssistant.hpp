@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <chrono>
 
 namespace prediction
 {
@@ -48,6 +49,7 @@ private:
 
     DistanceFunctions functions_;
     std::unique_ptr<BasicKNeighborFinder> finder_;
+    std::chrono::duration<double> elapsedSec_;
 };
 
 }

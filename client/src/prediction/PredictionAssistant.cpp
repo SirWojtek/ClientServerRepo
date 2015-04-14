@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <iostream>
 
+
 namespace prediction
 {
 
@@ -16,7 +17,8 @@ PredictionAssistant::PredictionAssistant(unsigned recordSize, unsigned k,
         recordSize_(recordSize),
         k_(k),
         distanceFunction_(distanceFunc),
-        chooseFunction_(chooseFunc) {}
+        chooseFunction_(chooseFunc),
+        elapsedSec_(0.0) {}
 
 PredictionAssistant::~PredictionAssistant() {}
 
@@ -48,8 +50,12 @@ std::vector<bool> PredictionAssistant::runTest()
     std::cout << "Test iterations: " << testData.size() << std::endl;
 
     std::cout << "Running test..." << std::endl;
+
     std::transform(testData.begin(), testData.end(), std::back_inserter(testResults),
         std::bind(&PredictionAssistant::getTestResult, this, _1));
+
+    std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
+        << "s" << std::endl;
 
     return testResults;
 }
@@ -73,8 +79,14 @@ std::pair<InputRecord, DeltaRecord> PredictionAssistant::convertToTestData(
 
 bool PredictionAssistant::getTestResult(const std::pair<InputRecord, DeltaRecord>& test)
 {
+    std::chrono::time_point<std::chrono::system_clock> start, end;
     functions_.setInput(test.first);
+
+    start = std::chrono::system_clock::now();
     BasicKNeighborFinder::NeighborsVector finderResults = finder_->getNeighbors(k_);
+    end = std::chrono::system_clock::now();
+
+    elapsedSec_ += end - start;
 
     if (finderResults.empty())
     {
