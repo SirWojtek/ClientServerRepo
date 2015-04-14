@@ -20,9 +20,9 @@ FileVector getFiles(int argc, char** argv)
     return files;
 }
 
-void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func)
+void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func, unsigned n)
 {
-    PredictionAssistant assistant(3, 3, func, prediction::getDirectionWithMaxOccurence);
+    PredictionAssistant assistant(n, 3, func, prediction::getClosestNeighborDirectionWithMaxOccurence);
 
     for (unsigned i = 0; i < files.size() - 1; i++)
     {
@@ -46,32 +46,17 @@ int main(int argc, char** argv)
     }
 
     FileVector files = getFiles(argc, argv);
+    DistanceFunctions::setWeight(0.01);
 
-    // std::cout << "**** Testing with start points distance ***" << std::endl;
-    // runTest(files, &DistanceFunctions::startPointsDistance);
-    // std::cout << std::endl << "**** Testing with direction distance ***" << std::endl;
-    // runTest(files, &DistanceFunctions::directionDistance);
-    // std::cout << std::endl << "**** Testing with start points and direction distance ***" << std::endl;
-    // runTest(files, &DistanceFunctions::startPointsDistanceAndDirection);
+    for (unsigned i = 2; i < 15; i++)
+    {
+        std::cout << "**** Testing with n = "<< i << " ***" << std::endl;
 
-    // for (float i = 0.0; i < 0.01; i += 0.002)
-    // {
-    //     std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
-    //         << i << " ***" << std::endl;
-    //     DistanceFunctions::setWeight(i);
-    //     runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
-    // }
+        std::cout << std::endl << "**** Testing with weight start points and direction distance ***" << std::endl;
+        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection, i);
+        std::cout << std::endl;
+    }
 
-    // for (float i = 0.01; i < 0.1; i += 0.01)
-    // {
-    //     std::cout << std::endl << "**** Testing with start points and direction distance with weight: "
-    //         << i << " ***" << std::endl;
-    //     DistanceFunctions::setWeight(i);
-    //     runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
-    // }
-
-        DistanceFunctions::setWeight(1.0);
-        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection);
 
     return 0;
 }
