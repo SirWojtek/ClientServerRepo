@@ -5,9 +5,17 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <random>
+#include <chrono>
 
 namespace prediction
 {
+
+namespace
+{
+    unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+    auto engine = std::default_random_engine(seed1);
+}
 
 DataVector readDataFile(const std::string& dataFile)
 {
@@ -20,7 +28,7 @@ DataVector readDataFile(const std::string& dataFile)
         result.emplace_back(x, y);
     }
 
-    std::cout << "Readed " << result.size() << " positions from " << dataFile << std::endl;
+    // std::cout << "Readed " << result.size() << " positions from " << dataFile << std::endl;
     return result;
 }
 
@@ -54,7 +62,7 @@ std::vector<DataVector> splitDataVector(const DataVector& dataVector, unsigned f
 void feedKNeighborsFinder(BasicKNeighborFinder& finder,
     const std::vector<DataVector>& partitionedData)
 {
-    std::cout << "Feeding finder with " << partitionedData.size() << " records" << std::endl;
+    // std::cout << "Feeding finder with " << partitionedData.size() << " records" << std::endl;
 
     for (const auto& part : partitionedData)
     {
@@ -93,11 +101,23 @@ std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned
     return partitionedData;
 }
 
+void cutPartitionedData(std::vector<DataVector>& data, int recordsNumber)
+{
+    if (recordsNumber <= 0)
+    {
+        return;
+    }
+
+    std::shuffle(data.begin(), data.end(), engine);
+    data.resize(recordsNumber);
+}
+
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFiles,
-    unsigned recordSize, std::function<float(const InputRecord&)> distFunc)
+    unsigned recordSize, int recordsNumber, std::function<float(const InputRecord&)> distFunc)
 {
     BasicKNeighborFinder finder(distFunc);
     std::vector<DataVector> partitionedData = getPartitionedData(dataFiles, recordSize);
+    cutPartitionedData(partitionedData, recordsNumber);
 
     feedKNeighborsFinder(finder, partitionedData);
 

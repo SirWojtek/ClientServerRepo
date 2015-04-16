@@ -11,7 +11,7 @@ namespace prediction
 {
 
 BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFile,
-    unsigned recordSize, std::function<float(const InputRecord&)> distFunc);
+    unsigned recordSize, int recordsNumber, std::function<float(const InputRecord&)> distFunc);
 
 std::vector<DataVector> getPartitionedData(const FileVector& dataFiles, unsigned recordSize);
 

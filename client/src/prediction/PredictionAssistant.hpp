@@ -26,6 +26,8 @@ public:
 
     PredictionAssistant(unsigned recordSize, unsigned k,
         PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc);
+    PredictionAssistant(unsigned recordSize, int recordsNumber, unsigned k,
+        PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc);
     ~PredictionAssistant();
 
     void addDatabaseFile(const std::string& file);
@@ -43,6 +45,7 @@ private:
     FileVector testFiles_;
 
     const unsigned recordSize_;
+    const int recordsNumber_;
     const unsigned k_;
     const PredictionFunction distanceFunction_;
     const DirectionChooseFunction chooseFunction_;

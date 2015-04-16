@@ -22,20 +22,28 @@ FileVector getFiles(int argc, char** argv)
 
 void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func, unsigned n)
 {
-    PredictionAssistant assistant(n, 3, func, prediction::getClosestNeighborDirectionWithMaxOccurence);
+    PredictionAssistant assistant(3, n, 3, func, prediction::getDirectionWithMaxOccurence);
+    float floatPassed = 0;
+    unsigned iterations = 1000;
 
     for (unsigned i = 0; i < files.size() - 1; i++)
     {
         assistant.addDatabaseFile(files[i]);
     }
-
     assistant.addTestFile(files.back());
-    assistant.initPredictionAlgorithm();
-    std::vector<bool> results = assistant.runTest();
 
-    int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
-    float floatPassed = static_cast<float>(passed)/static_cast<float>(results.size());
-    std::cout << "Percent prediction match: " << floatPassed * 100 << std::endl;
+    std::cout << "Iteration: ";
+    for (unsigned i = 0; i < iterations; i++)
+    {
+        std::cout << i << " ";
+        assistant.initPredictionAlgorithm();
+        std::vector<bool> results = assistant.runTest();
+        int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
+        floatPassed += static_cast<float>(passed)/static_cast<float>(results.size());
+    }
+
+    floatPassed /= iterations;
+    std::cout << std::endl << "Percent prediction match: " << floatPassed * 100 << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -47,13 +55,14 @@ int main(int argc, char** argv)
 
     FileVector files = getFiles(argc, argv);
     DistanceFunctions::setWeight(0.01);
+    std::vector<unsigned> recordsNumber = { 100, 200, 500, 1000, 2000, 5000, 10000 };
 
-    for (unsigned i = 2; i < 15; i++)
+    for (unsigned number : recordsNumber)
     {
-        std::cout << "**** Testing with n = "<< i << " ***" << std::endl;
+        std::cout << "**** Testing with n = "<< number << " ***" << std::endl;
 
         std::cout << std::endl << "**** Testing with weight start points and direction distance ***" << std::endl;
-        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection, i);
+        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection, number);
         std::cout << std::endl;
     }
 

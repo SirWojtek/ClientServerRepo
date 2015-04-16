@@ -15,6 +15,16 @@ using namespace std::placeholders;
 PredictionAssistant::PredictionAssistant(unsigned recordSize, unsigned k,
     PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc) :
         recordSize_(recordSize),
+        recordsNumber_(-1),
+        k_(k),
+        distanceFunction_(distanceFunc),
+        chooseFunction_(chooseFunc),
+        elapsedSec_(0.0) {}
+
+PredictionAssistant::PredictionAssistant(unsigned recordSize, int recordsNumber, unsigned k,
+    PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc) :
+        recordSize_(recordSize),
+        recordsNumber_(recordsNumber),
         k_(k),
         distanceFunction_(distanceFunc),
         chooseFunction_(chooseFunc),
@@ -24,22 +34,22 @@ PredictionAssistant::~PredictionAssistant() {}
 
 void PredictionAssistant::addDatabaseFile(const std::string& file)
 {
-    std::cout << "Adding " << file << " as database file" << std::endl;
+    // std::cout << "Adding " << file << " as database file" << std::endl;
     databaseFiles_.emplace_back(file);
 }
 
 void PredictionAssistant::addTestFile(const std::string& file)
 {
-    std::cout << "Adding " << file << " as test file" << std::endl;
+    // std::cout << "Adding " << file << " as test file" << std::endl;
     testFiles_.emplace_back(file);
 }
 
 void PredictionAssistant::initPredictionAlgorithm()
 {
     finder_.reset(new BasicKNeighborFinder(
-        buildKNeighborsFinder(databaseFiles_, recordSize_,
+        buildKNeighborsFinder(databaseFiles_, recordSize_, recordsNumber_,
         std::bind(distanceFunction_, &functions_, _1))));
-    std::cout << "Successful loaded prediction algorithm" << std::endl;
+    // std::cout << "Successful loaded prediction algorithm" << std::endl;
     // finder_->printInfo();
 }
 
@@ -47,15 +57,15 @@ std::vector<bool> PredictionAssistant::runTest()
 {
     TestData testData = getTestData();
     std::vector<bool> testResults;
-    std::cout << "Test iterations: " << testData.size() << std::endl;
+    // std::cout << "Test iterations: " << testData.size() << std::endl;
 
-    std::cout << "Running test..." << std::endl;
+    // std::cout << "Running test..." << std::endl;
 
     std::transform(testData.begin(), testData.end(), std::back_inserter(testResults),
         std::bind(&PredictionAssistant::getTestResult, this, _1));
 
-    std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
-        << "s" << std::endl;
+    // std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
+        // << "s" << std::endl;
 
     return testResults;
 }
