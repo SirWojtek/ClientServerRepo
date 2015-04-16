@@ -36,6 +36,7 @@ void runTest(const FileVector& files, PredictionAssistant::PredictionFunction fu
     for (unsigned i = 0; i < iterations; i++)
     {
         std::cout << i << " ";
+        std::cout.flush();
         assistant.initPredictionAlgorithm();
         std::vector<bool> results = assistant.runTest();
         int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
