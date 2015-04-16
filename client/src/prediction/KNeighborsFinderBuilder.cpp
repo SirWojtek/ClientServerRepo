@@ -117,7 +117,11 @@ BasicKNeighborFinder buildKNeighborsFinder(const FileVector& dataFiles,
 {
     BasicKNeighborFinder finder(distFunc);
     std::vector<DataVector> partitionedData = getPartitionedData(dataFiles, recordSize);
-    cutPartitionedData(partitionedData, recordsNumber);
+
+    if (recordsNumber < partitionedData.size())
+    {
+        cutPartitionedData(partitionedData, recordsNumber);
+    }
 
     feedKNeighborsFinder(finder, partitionedData);
 

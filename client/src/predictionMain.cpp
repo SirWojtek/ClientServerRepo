@@ -35,7 +35,7 @@ void runTest(const FileVector& files, PredictionAssistant::PredictionFunction fu
     std::cout << "Iteration: ";
     for (unsigned i = 0; i < iterations; i++)
     {
-        std::cout << i << " ";
+        std::cout << i + 1 << " ";
         std::cout.flush();
         assistant.initPredictionAlgorithm();
         std::vector<bool> results = assistant.runTest();
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
     FileVector files = getFiles(argc, argv);
     DistanceFunctions::setWeight(0.01);
-    std::vector<unsigned> recordsNumber = { 100, 200, 500, 1000, 2000, 5000, 10000 };
+    std::vector<unsigned> recordsNumber = { 10, 20, 50, 100, 200, 500, 1000 };
 
     for (unsigned number : recordsNumber)
     {
