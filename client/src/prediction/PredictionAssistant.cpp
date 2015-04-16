@@ -46,6 +46,7 @@ void PredictionAssistant::addTestFile(const std::string& file)
 
 void PredictionAssistant::initPredictionAlgorithm()
 {
+    elapsedSec_ = std::chrono::duration<double>(0.0);
     finder_.reset(new BasicKNeighborFinder(
         buildKNeighborsFinder(databaseFiles_, recordSize_, recordsNumber_,
         std::bind(distanceFunction_, &functions_, _1))));
@@ -65,7 +66,7 @@ std::vector<bool> PredictionAssistant::runTest()
         std::bind(&PredictionAssistant::getTestResult, this, _1));
 
     // std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
-        // << "s" << std::endl;
+    //     << "s" << std::endl;
 
     return testResults;
 }
