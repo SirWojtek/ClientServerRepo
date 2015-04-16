@@ -19,12 +19,6 @@ public:
     static void setWeight(float newWeight);
 
 private:
-    struct Sums
-    {
-        DeltaRecord inputSum, compSum;
-    };
-    Sums getSumedDeltas(const InputRecord& comp) const;
-
     InputRecord input;
     static float weight;
 };

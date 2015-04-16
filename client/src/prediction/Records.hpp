@@ -1,9 +1,9 @@
 #ifndef RECORDS_HPP_
 #define RECORDS_HPP_
 
-#include <vector>
 #include <utility>
 #include <ostream>
+#include <vector>
 
 namespace prediction
 {
@@ -31,7 +31,7 @@ struct InputRecord
     bool operator<(const InputRecord& a) const;
 
     int beginX, beginY;
-    std::vector<DeltaRecord> steps;
+    DeltaRecord direction;
 };
 
 std::ostream& operator<<(std::ostream& stream, const InputRecord& x);

@@ -28,10 +28,8 @@ float DistanceFunctions::startPointsDistance(const InputRecord& comp) const
 
 float DistanceFunctions::directionDistance(const InputRecord& comp) const
 {
-    Sums sums = getSumedDeltas(comp);
-
-    return std::abs(sums.inputSum.deltaX - sums.compSum.deltaX) +
-        std::abs(sums.inputSum.deltaY - sums.compSum.deltaY);
+    return std::abs(comp.direction.deltaX - input.direction.deltaX) +
+        std::abs(comp.direction.deltaY - input.direction.deltaY);
 }
 
 float DistanceFunctions::startPointsDistanceAndDirection(const InputRecord& comp) const
@@ -49,17 +47,5 @@ float DistanceFunctions::reversedWeightStartPointsDistanceAndDirection(
 {
     return weight * directionDistance(comp) + (1.0f - weight) * startPointsDistance(comp);
 }
-
-DistanceFunctions::Sums DistanceFunctions::getSumedDeltas(const InputRecord& comp) const
-{
-    Sums result;
-
-    result.compSum = std::accumulate(comp.steps.begin(), comp.steps.end(), DeltaRecord());
-    result.inputSum = std::accumulate(
-        input.steps.begin(), input.steps.end(), DeltaRecord());
-
-    return result; 
-}
-
 
 }

@@ -2,6 +2,7 @@
 #include "Records.hpp"
 
 #include <tuple>
+#include <algorithm>
 
 namespace prediction
 {
@@ -46,6 +47,7 @@ InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :
 {
     int prevStepX = beginX;
     int prevStepY = beginY;
+    std::vector<DeltaRecord> steps;
 
     for (unsigned i = 1; i < dataVector.size() - 1; i++)
     {
@@ -57,22 +59,18 @@ InputRecord::InputRecord(const std::vector<std::pair<int, int>>& dataVector) :
         prevStepX = dataVector[i].first;
         prevStepY = dataVector[i].second;
     }
+
+    direction = std::accumulate(steps.begin(), steps.end(), DeltaRecord());
 }
 
 bool InputRecord::operator<(const InputRecord& a) const
 {
-    return std::tie(beginX, beginY, steps) < std::tie(a.beginX, a.beginY, a.steps);
+    return std::tie(beginX, beginY, direction) < std::tie(a.beginX, a.beginY, a.direction);
 }
 
 std::ostream& operator<<(std::ostream& stream, const InputRecord& x)
 {
-    stream << "( " << x.beginX << " , " << x.beginY << ") -> ";
-
-    for (unsigned i = 0; i < x.steps.size() - 1; i++)
-    {
-        stream << x.steps[i] << " -> ";
-    }
-    stream << x.steps.back();
+    stream << "( " << x.beginX << " , " << x.beginY << ") -> " << x.direction;
 
     return stream;
 }
