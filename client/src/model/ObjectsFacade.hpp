@@ -21,13 +21,13 @@ public:
     void addActiveObject(const Object& obj);
     void addInactiveObject(const Object& obj);
     ObjectPtr getPlayerObject();
-    SafeMapContainer& getCurrentMap();
+    maps::MapContainer& getCurrentMap();
 
 private:
     ObjectPtr playerObject_;
     std::set<ObjectPtr> activeObjects_;
     std::set<ObjectPtr> inactiveObjects_;
-    std::vector<SafeMapContainer> maps_;
+    std::vector<maps::MapContainer> maps_;
 
     static const std::vector<std::string> mapFiles;
     static const std::string mapPath;

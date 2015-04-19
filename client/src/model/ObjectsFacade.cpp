@@ -36,9 +36,9 @@ void ObjectsFacade::loadMaps()
 
     for (const auto& mapFile : mapFiles)
     {
-        maps_.emplace_back(MapContainer(mapPath));
+        maps_.emplace_back(mapPath);
 
-        if (!maps_.back().object.loadMap(mapFile))
+        if (!maps_.back().loadMap(mapFile))
         {
             throw std::runtime_error("Map not loaded correctly");
         }
@@ -60,7 +60,7 @@ ObjectPtr ObjectsFacade::getPlayerObject()
     return playerObject_;
 }
 
-ObjectsFacade::SafeMapContainer& ObjectsFacade::getCurrentMap()
+maps::MapContainer& ObjectsFacade::getCurrentMap()
 {
     // TODO: current map deduction
     return maps_.back();
