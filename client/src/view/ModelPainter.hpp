@@ -26,10 +26,11 @@ public:
     virtual void paint(sf::RenderWindow& window);
 
 private:
-    void printMap(sf::RenderWindow& window, const maps::MapContainerPtr& currentMap);
+        void printMap(sf::RenderWindow& window, maps::IMapContainer& currentMap);
     void printPlayer(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
     void setCamera(sf::RenderWindow& window, const model::ObjectPtr& playerObj);
-    void updateViewportArea(maps::MapContainerPtr& map, const model::ObjectPtr& playerObj);
+    void updateViewportArea(maps::IMapContainer& map,
+        const model::ObjectPtr& playerObj);
 
     model::ObjectsFacadePtr modelFacade_;
     sf::View view_;

@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <mutex>
 
 #include <tmx/MapLoader.h>
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -34,8 +35,9 @@ public:
 private:
     void loadMapRenderTexture();
 
-    std::unique_ptr<tmx::MapLoader> tmxMapLoader_;
-    std::unique_ptr<sf::RenderTexture> mapTexture_;
+    tmx::MapLoader tmxMapLoader_;
+    std::mutex loaderMutex_;
+    sf::RenderTexture mapTexture_;
     Console console_;
 };
 

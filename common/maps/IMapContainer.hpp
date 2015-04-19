@@ -29,7 +29,7 @@ public:
     virtual std::vector<tmx::MapObject*> getCollisionObjects(
         const sf::FloatRect& spriteArea) = 0;
 };
-using MapContainerPtr = std::shared_ptr<IMapContainer>;
+using MapContainerPtr = std::unique_ptr<IMapContainer>;
 
 }
 
