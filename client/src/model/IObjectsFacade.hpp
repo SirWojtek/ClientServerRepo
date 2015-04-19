@@ -2,8 +2,12 @@
 #define IOBJECTS_FACADE_HPP_
 
 #include "objects/Object.hpp"
+#include "common/utilities/ThreadSafeObject.hpp"
 
-#include "common/maps/IMapContainer.hpp"
+namespace maps
+{
+class MapContainer;
+}
 
 namespace model
 {
@@ -11,11 +15,13 @@ namespace model
 class IObjectsFacade
 {
 public:
+    using SafeMapContainer = ThreadSafeObject<maps::MapContainer>;
+
     virtual void loadMaps() = 0;
     virtual void addActiveObject(const Object& obj) = 0;
     virtual void addInactiveObject(const Object& obj) = 0;
     virtual ObjectPtr getPlayerObject() = 0;
-    virtual maps::MapContainerPtr getCurrentMap() const = 0;
+    virtual SafeMapContainer& getCurrentMap() = 0;
 };
 using ObjectsFacadePtr = std::shared_ptr<IObjectsFacade>;
 
