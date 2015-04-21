@@ -27,9 +27,9 @@ public:
     virtual const sf::Texture& getSfmlMap() const = 0;
     virtual void updateViewport(const sf::FloatRect& area) = 0;
     virtual std::vector<tmx::MapObject*> getCollisionObjects(
-        const sf::FloatRect& spriteArea) const = 0;
+        const sf::FloatRect& spriteArea) = 0;
 };
-using MapContainerPtr = std::shared_ptr<IMapContainer>;
+using MapContainerPtr = std::unique_ptr<IMapContainer>;
 
 }
 

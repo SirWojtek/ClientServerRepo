@@ -94,7 +94,7 @@ bool MovementManager::isPlayerColliding(const model::ObjectPtr& playerObj,
         model::Object::Position& newPosition) const
 {
     using tmx::MapObject;
-    std::vector<MapObject*> collidedObjects = objectFacade_->getCurrentMap()->getCollisionObjects(
+    std::vector<MapObject*> collidedObjects = objectFacade_->getCurrentMap().getCollisionObjects(
         playerObj->getPositionRect());
 
 

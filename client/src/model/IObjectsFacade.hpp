@@ -2,7 +2,6 @@
 #define IOBJECTS_FACADE_HPP_
 
 #include "objects/Object.hpp"
-
 #include "common/maps/IMapContainer.hpp"
 
 namespace model
@@ -15,7 +14,7 @@ public:
     virtual void addActiveObject(const Object& obj) = 0;
     virtual void addInactiveObject(const Object& obj) = 0;
     virtual ObjectPtr getPlayerObject() = 0;
-    virtual maps::MapContainerPtr getCurrentMap() const = 0;
+    virtual maps::IMapContainer& getCurrentMap() = 0;
 };
 using ObjectsFacadePtr = std::shared_ptr<IObjectsFacade>;
 

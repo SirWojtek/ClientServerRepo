@@ -32,7 +32,7 @@ ModelPainter::ModelPainter(model::ObjectsFacadePtr modelFacade) :
 void ModelPainter::paint(sf::RenderWindow& window)
 {
     model::ObjectPtr playerObj = modelFacade_->getPlayerObject();
-    maps::MapContainerPtr currentMap = modelFacade_->getCurrentMap();
+    maps::IMapContainer& currentMap = modelFacade_->getCurrentMap();
 
     printMap(window, currentMap);
     printPlayer(window, playerObj);
@@ -40,9 +40,9 @@ void ModelPainter::paint(sf::RenderWindow& window)
     updateViewportArea(currentMap, playerObj);
 }
 
-void ModelPainter::printMap(sf::RenderWindow& window, const maps::MapContainerPtr& currentMap)
+void ModelPainter::printMap(sf::RenderWindow& window, maps::IMapContainer& currentMap)
 {
-    sf::Sprite mapSprite(currentMap->getSfmlMap());
+    sf::Sprite mapSprite(currentMap.getSfmlMap());
     window.draw(mapSprite);
 }
 
@@ -62,7 +62,7 @@ void ModelPainter::setCamera(sf::RenderWindow& window, const model::ObjectPtr& p
     window.setView(view_);
 }
 
-void ModelPainter::updateViewportArea(maps::MapContainerPtr& map,
+void ModelPainter::updateViewportArea(maps::IMapContainer& map,
     const model::ObjectPtr& playerObj)
 {
     sf::FloatRect viewportArea;
@@ -72,7 +72,7 @@ void ModelPainter::updateViewportArea(maps::MapContainerPtr& map,
     viewportArea.width = viewportSize.x;
     viewportArea.height = viewportSize.y;
 
-    map->updateViewport(viewportArea);
+    map.updateViewport(viewportArea);
 }
 
 }

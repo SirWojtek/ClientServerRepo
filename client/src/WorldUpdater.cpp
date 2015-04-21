@@ -16,8 +16,7 @@
 WorldUpdater::WorldUpdater(model::ObjectsFacadePtr objectsFacade,
     CommunicationServicePtr communicationServ) :
         objectsFacade_(objectsFacade),
-        communicationServ_(communicationServ),
-        loginService_(std::make_shared<LoginService>(communicationServ)) {}
+        communicationServ_(communicationServ) {}
 
 WorldUpdater::~WorldUpdater()
 {
@@ -29,7 +28,7 @@ void WorldUpdater::init()
     communicationServ_->startService();
 
     model::ObjectPtr player = objectsFacade_->getPlayerObject();
-    player->position = loginService_->login();
+    player->position = login(*communicationServ_);
     previousPlayerObject_ = copyPlayerObject(player);
 
     objectsFacade_->loadMaps();

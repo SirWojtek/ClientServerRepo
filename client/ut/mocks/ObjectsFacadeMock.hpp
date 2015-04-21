@@ -16,7 +16,7 @@ public:
     MOCK_METHOD1(addActiveObject, void(const model::Object& obj));
     MOCK_METHOD1(addInactiveObject, void(const model::Object& obj));
     MOCK_METHOD0(getPlayerObject, model::ObjectPtr());
-    MOCK_CONST_METHOD0(getCurrentMap, maps::MapContainerPtr());
+    MOCK_METHOD0(getCurrentMap, maps::IMapContainer&());
 };
 using ObjectsFacadeMockPtr = std::shared_ptr<ObjectsFacadeMock>;
 

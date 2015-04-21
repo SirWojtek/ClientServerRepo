@@ -1,15 +1,13 @@
+
 #include <gtest/gtest.h>
 #include <memory>
 #include <stdexcept>
 
-#include "client/src/CommunicationService.hpp"
 #include "common/messages/UpdatePlayer.hpp"
 #include "common/messages/MessageTypes.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
-#include "TcpSocketMock.hpp"
-#include "MessageQueueMock.hpp"
-#include "MessageCommanderMock.hpp"
+#include "utilities/CommunicationServiceSutBuilder.hpp"
 
 using namespace ::testing;
 using namespace common;
@@ -18,14 +16,7 @@ class CommunicationServiceShould : public ::testing::Test
 {
 protected:
     CommunicationServiceShould() :
-        tcpSocketMock_(std::make_shared<TcpSocketMock>()),
-        writerQueueMock_(std::make_shared<MessageQueueMock>()),
-        readerQueueMock_(std::make_shared<MessageQueueMock>()),
-        messageWriterMock_(std::make_shared<MessageCommanderMock>()),
-        messageReaderMock_(std::make_shared<MessageCommanderMock>()),
-        communicationServ_(std::make_shared<CommunicationService>(
-            tcpSocketMock_, writerQueueMock_, messageWriterMock_,
-            readerQueueMock_, messageReaderMock_))
+        sut(buildCommunicationServiceSut())
     {
         UpdatePlayer updatePlayer;
         message_ = std::make_shared<std::string>(getMessageJson(updatePlayer));
@@ -40,25 +31,12 @@ protected:
     std::shared_ptr<std::string> getMessageOfTypeAfterInsert(const messagetype::MessageType& type,
         std::shared_ptr<std::string> message)
     {
-        {
-            InSequence seq;
-            EXPECT_CALL(*readerQueueMock_, popMessage())
-                .WillOnce(Return(message));
-            EXPECT_CALL(*readerQueueMock_, popMessage())
-                .WillRepeatedly(Return(nullptr));
-        }
-
-        auto ret = communicationServ_->getMessage(type, true);
-
+        sut.messageQueue->messageToPop = message;
+        auto ret = sut.communicationServ->getMessage(type, true);
         return ret;
     }
 
-    TcpSocketMockPtr tcpSocketMock_;
-    MessageQueueMockPtr writerQueueMock_;
-    MessageQueueMockPtr readerQueueMock_;
-    MessageCommanderMockPtr messageWriterMock_;
-    MessageCommanderMockPtr messageReaderMock_;
-    CommunicationServicePtr communicationServ_;
+    CommunicationServiceSut sut;
 
     std::shared_ptr<std::string> message_;
     messagetype::MessageType messageType_;
@@ -66,38 +44,21 @@ protected:
     std::string port = "4001";  // from implementation
 };
 
-TEST_F(CommunicationServiceShould, prepareCommunicationSocket)
-{
-    EXPECT_CALL(*tcpSocketMock_, connect(host, port));
-    EXPECT_CALL(*messageWriterMock_, start())
-        .WillOnce(Return(nullptr));
-    EXPECT_CALL(*messageReaderMock_, start())
-        .WillOnce(Return(nullptr));
-
-    communicationServ_->startService();
-}
-
 TEST_F(CommunicationServiceShould, putUpdatePlayerMessageInQueueAndGetOkResponse)
 {
     UpdatePlayer msg;
     OkResponse ok;
 
-    EXPECT_CALL(*writerQueueMock_, pushMessage(_));
-    EXPECT_CALL(*readerQueueMock_, popMessage())
-        .WillOnce(Return(std::make_shared<std::string>(getMessageJson(ok))));
+    sut.messageQueue->messageToPop = std::make_shared<std::string>(getMessageJson(ok));
 
-    ASSERT_EQ(communicationServ_->putMessageInQueue(msg), ok);
+    ASSERT_EQ(sut.communicationServ->putMessageInQueue(msg), ok);
 }
 
 TEST_F(CommunicationServiceShould, putUpdatePlayerMessageInQueueAndNotGetOkResponseThrows)
 {
     UpdatePlayer msg;
 
-    EXPECT_CALL(*writerQueueMock_, pushMessage(_));
-    EXPECT_CALL(*readerQueueMock_, popMessage())
-        .WillRepeatedly(Return(nullptr));
-
-    EXPECT_THROW(communicationServ_->putMessageInQueue(msg), std::runtime_error);
+    EXPECT_THROW(sut.communicationServ->putMessageInQueue(msg), std::runtime_error);
 }
 
 TEST_F(CommunicationServiceShould, returnNullPtrIfCannotGetMessageOfType)
@@ -118,7 +79,7 @@ TEST_F(CommunicationServiceShould, getMessageOfTypeIfIsInQueue)
 {
     insertMessageIntoCommonicationServiceMultiMap();
 
-    auto rec = communicationServ_->getMessage(messageType_, false);
+    auto rec = sut.communicationServ->getMessage(messageType_, false);
 
     ASSERT_EQ(*message_, *rec);
 }

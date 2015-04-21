@@ -9,8 +9,6 @@
 
 #include "objects/Object.hpp"
 
-#include "common/maps/IMapContainer.hpp"
-
 namespace model
 {
 
@@ -19,11 +17,11 @@ class ObjectsFacade : public IObjectsFacade
 public:
     ObjectsFacade();
 
-    virtual void loadMaps();
-    virtual void addActiveObject(const Object& obj);
-    virtual void addInactiveObject(const Object& obj);
-    virtual ObjectPtr getPlayerObject();
-    virtual maps::MapContainerPtr getCurrentMap() const;
+    void loadMaps();
+    void addActiveObject(const Object& obj);
+    void addInactiveObject(const Object& obj);
+    ObjectPtr getPlayerObject();
+    maps::IMapContainer& getCurrentMap();
 
 private:
     ObjectPtr playerObject_;

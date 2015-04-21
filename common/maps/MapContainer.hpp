@@ -6,9 +6,10 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <mutex>
 
+#include <tmx/MapLoader.h>
 #include <SFML/Graphics/RenderTexture.hpp>
-#include <SFML/Graphics/Rect.hpp>
 
 #include "common/utilities/Console.hpp"
 
@@ -16,12 +17,6 @@ namespace sf
 {
 class Texture;
 };
-
-namespace tmx
-{
-class MapLoader;
-class MapObject;
-}
 
 namespace maps
 {
@@ -35,12 +30,13 @@ public:
     virtual const sf::Texture& getSfmlMap() const;
     virtual void updateViewport(const sf::FloatRect& area);
     virtual std::vector<tmx::MapObject*> getCollisionObjects(
-        const sf::FloatRect& spriteArea) const;
+        const sf::FloatRect& spriteArea);
 
 private:
     void loadMapRenderTexture();
 
-    std::shared_ptr<tmx::MapLoader> tmxMapLoader_;
+    tmx::MapLoader tmxMapLoader_;
+    std::mutex loaderMutex_;
     sf::RenderTexture mapTexture_;
     Console console_;
 };

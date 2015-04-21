@@ -8,8 +8,8 @@ class IMessageQueue
 {
 public:
     virtual ~IMessageQueue() {}
-	virtual void pushMessage(const std::string& message) = 0;
-	virtual std::shared_ptr<std::string> popMessage() = 0;
+    virtual void pushMessage(const std::string& message) = 0;
+    virtual std::shared_ptr<std::string> popMessage() = 0;
     virtual void waitForEmptyQueue() = 0;
     virtual void waitForEmptyQueueWithTimeout() = 0;
 };

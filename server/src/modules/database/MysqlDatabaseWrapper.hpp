@@ -2,6 +2,7 @@
 #define MYSQL_DATABASE_WRAPPER_HPP_
 
 #include <stdexcept>
+#include <mutex>
 
 #include "IDatabaseWrapper.hpp"
 
@@ -42,6 +43,7 @@ private:
 
 	std::shared_ptr<soci::session> databaseConnector_;
 	Console console_;
+	std::mutex connectorMutex;
 };
 
 #endif 

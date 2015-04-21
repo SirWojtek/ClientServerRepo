@@ -1,24 +1,19 @@
 
 #include "MapContainer.hpp"
 
-#include <memory>
-#include <string>
-
-#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/System/Vector2.hpp>
-
-#include <tmx/MapLoader.h>
+#include <SFML/Graphics/Rect.hpp>
 
 namespace maps
 {
 
 MapContainer::MapContainer(std::string mapFolder) :
-    tmxMapLoader_(std::make_shared<tmx::MapLoader>(mapFolder)),
+    tmxMapLoader_(mapFolder),
     console_("MapContainer") {}
 
 bool MapContainer::loadMap(const std::string filename)
 {
-    bool result = tmxMapLoader_->Load(filename);
+    bool result = tmxMapLoader_.Load(filename);
     loadMapRenderTexture();
 
     console_.info << "Map loaded";
@@ -27,11 +22,11 @@ bool MapContainer::loadMap(const std::string filename)
 
 void MapContainer::loadMapRenderTexture()
 {
-    sf::Vector2u mapSize = tmxMapLoader_->GetMapSize();
+    sf::Vector2u mapSize = tmxMapLoader_.GetMapSize();
 
     mapTexture_.create(mapSize.x, mapSize.y);
     mapTexture_.clear();
-    mapTexture_.draw(*tmxMapLoader_);
+    mapTexture_.draw(tmxMapLoader_);
     mapTexture_.display();
 }
 
@@ -42,13 +37,15 @@ const sf::Texture& MapContainer::getSfmlMap() const
 
 void MapContainer::updateViewport(const sf::FloatRect& area)
 {
-    tmxMapLoader_->UpdateQuadTree(area);
+    std::lock_guard<std::mutex> lock(loaderMutex_);
+    tmxMapLoader_.UpdateQuadTree(area);
 }
 
 std::vector<tmx::MapObject*> MapContainer::getCollisionObjects(
-        const sf::FloatRect& spriteArea) const
+        const sf::FloatRect& spriteArea)
 {
-    return tmxMapLoader_->QueryQuadTree(spriteArea);
+    std::lock_guard<std::mutex> lock(loaderMutex_);
+    return tmxMapLoader_.QueryQuadTree(spriteArea);
 }
 
 }

@@ -8,9 +8,11 @@
 Users DatabaseWrapper::getUsers()
 {
 	Users foundUsers;
+	connectorMutex.lock();
 	soci::rowset<User> rows = (databaseConnector_->prepare <<
 		"SELECT * from users");
 	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
+	connectorMutex.unlock();
 	return foundUsers;
 }
 
@@ -22,9 +24,11 @@ Users DatabaseWrapper::getUsersBy(UserTypes type, unsigned& id)
 		console_.error << "Trying to get users by ID, but specified other type: " << type;
 		return foundUsers;
 	}
+	connectorMutex.lock();
 	soci::rowset<User> rows = (databaseConnector_->prepare <<
 		"SELECT * from users where id = :id", soci::use(id));
 	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
+	connectorMutex.unlock();
 	return foundUsers;
 }
 
@@ -36,9 +40,11 @@ Users DatabaseWrapper::getUsersBy(UserTypes type, std::string& login)
 		console_.error << "Trying to get users by LOGIN, but specified other type: " << type;
 		return foundUsers;
 	}
+	connectorMutex.lock();
 	soci::rowset<User> rows = (databaseConnector_->prepare <<
 		"SELECT * from users where login = :login", soci::use(login));
 	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
+	connectorMutex.unlock();
 	return foundUsers;
 }
 
@@ -51,28 +57,34 @@ Users DatabaseWrapper::getUsersBy(UserTypes type, bool isOnline)
 		return foundUsers;
 	}
 	int isOnlineIntValue = ((isOnline) ? 1 : 0 );
+	connectorMutex.lock();
 	soci::rowset<User> rows = (databaseConnector_->prepare <<
 		"SELECT * from users where isOnline = :isOnline", soci::use(isOnlineIntValue));
 	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
+	connectorMutex.unlock();
 	return foundUsers;
 }
 
 bool DatabaseWrapper::updateUser(User userToUpdate)
 {
+	connectorMutex.lock();
 	*databaseConnector_ << "UPDATE users SET login = :login, lastVisit = :lastVisit, xPosition = :xPos, yPosition = :yPos, zPosition = :zPos, isOnline = :isOn WHERE id = :id",
 		soci::use(userToUpdate.get<1>()), soci::use(userToUpdate.get<2>()),
 		soci::use(userToUpdate.get<3>()), soci::use(userToUpdate.get<4>()),
 		soci::use(userToUpdate.get<5>()), soci::use(userToUpdate.get<6>()),
 		soci::use(userToUpdate.get<0>());
-	if (userIsEqualToPattern(userToUpdate.get<0>(), userToUpdate))
-	{
-		return true;
-	}
-	else
-	{
-		console_.error << "Failed to update player!";
-		return false;
-	}
+	connectorMutex.unlock();
+	return true;
+	// TODO - try to remember why I thought it would be useful
+	// if (userIsEqualToPattern(userToUpdate.get<0>(), userToUpdate))
+	// {
+	// 	return true;
+	// }
+	// else
+	// {
+	// 	console_.error << "Failed to update player!";
+	// 	return false;
+	// }
 }
 
 Users DatabaseWrapper::getUsersBy(UserTypes type, std::vector<int> position)
@@ -84,8 +96,10 @@ Users DatabaseWrapper::getUsersBy(UserTypes type, std::vector<int> position)
 		return foundUsers;
 
 	}
+	connectorMutex.lock();
 	soci::rowset<User> rows = (databaseConnector_->prepare << "SELECT * from users");
 	MarkedPositions positions = checkMarkedPositions(position);
+	connectorMutex.unlock();
 	switch(positions)
 	{
 		case X:

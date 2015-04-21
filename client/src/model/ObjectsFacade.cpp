@@ -36,14 +36,11 @@ void ObjectsFacade::loadMaps()
 
     for (const auto& mapFile : mapFiles)
     {
-        MapContainerPtr map = std::make_shared<MapContainer>(mapPath);
-
-        if (!map->loadMap(mapFile))
+        maps_.emplace_back(new MapContainer(mapPath));
+        if (!maps_.back()->loadMap(mapFile))
         {
             throw std::runtime_error("Map not loaded correctly");
         }
-
-        maps_.push_back(map);
     }
 }
 
@@ -62,10 +59,10 @@ ObjectPtr ObjectsFacade::getPlayerObject()
     return playerObject_;
 }
 
-maps::MapContainerPtr ObjectsFacade::getCurrentMap() const
+maps::IMapContainer& ObjectsFacade::getCurrentMap()
 {
     // TODO: current map deduction
-    return maps_[0];
+    return *maps_.back();
 }
 
 }

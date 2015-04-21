@@ -2,43 +2,38 @@
 #include "LoginService.hpp"
 
 #include <stdexcept>
+#include <string>
+#include <fstream>
 
 #include "common/messages/Login.hpp"
 #include "common/messages/MessageUtilities.hpp"
 
-std::string LoginService::filename = "login.info";
 
-LoginService::LoginService(CommunicationServicePtr communicationServ) :
-    communicationServ_(communicationServ),
-    loginFile_(filename) {}
-
-model::Object::Position LoginService::login()
+namespace
 {
-    std::string username = getUserName();
-    loginWithCredencial(username);
+const std::string filename = "login.info";
 
-    return getPlayerPositionFromServer();
-}
-
-std::string LoginService::getUserName()
+std::string getUserName()
 {
     std::string username;
+    std::ifstream loginFile(filename);
 
-    if (!loginFile_)
+    if (!loginFile)
     {
         throw std::runtime_error("File with credencial (" + filename + ") cannot be open");
     }
 
-    loginFile_ >> username;
+    loginFile >> username;
     return username;
 }
 
-void LoginService::loginWithCredencial(const std::string& username)
+void loginWithCredencial(ICommunicationService& communicationServ,
+    const std::string& username)
 {
     using namespace common;
 
     Login loginMessage = { username };
-    OkResponse response = communicationServ_->putMessageInQueue(loginMessage);
+    OkResponse response = communicationServ.putMessageInQueue(loginMessage);
 
     if (!response.serverAllows)
     {
@@ -46,8 +41,18 @@ void LoginService::loginWithCredencial(const std::string& username)
     }
 }
 
-model::Object::Position LoginService::getPlayerPositionFromServer()
+model::Object::Position getPlayerPositionFromServer()
 {
     // TODO: write this method
     return model::Object::Position();
+}
+
+}
+
+model::Object::Position login(ICommunicationService& communicationServ)
+{
+    std::string username = getUserName();
+    loginWithCredencial(communicationServ, username);
+
+    return getPlayerPositionFromServer();
 }
