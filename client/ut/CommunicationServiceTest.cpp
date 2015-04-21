@@ -11,6 +11,8 @@
 #include "MessageQueueMock.hpp"
 #include "MessageCommanderMock.hpp"
 
+#include "utilities/CommunicationServiceSutBuilder.hpp"
+
 using namespace ::testing;
 using namespace common;
 

@@ -1,6 +1,8 @@
 
 add_subdirectory(mocks)
+add_subdirectory(stubs)
 include_directories("mocks")
+include_directories("stubs")
 include_directories("${PROJECT_SOURCE_DIR}/common/socketServices/ut/mocks")
 
 
