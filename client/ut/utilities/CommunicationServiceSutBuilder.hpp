@@ -12,7 +12,7 @@
 struct CommunicationServiceSut
 {
     CommunicationServicePtr communicationServ;
-    MessageQueuePtr messageQueue;
+    std::shared_ptr<MessageQueueStub> messageQueue;
 };
 
 CommunicationServiceSut buildCommunicationServiceSut()

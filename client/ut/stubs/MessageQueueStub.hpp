@@ -11,7 +11,9 @@ struct MessageQueueStub : public IMessageQueue
     }
     std::shared_ptr<std::string> popMessage() override
     {
-        return messageToPop;
+        auto message = messageToPop;
+        messageToPop = nullptr;
+        return message;
     }
     void waitForEmptyQueue() override {}
     void waitForEmptyQueueWithTimeout() override {}
