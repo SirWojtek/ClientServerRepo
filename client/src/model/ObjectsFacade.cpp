@@ -36,7 +36,7 @@ void ObjectsFacade::loadMaps()
 
     for (const auto& mapFile : mapFiles)
     {
-
+        maps_.emplace_back(new MapContainer(mapPath));
         if (!maps_.back()->loadMap(mapFile))
         {
             throw std::runtime_error("Map not loaded correctly");
