@@ -1,60 +1,62 @@
-#include <gtest/gtest.h>
-#include <memory>
-#include <string>
-#include <stdexcept>
 
-#include "client/src/WorldUpdater.hpp"
-#include "common/messages/MessageTypes.hpp"
+// TODO: rewrite without mocks
 
-#include "ObjectsFacadeMock.hpp"
-#include "CommunicationServiceMock.hpp"
+// #include <gtest/gtest.h>
+// #include <memory>
+// #include <string>
+// #include <stdexcept>
 
-#include "client/src/model/objects/Object.hpp"
+// #include "client/src/WorldUpdater.hpp"
+// #include "common/messages/MessageTypes.hpp"
 
-using namespace ::testing;
-// using namespace common;
+// #include "ObjectsFacadeMock.hpp"
+// #include "CommunicationServiceMock.hpp"
 
-class WorldUpdaterShould : public ::testing::Test
-{
-protected:
-    WorldUpdaterShould() :
-        objectsFacadeMock_(std::make_shared<ObjectsFacadeMock>()),
-        communicationServMock_(std::make_shared<CommunicationServiceMock>()),
-        playerObject_(std::make_shared<model::Object>()),
-        worldUpdater_(std::make_shared<WorldUpdater>(
-            objectsFacadeMock_, communicationServMock_)) {}
+// #include "client/src/model/objects/Object.hpp"
 
-    void SetUp()
-    {
-        EXPECT_CALL(*communicationServMock_, startService());
-        EXPECT_CALL(*objectsFacadeMock_, getPlayerObject())
-            .WillOnce(Return(playerObject_));
-        EXPECT_CALL(*objectsFacadeMock_, loadMaps());
+// using namespace ::testing;
+// // using namespace common;
 
-        worldUpdater_->init();
-    }
+// class WorldUpdaterShould : public ::testing::Test
+// {
+// protected:
+//     WorldUpdaterShould() :
+//         objectsFacadeMock_(std::make_shared<ObjectsFacadeMock>()),
+//         communicationServMock_(std::make_shared<CommunicationServiceMock>()),
+//         playerObject_(std::make_shared<model::Object>()),
+//         worldUpdater_(std::make_shared<WorldUpdater>(
+//             objectsFacadeMock_, communicationServMock_)) {}
 
-    void TearDown()
-    {
-        EXPECT_CALL(*communicationServMock_, tearDown());
-    }
+//     void SetUp()
+//     {
+//         EXPECT_CALL(*communicationServMock_, startService());
+//         EXPECT_CALL(*objectsFacadeMock_, getPlayerObject())
+//             .WillOnce(Return(playerObject_));
 
-    ObjectsFacadeMockPtr objectsFacadeMock_;
-    CommunicationServiceMockPtr communicationServMock_;
-    model::ObjectPtr playerObject_;
+//         worldUpdater_->init();
+//     }
 
-    WorldUpdaterPtr worldUpdater_;
-};
+//     void TearDown()
+//     {
+//         EXPECT_CALL(*communicationServMock_, tearDown());
+//     }
 
-TEST_F(WorldUpdaterShould, throwIfUpdateEnvironmentMessageConversionFails)
-{
-    std::shared_ptr<std::string> message = std::make_shared<std::string>();
+//     ObjectsFacadeMockPtr objectsFacadeMock_;
+//     CommunicationServiceMockPtr communicationServMock_;
+//     model::ObjectPtr playerObject_;
 
-    EXPECT_CALL(*communicationServMock_,
-        getMessage(common::messagetype::UpdateEnvironment, false))
-    .WillOnce(Return(message));
+//     WorldUpdaterPtr worldUpdater_;
+// };
 
-    EXPECT_THROW(worldUpdater_->updateModel(false), std::runtime_error);
-}
+// TEST_F(WorldUpdaterShould, throwIfUpdateEnvironmentMessageConversionFails)
+// {
+//     std::shared_ptr<std::string> message = std::make_shared<std::string>();
+
+//     EXPECT_CALL(*communicationServMock_,
+//         getMessage(common::messagetype::UpdateEnvironment, false))
+//     .WillOnce(Return(message));
+
+//     EXPECT_THROW(worldUpdater_->updateModel(false), std::runtime_error);
+// }
 
 
