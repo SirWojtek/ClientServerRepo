@@ -62,7 +62,7 @@ void Client::tearDown()
 void Client::clientLoop()
 {
 
-    for (int i=0; i<200; i++)
+    for (int i=0; i<600; i++)
     {
         IKeyboardController::KeyDirection direction = keyboardController_->getKeyboardInput();
 

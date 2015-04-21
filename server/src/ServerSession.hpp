@@ -8,6 +8,8 @@
 #include <atomic>
 #include <thread>
 #include <ctime>
+#include <chrono>
+#include <ratio>
 
 #include "common/utilities/Console.hpp"
 #include "common/messages/MessageUtilities.hpp"
@@ -16,6 +18,7 @@
 
 #include "modules/database/IDatabaseWrapper.hpp"
 
+using namespace std::chrono;
 using boost::asio::ip::tcp;
 using messagePair = std::pair<common::messagetype::MessageType, std::shared_ptr<std::string> >;
 using messagePairVec = std::vector<messagePair>;
@@ -44,8 +47,7 @@ public:
     messageCounter_[common::messagetype::CurrentPlayerPosition] = 0;
     messageCounter_[common::messagetype::Logout] = 0;
     amountOfMessagesSent_ = 0;
-    timeBetweenMessageReceiveAndSend_ = 0;
-    totalTimeBetweenMessageReceiveAndSend_ = 0;
+    totalTimeBetweenMessageReceiveAndSend_ = duration_cast<duration<double>>(high_resolution_clock::now() - high_resolution_clock::now());
   }
 
   std::shared_ptr<std::thread> start();
@@ -72,8 +74,8 @@ private:
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
   unsigned amountOfMessagesSent_; 
-  unsigned long long totalTimeBetweenMessageReceiveAndSend_;
-  unsigned timeBetweenMessageReceiveAndSend_;
+  duration<double> totalTimeBetweenMessageReceiveAndSend_;
+  high_resolution_clock::time_point timeBetweenMessageReceiveAndSend_;
   User userForSession_;
 
   std::atomic<bool> stop_;
