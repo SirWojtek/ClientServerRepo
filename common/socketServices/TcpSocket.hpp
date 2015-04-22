@@ -32,6 +32,7 @@ private:
 
     std::unique_ptr<boost::asio::io_service> ioService_;
     std::unique_ptr<boost::asio::ip::tcp::socket> tcpSocket_;
+    std::string messagePieceFromLastReading_;
 
     Console console_;
 };

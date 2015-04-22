@@ -63,6 +63,7 @@ public:
 private:
   void runSession();
   int getMessage();
+  void sendOtherPlayersUpdate();
   void sendOkResponse(bool serverAllows);
   void sendPlayerPosition(int x, int y, int z);
   void printMessageCounter();

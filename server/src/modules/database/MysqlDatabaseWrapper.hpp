@@ -35,6 +35,7 @@ public:
 	Users getUsersBy(UserTypes type, std::string& login);
 	Users getUsersBy(UserTypes type, std::vector<int> position);
 	Users getUsersBy(UserTypes type, bool isOnline);
+	Users getAllUsersExcept(unsigned& id);
 	bool updateUser(User userToUpdate);
 private:
 	MarkedPositions checkMarkedPositions(std::vector<int> position);

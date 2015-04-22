@@ -158,7 +158,7 @@ void ServerSession::printMessageCounter()
     console_.info << "CurrentPlayerPosition: " + std::to_string(messageCounter_[common::messagetype::CurrentPlayerPosition]);
     console_.info << "Logout:                " + std::to_string(messageCounter_[common::messagetype::Logout]);
     console_.info << "Total amount of messages sent: " + std::to_string(amountOfMessagesSent_);
-    console_.info << "Mean time between message receive and message send [ms] : " + std::to_string(totalTicks);
+    console_.info << "Mean time between message receive and message send [sec] : " + std::to_string(totalTicks);
     console_.info << "____________________";
 }
 
@@ -180,11 +180,18 @@ bool ServerSession::updatePlayerPositionByJson(std::string json)
     return false;
 }
 
+void ServerSession::sendOtherPlayersUpdate()
+{
+    
+}
+
 void ServerSession::sendPlayerPosition(int x, int y, int z)
 {
     common::CurrentPlayerPosition position;
     position.position = std::make_tuple(x, y, z);
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
+    totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
+    amountOfMessagesSent_++;
     writerWrapper_->pushMessage(json);
     console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
 }

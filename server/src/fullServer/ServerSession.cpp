@@ -47,6 +47,8 @@ void ServerSession::runSession()
                 case MessageType::UpdatePlayer:
                     if (updatePlayerPositionByJson(*receivedMessages_[messageIndex].second))
                     {
+                        sendOtherPlayersUpdate();
+                        writerWrapper_->waitForEmptyQueueWithTimeout();
                         sendOkResponse(true);
                     }
                     else
@@ -131,7 +133,7 @@ bool ServerSession::loginService()
     {
         return false;
     }
-    int messageIndex = getMessage();
+    getMessage();
     if (userForSession_.get<LOGIN_ID>() != "") // emptiness of Login implies emptiness of tuple
     {
         userForSession_.get<ISONLINE_ID>() = true;
@@ -177,6 +179,24 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
     //console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
+void ServerSession::sendOtherPlayersUpdate()
+{
+    Users usersData = databaseConnector_->getAllUsersExcept(userForSession_.get<ID_ID>());
+    common::UpdateEnvironment updateEnvironmentMessage;
+    common::UpdateEnvironment::Changes singleChange;
+    for (auto user: usersData)
+    {
+        singleChange.state = 0;
+        singleChange.delta.first = user.get<XPOS_ID>();
+        singleChange.delta.second = user.get<YPOS_ID>();
+        singleChange.id = user.get<ID_ID>();
+        updateEnvironmentMessage.changesVector.push_back(singleChange);
+    }
+    std::string json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
+    writerWrapper_->pushMessage(json);
+    console_.debug << "UpdateEnvironment added to queue";
+}
+
 void ServerSession::sendOkResponse(bool serwerAllows)
 {
     common::OkResponse okMessage;
@@ -193,6 +213,8 @@ void ServerSession::sendPlayerPosition(int x, int y, int z)
     common::CurrentPlayerPosition position;
     position.position = std::make_tuple(x, y, z);
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
+    totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
+    amountOfMessagesSent_++;
     writerWrapper_->pushMessage(json);
     console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
 }

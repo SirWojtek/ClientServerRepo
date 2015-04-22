@@ -87,6 +87,17 @@ bool DatabaseWrapper::updateUser(User userToUpdate)
 	// }
 }
 
+Users DatabaseWrapper::getAllUsersExcept(unsigned& id)
+{
+	Users foundUsers;
+	connectorMutex.lock();
+	soci::rowset<User> rows = (databaseConnector_->prepare <<
+		"SELECT * from users where id != :id", soci::use(id));
+	std::copy(rows.begin(), rows.end(), std::back_inserter(foundUsers));
+	connectorMutex.unlock();
+	return foundUsers;
+}
+
 Users DatabaseWrapper::getUsersBy(UserTypes type, std::vector<int> position)
 {
 	Users foundUsers;

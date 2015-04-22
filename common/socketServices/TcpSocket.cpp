@@ -1,9 +1,11 @@
 #include <string>
+#include <sstream>
 #include <stdexcept>
 #include <memory>
 #include <iterator>
 #include <algorithm>
 
+#include <assert.h>
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time_duration.hpp>
 #include <boost/bind.hpp>
@@ -12,6 +14,23 @@
 #include "TcpSocket.hpp"
 
 using boost::asio::ip::tcp;
+
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems)
+{
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+std::vector<std::string> split(const std::string &s, char delim)
+{
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
+}
 
 TcpSocket::TcpSocket() :
     ioService_(new boost::asio::io_service()),
@@ -128,8 +147,18 @@ std::shared_ptr<std::string> TcpSocket::getMessageFromBuffer(boost::asio::stream
     std::string message((std::istreambuf_iterator<char>(&buffer)),
         std::istreambuf_iterator<char>());
 
-    message.erase(std::remove(message.begin(), message.end(), iTcpSocketReadDelim),
-        message.end());
+    // message.erase(std::remove(message.begin(), message.end(), iTcpSocketReadDelim),
+    //     message.end());
+
+    std::vector<std::string> splitMessage = split(message, iTcpSocketReadDelim);
+    assert(splitMessage.size() > 0 && "splitMessage size should not be zero!");
+
+    message = messagePieceFromLastReading_ + splitMessage[0];
+    messagePieceFromLastReading_ = "";
+    if (splitMessage.size() == 2)
+    {
+        messagePieceFromLastReading_ = splitMessage[1];
+    }
 
     return std::make_shared<std::string>(message);
 }
