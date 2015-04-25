@@ -160,6 +160,8 @@ void ServerSession::printMessageCounter()
     console_.info << "Total amount of messages sent: " + std::to_string(amountOfMessagesSent_);
     console_.info << "Mean time between message receive and message send [sec] : " + std::to_string(totalTicks);
     console_.info << "____________________";
+    std::ofstream outputFile("serverLogs/"+std::to_string(socketNumber_)+".log");
+    outputFile << totalTicks << "\n" << updateEnvironmentCounter_ << "\n" << messageCounter_[common::messagetype::UpdatePlayer];
 }
 
 messageCounter ServerSession::getMessageCounter()

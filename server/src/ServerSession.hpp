@@ -47,6 +47,7 @@ public:
     messageCounter_[common::messagetype::CurrentPlayerPosition] = 0;
     messageCounter_[common::messagetype::Logout] = 0;
     amountOfMessagesSent_ = 0;
+    updateEnvironmentCounter_ = 0;
     totalTimeBetweenMessageReceiveAndSend_ = duration_cast<duration<double>>(high_resolution_clock::now() - high_resolution_clock::now());
   }
 
@@ -74,6 +75,7 @@ private:
   int socketNumber_;
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
+  unsigned updateEnvironmentCounter_;
   unsigned amountOfMessagesSent_; 
   duration<double> totalTimeBetweenMessageReceiveAndSend_;
   high_resolution_clock::time_point timeBetweenMessageReceiveAndSend_;

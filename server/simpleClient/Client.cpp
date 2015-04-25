@@ -25,6 +25,8 @@ Client::Client(CommunicationServicePtr communicationServ,
         keyboardController_(keyboardController),
         console_("Client")
 {
+    amountOfMessagesSent_ = 0;
+    totalTimeBetweenMessageReceiveAndSend_ = duration_cast<duration<double>>(high_resolution_clock::now() - high_resolution_clock::now());;
     srand (time(NULL));
 }
 
@@ -33,9 +35,9 @@ int Client::start(int argc, char** argv)
     try
     {
         init();
-        login();
+        login(atoi(argv[1]));
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        clientLoop();
+        clientLoop(atoi(argv[1]));
         tearDown();
     }
     catch (std::runtime_error& e)
@@ -59,10 +61,10 @@ void Client::tearDown()
     communicationServ_->tearDown();
 }
 
-void Client::clientLoop()
+void Client::clientLoop(int clientNumber)
 {
 
-    for (int i=0; i<600; i++)
+    for (int i=0; i<200; i++)
     {
         IKeyboardController::KeyDirection direction = keyboardController_->getKeyboardInput();
 
@@ -95,7 +97,10 @@ void Client::clientLoop()
                 message.delta.second = 0;
                 break;
         }
+        amountOfMessagesSent_++;
+        timeBetweenMessageReceiveAndSend_ = high_resolution_clock::now();
         OkResponse response = communicationServ_->putMessageInQueue(message);
+        totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
 
         if (!response.serverAllows)
         {
@@ -104,12 +109,15 @@ void Client::clientLoop()
 
         //console_.debug << "Correct keyboard input received";
     }
+    double totalTicks = float(totalTimeBetweenMessageReceiveAndSend_.count()/amountOfMessagesSent_);
+    std::ofstream outputFile("simpleClientLogs/"+std::to_string(clientNumber)+".log");
+    outputFile << totalTicks;
 }
 
-void Client::login()
+void Client::login(int clientNumber)
 {
     Login loginMessage;
-    loginMessage.playerName = "Gettor";
+    loginMessage.playerName = "User" + std::to_string(clientNumber);
     OkResponse response = communicationServ_->putMessageInQueue(loginMessage);
 
     if (!response.serverAllows)

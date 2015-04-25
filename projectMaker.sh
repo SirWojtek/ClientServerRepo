@@ -7,6 +7,11 @@ then
 	mkdir backups
 fi
 
+if [ ! -d "serverLogs" ]; 
+then
+	mkdir serverLogs
+fi
+
 DATE=$(date +"%H:%M:%S_%d-%m-%Y");
 UP=$(pgrep mysql | wc -l);
 if [ "$UP" -gt 0 ];

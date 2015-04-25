@@ -31,6 +31,7 @@ KeyboardControllerPtr createKeyboardController()
 
 int main(int argc, char** argv)
 {
+	assert(argc>1 && "Run this program with a client number please!");
 	ILoger::setDebugPrint(true);
 	
 	CommunicationServicePtr communicationServ = createCommunicationService();
