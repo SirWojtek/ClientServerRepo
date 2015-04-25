@@ -36,7 +36,7 @@ int Client::start(int argc, char** argv)
     {
         init();
         login(atoi(argv[1]));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         clientLoop(atoi(argv[1]));
         tearDown();
     }
@@ -63,7 +63,6 @@ void Client::tearDown()
 
 void Client::clientLoop(int clientNumber)
 {
-
     for (int i=0; i<200; i++)
     {
         IKeyboardController::KeyDirection direction = keyboardController_->getKeyboardInput();
@@ -101,7 +100,6 @@ void Client::clientLoop(int clientNumber)
         timeBetweenMessageReceiveAndSend_ = high_resolution_clock::now();
         OkResponse response = communicationServ_->putMessageInQueue(message);
         totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
-
         if (!response.serverAllows)
         {
             throw std::runtime_error("Login attempt failed");
@@ -111,15 +109,17 @@ void Client::clientLoop(int clientNumber)
     }
     double totalTicks = float(totalTimeBetweenMessageReceiveAndSend_.count()/amountOfMessagesSent_);
     std::ofstream outputFile("simpleClientLogs/"+std::to_string(clientNumber)+".log");
-    outputFile << totalTicks;
+    outputFile << totalTicks << "\n" << amountOfMessagesSent_;
 }
 
 void Client::login(int clientNumber)
 {
     Login loginMessage;
     loginMessage.playerName = "User" + std::to_string(clientNumber);
+    amountOfMessagesSent_++;
+    timeBetweenMessageReceiveAndSend_ = high_resolution_clock::now();
     OkResponse response = communicationServ_->putMessageInQueue(loginMessage);
-
+    totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
     if (!response.serverAllows)
     {
         throw std::runtime_error("Login attempt failed");

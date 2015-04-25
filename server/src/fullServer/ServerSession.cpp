@@ -133,7 +133,7 @@ bool ServerSession::loginService()
     {
         return false;
     }
-    getMessage();
+    //getMessage();
     if (userForSession_.get<LOGIN_ID>() != "") // emptiness of Login implies emptiness of tuple
     {
         userForSession_.get<ISONLINE_ID>() = true;
@@ -176,7 +176,6 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
     messageCounter_[receivedMessageType]++;
-    //console_.debug << "Amount of received messages: " + std::to_string(receivedMessages_.size());
 }
 
 void ServerSession::sendOtherPlayersUpdate()
@@ -194,7 +193,7 @@ void ServerSession::sendOtherPlayersUpdate()
         updateEnvironmentMessage.changesVector.push_back(singleChange);
     }
     std::string json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
-    writerWrapper_->pushMessage(json);
+    // writerWrapper_->pushMessage(json);
     console_.debug << "UpdateEnvironment added to queue";
 }
 
@@ -214,6 +213,7 @@ void ServerSession::sendPlayerPosition(int x, int y, int z)
     common::CurrentPlayerPosition position;
     position.position = std::make_tuple(x, y, z);
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
+    console_.info << std::to_string(duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_).count());
     totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
     amountOfMessagesSent_++;
     writerWrapper_->pushMessage(json);

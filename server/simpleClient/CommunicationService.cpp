@@ -83,12 +83,13 @@ common::OkResponse CommunicationService::getResponse()
 std::shared_ptr<std::string> CommunicationService::getMessage(
     const MessageType& type, bool wait)
 {
-    if (isMessageOfTypeAlreadyReceived(type))
-    {
-        return getMessageOfTypeAlreadyReceived(type);
-    }
+    // if (isMessageOfTypeAlreadyReceived(type))
+    // {
+    //     return getMessageOfTypeAlreadyReceived(type);
+    // }
 
-    return wait ? getMessageOfTypeNotReceived(type) : nullptr;
+    // return wait ? getMessageOfTypeNotReceived(type) : nullptr;
+    return getMessageOfTypeNotReceived(type);
 }
 
 void CommunicationService::tearDown()

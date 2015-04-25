@@ -7,8 +7,8 @@ fi
 
 rm simpleClientLogs/*
 
-for i in {1..80}
+for i in {0..19}
 do
-   bin/simpleClient > simpleClientLogs/$i.log &
+   bin/simpleClient $i > /dev/null &
    sleep 0.5
 done
