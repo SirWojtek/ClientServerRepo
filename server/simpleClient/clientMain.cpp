@@ -11,7 +11,7 @@
 #include "common/socketServices/MessageWriter.hpp"
 #include "common/socketServices/MessageReader.hpp"
 
-CommunicationServicePtr createCommunicationService()
+std::shared_ptr<CommunicationService> createCommunicationService()
 {
 	MessageQueuePtr writerQueue =
 		std::make_shared<MessageQueue>();
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	assert(argc>1 && "Run this program with a client number please!");
 	ILoger::setDebugPrint(true);
 	
-	CommunicationServicePtr communicationServ = createCommunicationService();
+	std::shared_ptr<CommunicationService> communicationServ = createCommunicationService();
     KeyboardControllerPtr keyboardController = createKeyboardController();
 
 	Client client(communicationServ, keyboardController);

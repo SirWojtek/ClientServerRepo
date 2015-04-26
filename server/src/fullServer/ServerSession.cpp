@@ -175,7 +175,7 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.erase(receivedMessages_.end()-1);
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
-    messageCounter_[receivedMessageType]++;
+    //messageCounter_[receivedMessageType]++;
 }
 
 void ServerSession::sendOtherPlayersUpdate()
@@ -184,16 +184,26 @@ void ServerSession::sendOtherPlayersUpdate()
     common::UpdateEnvironment updateEnvironmentMessage;
     common::UpdateEnvironment::Changes singleChange;
     updateEnvironmentCounter_ += usersData.size();
+    int i = 0;
+    std::string json = "";
     for (auto user: usersData)
     {
         singleChange.state = 0;
         singleChange.delta.first = user.get<XPOS_ID>();
         singleChange.delta.second = user.get<YPOS_ID>();
         singleChange.id = user.get<ID_ID>();
-        updateEnvironmentMessage.changesVector.push_back(singleChange);
+        i++;
+        if (i<31)
+            //json += "xxxxx";
+            updateEnvironmentMessage.changesVector.push_back(singleChange);
     }
-    std::string json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
-    // writerWrapper_->pushMessage(json);
+    json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
+
+    amountOfMessagesSent_++;
+    bytesCounter_ += json.length();
+    messageCounter_[common::messagetype::UpdateEnvironment]++;
+
+    writerWrapper_->pushMessage(json);
     console_.debug << "UpdateEnvironment added to queue";
 }
 
@@ -203,7 +213,11 @@ void ServerSession::sendOkResponse(bool serwerAllows)
     okMessage.serverAllows = serwerAllows;
     std::string json = common::getMessageJson<common::OkResponse>(okMessage);
     totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
+    
     amountOfMessagesSent_++;
+    bytesCounter_ += json.length();
+    messageCounter_[common::messagetype::OkResponse]++;
+    
     writerWrapper_->pushMessage(json);
     console_.debug << "OkMessage added to queue";
 }
@@ -213,9 +227,12 @@ void ServerSession::sendPlayerPosition(int x, int y, int z)
     common::CurrentPlayerPosition position;
     position.position = std::make_tuple(x, y, z);
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
-    console_.info << std::to_string(duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_).count());
-    totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
-    amountOfMessagesSent_++;
+    // totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
+    
+    // amountOfMessagesSent_++;
+    // bytesCounter_ += json.length();
+    // messageCounter_[common::messagetype::CurrentPlayerPosition]++;
+
     writerWrapper_->pushMessage(json);
     console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
 }
@@ -241,10 +258,14 @@ void ServerSession::printMessageCounter()
     console_.info << "CurrentPlayerPosition: " + std::to_string(messageCounter_[common::messagetype::CurrentPlayerPosition]);
     console_.info << "Logout:                " + std::to_string(messageCounter_[common::messagetype::Logout]);
     console_.info << "Total amount of messages sent: " + std::to_string(amountOfMessagesSent_);
+    console_.info << "Total amount of bytes sent: " + std::to_string(bytesCounter_);
     console_.info << "Mean time between message receive and message send [sec] : " + std::to_string(totalTicks);
     console_.info << "____________________";
-    std::ofstream outputFile("serverLogs/"+std::to_string(socketNumber_)+".log");
-    outputFile << totalTicks << "\n" << updateEnvironmentCounter_ << "\n" << messageCounter_[common::messagetype::UpdatePlayer];
+    
+    outputFile_ << totalTicks << "\n";
+    outputFile_ << updateEnvironmentCounter_ << "\n";
+    outputFile_ << amountOfMessagesSent_ << "\n";
+    outputFile_ << bytesCounter_ << "\n";
 }
 
 messageCounter ServerSession::getMessageCounter()

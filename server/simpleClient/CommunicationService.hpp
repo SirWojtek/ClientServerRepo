@@ -32,6 +32,16 @@ public:
         const common::messagetype::MessageType& type, bool wait);
     void tearDown();
 
+    TcpSocketPtr tcpSocket_;
+
+    MessageQueuePtr writerQueue_;
+    MessageCommanderPtr messageWriter_;
+    ThreadPtr writerThread_;
+
+    MessageQueuePtr readerQueue_;
+    MessageCommanderPtr messageReader_;
+    ThreadPtr readerThread_;
+
 private:
     template<typename MessageT>
     common::OkResponse putMessage(const MessageT& message);
@@ -42,16 +52,6 @@ private:
         const common::messagetype::MessageType& type);
     std::shared_ptr<std::string> getMessageOfTypeNotReceived(
         const common::messagetype::MessageType& type);
-
-    TcpSocketPtr tcpSocket_;
-
-    MessageQueuePtr writerQueue_;
-    MessageCommanderPtr messageWriter_;
-    ThreadPtr writerThread_;
-
-    MessageQueuePtr readerQueue_;
-    MessageCommanderPtr messageReader_;
-    ThreadPtr readerThread_;
 
     std::multimap<common::messagetype::MessageType, std::shared_ptr<std::string>> receivedMessages_;
 

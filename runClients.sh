@@ -5,10 +5,18 @@ then
 	mkdir simpleClientLogs
 fi
 
-rm simpleClientLogs/*
+if [ ! -d "serverLogs" ]; 
+then
+	mkdir serverLogs
+fi
+
+rm simpleClientLogs/*.log
+rm serverLogs/*.log
 
 for i in {0..19}
 do
-   bin/simpleClient $i > /dev/null &
-   sleep 0.5
+	let "a=20-$i"
+	echo $a
+	bin/simpleClient $i 20 > /dev/null &
+	sleep 0.5
 done

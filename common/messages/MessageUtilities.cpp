@@ -10,6 +10,8 @@
 #include <stdexcept>
 
 #include <cereal/archives/json.hpp>
+// #include <cereal/types/string.hpp>
+// #include <cereal/archives/binary.hpp>
 #include <cereal/details/helpers.hpp>
 
 namespace common
@@ -55,6 +57,7 @@ std::shared_ptr<MessageT> getMessage(const std::string& jsonString)
     try
     {
         cereal::JSONInputArchive archive(stream);
+        // cereal::BinaryInputArchive archive(stream);
         archive(*result);
     }
     catch (cereal::Exception e)
@@ -76,6 +79,7 @@ std::string getMessageJson(const MessageT& msg)
 
     {
         cereal::JSONOutputArchive archive(result);
+        // cereal::BinaryOutputArchive archive(result);
 
         archive(msg);
     }

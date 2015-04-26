@@ -9,6 +9,7 @@ Testing/
 
 # Program logs
 *.log
+!longTimeLogs/*
 
 # Binaries and libs
 bin/

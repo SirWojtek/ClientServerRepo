@@ -36,7 +36,8 @@ public:
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
     databaseConnector_(databaseConnector),
-    console_("ServerSession")
+    console_("ServerSession"),
+    outputFile_("serverLogs/"+std::to_string(socketNumber-1)+".log")
   {
     console_.info << "New server session with socket number: " + std::to_string(socketNumber_);
     messageCounter_[common::messagetype::Incorrect] = 0;
@@ -48,6 +49,7 @@ public:
     messageCounter_[common::messagetype::Logout] = 0;
     amountOfMessagesSent_ = 0;
     updateEnvironmentCounter_ = 0;
+    bytesCounter_ = 0;
     totalTimeBetweenMessageReceiveAndSend_ = duration_cast<duration<double>>(high_resolution_clock::now() - high_resolution_clock::now());
   }
 
@@ -75,6 +77,7 @@ private:
   int socketNumber_;
   messagePairVec receivedMessages_;
   messageCounter messageCounter_;
+  unsigned long long bytesCounter_;
   unsigned updateEnvironmentCounter_;
   unsigned amountOfMessagesSent_; 
   duration<double> totalTimeBetweenMessageReceiveAndSend_;
@@ -92,6 +95,7 @@ private:
   std::shared_ptr<IDatabaseWrapper> databaseConnector_;
   
   Console console_;
+  std::ofstream outputFile_;
 
   static const int noMessage_ = -1;
 

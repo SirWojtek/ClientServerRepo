@@ -2,7 +2,7 @@
 #define SERVER_INITIALIZER_HPP_
 
 #define FULL_SERVER_FLAG 5
-//#undef FULL_SERVER_FLAG
+#undef FULL_SERVER_FLAG
 
 #include <boost/asio/io_service.hpp>
 #include <thread>

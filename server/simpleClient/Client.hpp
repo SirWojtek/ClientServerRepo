@@ -7,7 +7,7 @@
 #include <chrono>
 #include <ratio>
 
-#include "ICommunicationService.hpp"
+#include "CommunicationService.hpp"
 #include "IKeyboardController.hpp"
 #include "common/utilities/Console.hpp"
 #include "common/messages/MessageUtilities.hpp"
@@ -17,7 +17,7 @@ using namespace std::chrono;
 class Client
 {
 public:
-    Client(CommunicationServicePtr communicationServ, KeyboardControllerPtr keyboardController);
+    Client(std::shared_ptr<CommunicationService> communicationServ, KeyboardControllerPtr keyboardController);
 
     int start(int argc, char** argv);
 
@@ -27,7 +27,7 @@ private:
     void clientLoop(int clientNumber);
     void login(int clientNumber);
 
-    CommunicationServicePtr communicationServ_;
+    std::shared_ptr<CommunicationService> communicationServ_;
     KeyboardControllerPtr keyboardController_;
     Console console_;
     unsigned amountOfMessagesSent_; 

@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 {
   try
   {
-    //ILoger::setDebugPrint(false);
+    ILoger::setDebugPrint(false);
 
   	std::shared_ptr<BoostWrapper> wrapper =
       std::make_shared<BoostWrapper>();
