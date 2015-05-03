@@ -29,9 +29,12 @@ class ServerSession : public std::enable_shared_from_this<ServerSession>, public
 public:
   ServerSession(std::shared_ptr<IBoostWrapper> wrapper, SocketServicePtr readerWrapper,
     SocketServicePtr writerWrapper, int socketNumber,
-    std::shared_ptr<IDatabaseWrapper> databaseConnector):
+    std::shared_ptr<IDatabaseWrapper> databaseConnector, std::shared_ptr<Users> userArray,
+    std::shared_ptr<std::mutex> serverMutex):
     wrapper_(wrapper),
     socketNumber_(socketNumber),
+    userArray_(userArray),
+    serverMutex_(serverMutex),
     stop_(false),
     readerWrapper_(readerWrapper),
     writerWrapper_(writerWrapper),
@@ -51,6 +54,8 @@ public:
     updateEnvironmentCounter_ = 0;
     bytesCounter_ = 0;
     totalTimeBetweenMessageReceiveAndSend_ = duration_cast<duration<double>>(high_resolution_clock::now() - high_resolution_clock::now());
+
+    cellVertexes_.push_back(std::make_pair(0, 0));
   }
 
   std::shared_ptr<std::thread> start();
@@ -83,6 +88,10 @@ private:
   duration<double> totalTimeBetweenMessageReceiveAndSend_;
   high_resolution_clock::time_point timeBetweenMessageReceiveAndSend_;
   User userForSession_;
+  std::shared_ptr<Users> userArray_;
+  std::shared_ptr<std::mutex> serverMutex_;
+  std::vector<std::pair<unsigned, unsigned> > cellVertexes_;
+
 
   std::atomic<bool> stop_;
 

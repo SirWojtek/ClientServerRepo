@@ -32,7 +32,7 @@ public:
 typedef std::shared_ptr<IBoostWrapper> BoostWrapperPtr;
 typedef std::shared_ptr<std::thread> ThreadPtr;
 const static unsigned iBoostWrapperPortNumber = 4001;
-const static size_t iBoostWrapperMaxMessageSize = 8192;
+const static size_t iBoostWrapperMaxMessageSize = 32768;
 const static unsigned iBoostWrapperReadTimeout = 2;
 const static char iBoostWrapperReadDelim = ';';
 

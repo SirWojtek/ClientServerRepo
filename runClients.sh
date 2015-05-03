@@ -13,10 +13,10 @@ fi
 rm simpleClientLogs/*.log
 rm serverLogs/*.log
 
-for i in {0..19}
+for i in {0..159}
 do
-	let "a=20-$i"
+	let "a=160-$i"
 	echo $a
-	bin/simpleClient $i 20 > /dev/null &
+	bin/simpleClient $i 160 > /dev/null &
 	sleep 0.5
 done

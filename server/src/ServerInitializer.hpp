@@ -29,6 +29,8 @@ private:
 	std::shared_ptr<ServerSession> session_;
 	std::vector<std::shared_ptr<std::thread>> sessionThreadArray_;
 	std::vector<std::shared_ptr<ServerSession>> sessionArray_;
+	std::shared_ptr<Users> userArray_;
+	std::shared_ptr<std::mutex> serverMutex_;
 	Console console_;
 };
 
@@ -51,6 +53,8 @@ private:
 	std::shared_ptr<ServerSession> session_;
 	std::vector<std::shared_ptr<std::thread>> sessionThreadArray_;
 	std::vector<std::shared_ptr<ServerSession>> sessionArray_;
+	std::shared_ptr<Users> userArray_;
+	std::shared_ptr<std::mutex> serverMutex_;
 	Console console_;
 };
 

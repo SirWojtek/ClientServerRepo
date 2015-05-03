@@ -108,7 +108,7 @@ void Client::clientLoop(int clientNumber)
 
         messageStr = communicationServ_->readerQueue_->popMessage();
         //auto updateEnv = common::getMessage<UpdateEnvironment>(*messageStr);
-        messageStr = communicationServ_->readerQueue_->popMessage();
+        //messageStr = communicationServ_->readerQueue_->popMessage();
         //auto okResponse = common::getMessage<OkResponse>(*messageStr);
 
         totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);

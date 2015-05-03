@@ -18,7 +18,7 @@ public:
 
 };
 typedef std::shared_ptr<ITcpSocket> TcpSocketPtr;
-const static size_t iTcpSocketMaxMessageSize = 8192;
+const static size_t iTcpSocketMaxMessageSize = 32768;
 const static unsigned iTcpSocketReadTimeout = 2;
 const static char iTcpSocketReadDelim = ';';
 

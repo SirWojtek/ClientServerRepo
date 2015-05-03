@@ -1,5 +1,6 @@
 #include <thread>
 #include <stdexcept>
+#include <algorithm>
 
 #include "server/src/ServerSession.hpp"
 #include "common/messages/MessageUtilities.hpp"
@@ -117,6 +118,9 @@ bool ServerSession::wasClientLoggedInCorrectly()
             if (loginData.size() == 1)
             {
                 userForSession_ = loginData[0];
+                serverMutex_->lock();
+                userArray_->push_back(userForSession_);
+                serverMutex_->unlock();
                 console_.info << "Login OK for user: " + loginMessage->playerName;
                 sendOkResponse(true);
                 return true;
@@ -133,7 +137,6 @@ bool ServerSession::loginService()
     {
         return false;
     }
-    //getMessage();
     if (userForSession_.get<LOGIN_ID>() != "") // emptiness of Login implies emptiness of tuple
     {
         userForSession_.get<ISONLINE_ID>() = true;
@@ -175,15 +178,17 @@ void ServerSession::cyclicPushReceivedMessages(MessageType receivedMessageType,
         receivedMessages_.erase(receivedMessages_.end()-1);
         receivedMessages_.push_back(messagePair(receivedMessageType, messageString));
     }
-    //messageCounter_[receivedMessageType]++;
 }
 
 void ServerSession::sendOtherPlayersUpdate()
 {
-    Users usersData = databaseConnector_->getAllUsersExcept(userForSession_.get<ID_ID>());
+    //Users usersData = databaseConnector_->getAllUsersExcept(userForSession_.get<ID_ID>());
+    serverMutex_->lock();
+    Users usersData = *userArray_;
+    serverMutex_->unlock();
     common::UpdateEnvironment updateEnvironmentMessage;
     common::UpdateEnvironment::Changes singleChange;
-    updateEnvironmentCounter_ += usersData.size();
+    updateEnvironmentCounter_ += usersData.size() - 1;
     int i = 0;
     std::string json = "";
     for (auto user: usersData)
@@ -194,10 +199,10 @@ void ServerSession::sendOtherPlayersUpdate()
         singleChange.id = user.get<ID_ID>();
         i++;
         if (i<31)
-            //json += "xxxxx";
+            json += "xxxxx";
             updateEnvironmentMessage.changesVector.push_back(singleChange);
     }
-    json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
+    //json = common::getMessageJson<common::UpdateEnvironment>(updateEnvironmentMessage);
 
     amountOfMessagesSent_++;
     bytesCounter_ += json.length();
@@ -227,11 +232,6 @@ void ServerSession::sendPlayerPosition(int x, int y, int z)
     common::CurrentPlayerPosition position;
     position.position = std::make_tuple(x, y, z);
     std::string json = common::getMessageJson<common::CurrentPlayerPosition>(position);
-    // totalTimeBetweenMessageReceiveAndSend_ += duration_cast<duration<double>>(high_resolution_clock::now() - timeBetweenMessageReceiveAndSend_);
-    
-    // amountOfMessagesSent_++;
-    // bytesCounter_ += json.length();
-    // messageCounter_[common::messagetype::CurrentPlayerPosition]++;
 
     writerWrapper_->pushMessage(json);
     console_.debug << "CurrentPlayerPosition added to queue: " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + " ";
@@ -242,7 +242,8 @@ bool ServerSession::updatePlayerPositionByJson(std::string json)
     auto message = common::getMessage<common::UpdatePlayer>(json);
     userForSession_.get<XPOS_ID>() += message->delta.first;
     userForSession_.get<YPOS_ID>() += message->delta.second;
-    return (databaseConnector_->updateUser(userForSession_));
+    return true;
+    //return (databaseConnector_->updateUser(userForSession_));
 }
 
 void ServerSession::printMessageCounter()
