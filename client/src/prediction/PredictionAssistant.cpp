@@ -35,6 +35,7 @@ PredictionAssistant::PredictionAssistant(unsigned recordSize, int recordsNumber,
         k_(k),
         distanceFunction_(distanceFunc),
         chooseFunction_(chooseFunc),
+        deadReckoning_(possibleDirections),
         elapsedSec_(0.0) {}
 
 PredictionAssistant::~PredictionAssistant() {}
