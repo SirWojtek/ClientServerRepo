@@ -20,26 +20,24 @@ FileVector getFiles(int argc, char** argv)
     return files;
 }
 
-void runTest(const FileVector& files, PredictionAssistant::PredictionFunction func, unsigned n)
+void runTest(const FileVector& files)
 {
-    PredictionAssistant assistant(3, n, 3, func, prediction::getDirectionWithMaxOccurence);
+    PredictionAssistant assistant(0, 0, 0, nullptr, nullptr);
     float floatPassed = 0;
     double duration = 0.0;
     unsigned iterations = 1000;
 
-    for (unsigned i = 0; i < files.size() - 1; i++)
+    for (unsigned i = 0; i < files.size(); i++)
     {
         assistant.addDatabaseFile(files[i]);
     }
-    assistant.addTestFile(files.back());
 
     std::cout << "Iteration: ";
     for (unsigned i = 0; i < iterations; i++)
     {
         std::cout << i + 1 << " ";
         std::cout.flush();
-        assistant.initPredictionAlgorithm();
-        std::vector<bool> results = assistant.runTest();
+        std::vector<bool> results = assistant.runDeadReckoningTest();
         int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
         floatPassed += static_cast<float>(passed)/static_cast<float>(results.size());
         duration += assistant.getElapsedTime();
@@ -59,18 +57,10 @@ int main(int argc, char** argv)
     }
 
     FileVector files = getFiles(argc, argv);
-    DistanceFunctions::setWeight(0.01);
-    std::vector<unsigned> recordsNumber = {350, 375, 400 };
 
-    for (unsigned number : recordsNumber)
-    {
-        std::cout << "**** Testing with n = "<< number << " ***" << std::endl;
-
-        std::cout << std::endl << "**** Testing with weight start points and direction distance ***" << std::endl;
-        runTest(files, &DistanceFunctions::startPointsDistance, number);
-        std::cout << std::endl;
-    }
-
+    std::cout << std::endl << "**** Testing Dead Reckoning ***" << std::endl;
+    runTest(files);
+    std::cout << std::endl;
 
     return 0;
 }
