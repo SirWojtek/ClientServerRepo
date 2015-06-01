@@ -10,7 +10,13 @@
 namespace prediction
 {
 
+namespace
+{
 using namespace std::placeholders;
+
+std::vector<DeltaRecord> possibleDirections{ {5, 0}, {-5, 0}, {0, 5}, {0, -5} };
+
+}
 
 PredictionAssistant::PredictionAssistant(unsigned recordSize, unsigned k,
     PredictionFunction distanceFunc, DirectionChooseFunction chooseFunc) :
@@ -19,6 +25,7 @@ PredictionAssistant::PredictionAssistant(unsigned recordSize, unsigned k,
         k_(k),
         distanceFunction_(distanceFunc),
         chooseFunction_(chooseFunc),
+        deadReckoning_(possibleDirections),
         elapsedSec_(0.0) {}
 
 PredictionAssistant::PredictionAssistant(unsigned recordSize, int recordsNumber, unsigned k,
@@ -56,6 +63,24 @@ void PredictionAssistant::initPredictionAlgorithm()
 }
 
 std::vector<bool> PredictionAssistant::runTest()
+{
+    TestData testData = getTestData();
+    testDataSize_ = testData.size();
+    std::vector<bool> testResults;
+    // std::cout << "Test iterations: " << testData.size() << std::endl;
+
+    // std::cout << "Running test..." << std::endl;
+
+    std::transform(testData.begin(), testData.end(), std::back_inserter(testResults),
+        std::bind(&PredictionAssistant::getTestResult, this, _1));
+
+    // std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
+    //     << "s" << std::endl;
+
+    return testResults;
+}
+
+std::vector<bool> PredictionAssistant::runDeadReckoningTest()
 {
     TestData testData = getTestData();
     testDataSize_ = testData.size();
@@ -112,6 +137,19 @@ bool PredictionAssistant::getTestResult(const std::pair<InputRecord, DeltaRecord
     }
 
     return chooseFunction_(finderResults) == test.second;
+}
+
+bool PredictionAssistant::getDeadReckoningTestResult(const std::pair<InputRecord, DeltaRecord>& test)
+{
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+
+    start = std::chrono::system_clock::now();
+    DeltaRecord output = deadReckoning_.getDeadReckoningPrediction(test.first);
+    end = std::chrono::system_clock::now();
+
+    elapsedSec_ += end - start;
+
+    return output == test.second;
 }
 
 }

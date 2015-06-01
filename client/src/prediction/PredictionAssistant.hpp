@@ -4,6 +4,7 @@
 #include "DistanceFunctions.hpp"
 #include "PredictionDefinitions.hpp"
 #include "KNeighborsFinder.hpp"
+#include "DeadReckoning.hpp"
 
 #include <string>
 #include <functional>
@@ -35,12 +36,14 @@ public:
 
     void initPredictionAlgorithm();
     std::vector<bool> runTest();
+    std::vector<bool> runDeadReckoningTest();
 
     double getElapsedTime() const;
 private:
     TestData getTestData() const;
     std::pair<InputRecord, DeltaRecord> convertToTestData(const DataVector& raw) const;
     bool getTestResult(const std::pair<InputRecord, DeltaRecord>& test);
+    bool getDeadReckoningTestResult(const std::pair<InputRecord, DeltaRecord>& test);
 
     FileVector databaseFiles_;
     FileVector testFiles_;
@@ -54,6 +57,7 @@ private:
 
     DistanceFunctions functions_;
     std::unique_ptr<BasicKNeighborFinder> finder_;
+    DeadReckoning<InputRecord, DeltaRecord> deadReckoning_;
     std::chrono::duration<double> elapsedSec_;
 };
 
