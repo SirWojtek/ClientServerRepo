@@ -36,6 +36,7 @@ public:
     void initPredictionAlgorithm();
     std::vector<bool> runTest();
 
+    double getElapsedTime() const;
 private:
     TestData getTestData() const;
     std::pair<InputRecord, DeltaRecord> convertToTestData(const DataVector& raw) const;
@@ -47,6 +48,7 @@ private:
     const unsigned recordSize_;
     const int recordsNumber_;
     const unsigned k_;
+    unsigned testDataSize_;
     const PredictionFunction distanceFunction_;
     const DirectionChooseFunction chooseFunction_;
 

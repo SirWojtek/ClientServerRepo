@@ -24,6 +24,7 @@ void runTest(const FileVector& files, PredictionAssistant::PredictionFunction fu
 {
     PredictionAssistant assistant(3, n, 3, func, prediction::getDirectionWithMaxOccurence);
     float floatPassed = 0;
+    double duration = 0.0;
     unsigned iterations = 1000;
 
     for (unsigned i = 0; i < files.size() - 1; i++)
@@ -41,10 +42,13 @@ void runTest(const FileVector& files, PredictionAssistant::PredictionFunction fu
         std::vector<bool> results = assistant.runTest();
         int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
         floatPassed += static_cast<float>(passed)/static_cast<float>(results.size());
+        duration += assistant.getElapsedTime();
     }
 
     floatPassed /= iterations;
+    duration /= iterations;
     std::cout << std::endl << "Percent prediction match: " << floatPassed * 100 << std::endl;
+    std::cout << std::endl << "Elapsed time: " << duration << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -56,14 +60,14 @@ int main(int argc, char** argv)
 
     FileVector files = getFiles(argc, argv);
     DistanceFunctions::setWeight(0.01);
-    std::vector<unsigned> recordsNumber = { 5, 10, 20, 50, 100, 200, 500, 1000 };
+    std::vector<unsigned> recordsNumber = {350, 375, 400 };
 
     for (unsigned number : recordsNumber)
     {
         std::cout << "**** Testing with n = "<< number << " ***" << std::endl;
 
         std::cout << std::endl << "**** Testing with weight start points and direction distance ***" << std::endl;
-        runTest(files, &DistanceFunctions::weightStartPointsDistanceAndDirection, number);
+        runTest(files, &DistanceFunctions::startPointsDistance, number);
         std::cout << std::endl;
     }
 
