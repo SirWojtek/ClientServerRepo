@@ -56,9 +56,9 @@ void PredictionAssistant::initPredictionAlgorithm()
 {
     elapsedSec_ = std::chrono::duration<double>(0.0);
     testDataSize_ = 0;
-    finder_.reset(new BasicKNeighborFinder(
-        buildKNeighborsFinder(databaseFiles_, recordSize_, recordsNumber_,
-        std::bind(distanceFunction_, &functions_, _1))));
+    // finder_.reset(new BasicKNeighborFinder(
+    //     buildKNeighborsFinder(databaseFiles_, recordSize_, recordsNumber_,
+    //     std::bind(distanceFunction_, &functions_, _1))));
     // std::cout << "Successful loaded prediction algorithm" << std::endl;
     // finder_->printInfo();
 }
@@ -91,7 +91,7 @@ std::vector<bool> PredictionAssistant::runDeadReckoningTest()
     // std::cout << "Running test..." << std::endl;
 
     std::transform(testData.begin(), testData.end(), std::back_inserter(testResults),
-        std::bind(&PredictionAssistant::getTestResult, this, _1));
+        std::bind(&PredictionAssistant::getDeadReckoningTestResult, this, _1));
 
     // std::cout << "Average getNeighbors time: " << elapsedSec_.count() / testData.size()
     //     << "s" << std::endl;

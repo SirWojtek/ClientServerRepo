@@ -22,14 +22,14 @@ FileVector getFiles(int argc, char** argv)
 
 void runTest(const FileVector& files)
 {
-    PredictionAssistant assistant(0, 0, 0, nullptr, nullptr);
+    PredictionAssistant assistant(5, 0, 0, nullptr, nullptr);
     float floatPassed = 0;
     double duration = 0.0;
     unsigned iterations = 1000;
 
     for (unsigned i = 0; i < files.size(); i++)
     {
-        assistant.addDatabaseFile(files[i]);
+        assistant.addTestFile(files[i]);
     }
 
     std::cout << "Iteration: ";
@@ -37,6 +37,7 @@ void runTest(const FileVector& files)
     {
         std::cout << i + 1 << " ";
         std::cout.flush();
+        assistant.initPredictionAlgorithm();
         std::vector<bool> results = assistant.runDeadReckoningTest();
         int passed = std::count_if(results.begin(), results.end(), [](bool a){ return a; });
         floatPassed += static_cast<float>(passed)/static_cast<float>(results.size());
