@@ -33,17 +33,17 @@ CMake ma strukturę hierarchiczną:
 3. Kompilacja wybranym narzędziem.
 
 ## Podstawowe pojęcia
-Target - część projektu, która może zostać zbudowana. Zazwyczaj library lub executable.
+**Target** - część projektu, która może zostać zbudowana. Zazwyczaj library lub executable.
 Może zostać zbudowany po wygenerowaniu make'a lub ninja.
 
-Library - kontener, dzięki któremu można podzielić projekt na mniejsze części.
+**Library** - kontener, dzięki któremu można podzielić projekt na mniejsze części.
 Podział na libki pozwala na osiągnięcie modułowości i przydaje się przy konstruowaniu testów.
 Typy libek w CMake'u:
 - statyczne, dynamiczne - standardowe typy bibliotek (*.a i *.so)
 - logiczne - biblioteki, które mogą być definiowane tylko jako zależności do innych komponentów,
 nie mogą byc budowane niezależnie (nie mogą być targetami)
 
-Executable - target, który po skompilowaniu może być uruchomiony (binarka).
+**Executable** - target, który po skompilowaniu może być uruchomiony (binarka).
 
 ## Definiowanie zależności
 Definiowanie zależności określa kolejność budowania i linkowania targetów.
@@ -73,7 +73,7 @@ Do cross-kompilacji CMake potrzebuje pliku z konfiguracją zawierającego defini
 #### +
 - nie skaluje się do dużych projektów
 - nieprzystosowany do dzielenia projektu
-#### - 
+#### -
 - słaba dokumentacja
 - zależność od Qt
 
